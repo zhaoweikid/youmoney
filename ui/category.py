@@ -186,7 +186,8 @@ class Category:
             if node:
                 node.count = v[0]
                 node.num   = v[1]
-                total += v[1]
+                if not node.childs:
+                    total += v[1]
             #self.payout_tree.echo()
         self.payout_tree.num = total
 
@@ -200,7 +201,8 @@ class Category:
             if node:
                 node.count = v[0]
                 node.num   = v[1]
-                total += v[1]
+                if not node.childs:
+                    total += v[1]
         self.income_tree.num = total
         #self.income_tree.echo()
 

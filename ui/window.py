@@ -222,18 +222,20 @@ class MainFrame (wx.Frame):
                 day    = data['date'].GetDay()
 
                 sql = sql % (cateid, num, tnow, year, month, day, payway, data['explain'])
-                loginfo.info(sql)
+                logfile.info(sql)
                 self.db.execute(sql)
             except Exception, e:
                 wx.MessageBox(u'添加收入信息失败: ' + str(e), u'添加收入信息', wx.OK|wx.ICON_INFORMATION)
                 logfile.info(traceback.format_exc())
+            else:
+                self.reload()
 
     def OnPayout(self, event):
         tday = datetime.date.today()
         ready = {'cates':self.category.payout_catelist, 'cate':self.category.payout_catelist[0], 'num':'', 
                  'explain':'', 'year':tday.year, 'month':tday.month, 'day':tday.day,
                  'pay':u'现金', 'mode':'insert'}
-        
+        #print 'payout insert:', ready 
         self.payout_dialog(ready)
 
     def payout_dialog(self, ready):

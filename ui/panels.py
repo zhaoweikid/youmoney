@@ -21,6 +21,7 @@ class CategoryPanel (wx.Panel):
         self.SetAutoLayout(True)
 
         self.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.OnItemActivated, self.tree)
+        self.tree.GetMainWindow().Bind(wx.EVT_RIGHT_UP, self.OnPopupMenu) 
 
     def init(self):
         self.tree.AddColumn(u'分类')
@@ -51,6 +52,16 @@ class CategoryPanel (wx.Panel):
  
         self.tree.ExpandAll(self.root)
 
+    def OnPopupMenu(self, event):
+        if not hasattr(self, "ID_POPUP_DEL"):
+            self.ID_POPUP_DEL = wx.NewId()
+            self.Bind(wx.EVT_MENU, self.OnCategoryDel, id=self.ID_POPUP_DEL)
+        menu = wx.Menu()
+        menu.Append(self.ID_POPUP_DEL, u"删除")
+        self.PopupMenu(menu)
+        menu.Destroy()
+
+
     def OnItemActivated(self, event):
         data = self.tree.GetPyData(event.GetItem())
         frame = self.parent.parent
@@ -71,6 +82,42 @@ class CategoryPanel (wx.Panel):
 
                 frame.cateedit_dialog(ready)
 
+    def OnCategoryDel(self, event):
+        data = self.tree.GetPyData(event.GetItem())
+        frame = self.parent.parent
+        
+        dlg = wx.MessageDialog(self, u'删除分类，此分类下的所有条目将自动归类到 "未分类" 中。点击OK确认，否则取消此操作',
+                               u'注意!',
+                               wx.OK | wx.ICON_INFORMATION | wx.CANCEL | wx.ICON_INFORMATION)
+        if dlg.ShowModal() == wx.ID_OK:
+            sql = "select * from category where id=" + str(data['id'])
+            ret = frame.db.query(sql)
+            if not ret:
+                logfile.info('not found del category:', data['id'])
+                return
+            mytype = ret[0]['type']
+            sql = u"select * from category where name='未分类' and type=" + str(mytype)
+            ret = frame.db.query(sql)
+            if not ret:
+                sql = "insert into category (name,parent,type) values ('未分类',0,%d)" % (mytype)
+                frame.db.execute(sql)
+                sql = u"select * from category where name='未分类' and type=" + str(mytype)
+                ret = frame.db.query(sql)
+ 
+            mycid = ret[0]['id']
+            try:
+                sql = "update capital set category=%d where category=%d and type=%d" % (mycid, data['id'], mytype)
+                frame.db.execute(sql, False)
+                sql = "delete from category where id=" + str(data['id'])
+                frame.db.execute(sql, False)
+            except Exception, e:
+                frame.db.rollback()
+                wx.MessageBox(u'删除分类失败:' + str(e), u'删除分类操作信息!', wx.OK|wx.ICON_INFORMATION)
+            else:
+                frame.db.commit()
+            frame.reload()
+        dlg.Destroy()
+
 
 class PayoutListPanel (wx.Panel):
     def __init__(self, parent):
@@ -88,6 +135,9 @@ class PayoutListPanel (wx.Panel):
         box.Add(wx.StaticText(self, -1, u" 年 ", (8, 10)), 0, wx.ALIGN_CENTER)
         box.Add(self.month, 0, wx.EXPAND)
         box.Add(wx.StaticText(self, -1, u" 月", (8, 10)), 0, wx.ALIGN_CENTER)
+        box.Add(wx.StaticText(self, -1, u"  总计: ", (8, 10)), 0, wx.ALIGN_CENTER)
+        self.total = wx.TextCtrl(self, -1, size=(100,-1), style=wx.TE_READONLY)
+        box.Add(self.total, 0, wx.ALIGN_CENTER)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(box, 0, wx.EXPAND|wx.ALL, border=2)
@@ -100,16 +150,28 @@ class PayoutListPanel (wx.Panel):
         self.Bind(wx.EVT_COMBOBOX, self.OnChooseYear, self.year)
         self.Bind(wx.EVT_COMBOBOX, self.OnChooseMonth, self.month)
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnItemActivated, self.list)
-
+        self.Bind(wx.EVT_CONTEXT_MENU, self.OnPopupMenu) 
         #self.init()
         self.load()
-    
+   
+    def OnPopupMenu(self, event):
+        if not hasattr(self, "ID_POPUP_DEL"):
+            self.ID_POPUP_DEL = wx.NewId()
+            
+            self.Bind(wx.EVT_MENU, self.OnPayoutDel, id=self.ID_POPUP_DEL)
+        menu = wx.Menu()
+        menu.Append(self.ID_POPUP_DEL, u"删除")
+        self.PopupMenu(menu)
+        menu.Destroy()
+
+
     def init(self):
         self.list.InsertColumn(0, u"日期")
         self.list.InsertColumn(1, u"分类")
         self.list.InsertColumn(2, u"金额")
         self.list.InsertColumn(3, u"支付方式")
         self.list.InsertColumn(4, u"说明")
+        self.list.SetColumnWidth(4, 300)
 
     def load(self):
         self.list.ClearAll()
@@ -123,6 +185,7 @@ class PayoutListPanel (wx.Panel):
         rets = self.parent.parent.db.query(sql)
         logfile.info('list:', rets)
         if rets:
+            numall = 0
             for row in rets:
                 mytime = '%d-%02d-%02d' % (row['year'], row['month'], row['day'])
                 item = self.list.InsertStringItem(0, mytime)
@@ -136,6 +199,11 @@ class PayoutListPanel (wx.Panel):
                     payway = u'信用卡'
                 self.list.SetStringItem(item, 3, payway)
                 self.list.SetStringItem(item, 4, row['explain'])
+                numall += row['num']
+            self.total.SetValue(str(numall))
+        else:
+            self.total.SetValue('0')
+
        
 
     def OnChooseYear(self, event):
@@ -165,7 +233,17 @@ class PayoutListPanel (wx.Panel):
                      'pay':payway, 'mode':'update', 'id':row['id']}
 
             logfile.info('ready:', ready)
+            #print 'update data:', ready
             self.parent.parent.payout_dialog(ready)
+
+
+    def OnPayoutDel(self, event):
+        currentItem = event.m_itemIndex
+        id = self.list.GetItemData(currentItem)
+        sql = "delete from capital where id=" + str(id)
+        self.parent.parent.db.execute(sql)
+        self.parent.parent.payout_dialog(ready)
+ 
 
 
 class ContentTab (wx.Notebook):

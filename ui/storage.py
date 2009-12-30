@@ -23,9 +23,17 @@ class DBStorage:
         self.db.close()
         self.db = None
 
-    def execute(self, sql):
+    def execute(self, sql, autocommit=True):
         self.db.execute(sql)
+        if autocommit:
+            self.db.commit()
+    
+    def commit(self):
         self.db.commit()
+        
+        
+    def rollback(self):
+        self.db.rollback()
 
     def query(self, sql, iszip=True):
         if type(sql) == types.UnicodeType:
