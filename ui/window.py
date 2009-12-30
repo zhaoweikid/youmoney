@@ -13,7 +13,7 @@ payways   = {1:u'现金', 2:u'信用卡', u'现金':1, u'信用卡':2}
 class MainFrame (wx.Frame):
     def __init__(self, parent, id, title):
         wx.Frame.__init__(self, parent, id, title, wx.DefaultPosition, wx.Size(800,600),
-                name=u'MyCash', style=wx.DEFAULT_FRAME_STYLE)
+                name=u'YouMoney', style=wx.DEFAULT_FRAME_STYLE)
 
         self.rundir = os.path.dirname(os.path.abspath(sys.argv[0]))
         try:
@@ -39,7 +39,7 @@ class MainFrame (wx.Frame):
         
 
     def init(self):
-        self.db = storage.DBStorage(os.path.join(self.rundir, "data", "mycash.db"))
+        self.db = storage.DBStorage(os.path.join(self.rundir, "data", "youmoney.db"))
         
     def load(self):
         tday = datetime.date.today()
