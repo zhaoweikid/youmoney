@@ -64,9 +64,9 @@ class MainFrame (wx.Frame):
         
         menubar = wx.MenuBar()
         self.filemenu = wx.Menu()
-        self.filemenu.Append(self.ID_FILE_OPEN, u'打开文件')
-        self.filemenu.Append(self.ID_FILE_SAVE, u'保存文件')
-        self.filemenu.Append(self.ID_FILE_SAVEAS, u'另存为')
+        self.filemenu.Append(self.ID_FILE_OPEN, u'打开数据库文件')
+        self.filemenu.Append(self.ID_FILE_SAVE, u'保存数据库文件')
+        self.filemenu.Append(self.ID_FILE_SAVEAS, u'数据库文件另存为')
         self.filemenu.AppendSeparator()
         self.filemenu.Append(self.ID_FILE_EXIT, u'退出')
         menubar.Append(self.filemenu, u'文件')
@@ -110,14 +110,42 @@ class MainFrame (wx.Frame):
 
 
     def OnFileOpen(self, event):
-        pass
+        dlg = wx.FileDialog(
+            self, message=u"选择数据库文件",
+            defaultDir=os.getcwd(), 
+            defaultFile="",
+            wildcard=u"YouMoney数据库文件 (*.db)|*.db",
+            style=wx.OPEN | wx.CHANGE_DIR
+            )
+
+        if dlg.ShowModal() == wx.ID_OK:
+            paths = dlg.GetPath()
+            logfile.info("open file:", paths) 
+        
+        dlg.Destroy()
 
     def OnFileSave(self, event):
-        pass
-
+        dlg = wx.FileDialog(
+            self, message=u"数据库文件另存为 ...", defaultDir=os.getcwd(), 
+            defaultFile="", wildcard=u"YouMoney数据库文件 (*.db)|*.db", style=wx.SAVE)
+        dlg.SetFilterIndex(2)
+        if dlg.ShowModal() == wx.ID_OK:
+            path = dlg.GetPath()
+            logfile.info("save file:", paths) 
+        
+        dlg.Destroy()
 
     def OnFileSaveAs(self, event):
-        pass
+        dlg = wx.FileDialog(
+            self, message=u"数据库文件另存为 ...", defaultDir=os.getcwd(), 
+            defaultFile="", wildcard=u"YouMoney数据库文件 (*.db)|*.db", style=wx.SAVE)
+        dlg.SetFilterIndex(2)
+        if dlg.ShowModal() == wx.ID_OK:
+            path = dlg.GetPath()
+            logfile.info("save file:", paths) 
+        
+        dlg.Destroy()
+
 
 
     def OnCateEdit(self, event):

@@ -21,6 +21,7 @@ class LogFile:
             else:
                 ss.append(str(x))
         self.file.write("%s %s\n" % (str(datetime.datetime.now()), ' '.join(ss)))
+        self.file.flush()
 
     def close(self):
         self.file.close()

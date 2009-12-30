@@ -109,7 +109,7 @@ class PayoutListPanel (wx.Panel):
         self.list.InsertColumn(1, u"分类")
         self.list.InsertColumn(2, u"金额")
         self.list.InsertColumn(3, u"支付方式")
-
+        self.list.InsertColumn(4, u"说明")
 
     def load(self):
         self.list.ClearAll()
@@ -135,6 +135,7 @@ class PayoutListPanel (wx.Panel):
                 else:
                     payway = u'信用卡'
                 self.list.SetStringItem(item, 3, payway)
+                self.list.SetStringItem(item, 4, row['explain'])
        
 
     def OnChooseYear(self, event):
