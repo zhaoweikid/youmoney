@@ -19,9 +19,12 @@ class CategoryPanel (wx.Panel):
 
         self.SetSizer(sizer)
         self.SetAutoLayout(True)
+        
+        self.currentItem = None
 
         self.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.OnItemActivated, self.tree)
         self.tree.GetMainWindow().Bind(wx.EVT_RIGHT_UP, self.OnPopupMenu) 
+        self.Bind(wx.EVT_TREE_SEL_CHANGED, self.OnItemSelected, self.tree)
 
     def init(self):
         self.tree.AddColumn(u'分类')
@@ -53,6 +56,11 @@ class CategoryPanel (wx.Panel):
         self.tree.ExpandAll(self.root)
 
     def OnPopupMenu(self, event):
+        pt = event.GetPosition();
+        test = self.tree.HitTest(pt)
+        if test[0]:
+            self.tree.SelectItem(test[0])
+        
         if not hasattr(self, "ID_POPUP_DEL"):
             self.ID_POPUP_DEL = wx.NewId()
             self.Bind(wx.EVT_MENU, self.OnCategoryDel, id=self.ID_POPUP_DEL)
@@ -63,7 +71,7 @@ class CategoryPanel (wx.Panel):
 
 
     def OnItemActivated(self, event):
-        data = self.tree.GetPyData(event.GetItem())
+        data  = self.tree.GetPyData(event.GetItem())
         frame = self.parent.parent
         if data['id'] > 0:
             sql = "select * from category where id=" + str(data['id'])
@@ -83,19 +91,41 @@ class CategoryPanel (wx.Panel):
                 frame.cateedit_dialog(ready)
 
     def OnCategoryDel(self, event):
-        data = self.tree.GetPyData(event.GetItem())
+        data  = self.tree.GetPyData(self.currentItem)
+        if not data or data['id'] <= 0:
+            logfile.info("category data invalid.")
+            return
         frame = self.parent.parent
+ 
+        sql = "select * from category where id=" + str(data['id'])
+        ret = frame.db.query(sql)
+        if not ret:
+            logfile.info('not found del category:', data['id'])
+            return
+        mytype = ret[0]['type']
+        name   = ret[0]['name']
         
-        dlg = wx.MessageDialog(self, u'删除分类，此分类下的所有条目将自动归类到 "未分类" 中。点击OK确认，否则取消此操作',
+        if name == u'未分类':
+            dlg = wx.MessageDialog(self, u'此分类不能不删除',
+                               u'注意!',
+                               wx.OK | wx.ICON_INFORMATION | wx.ICON_INFORMATION)
+            dlg.ShowModal()
+            dlg.Destroy()
+            return   
+        else:
+            dlg = wx.MessageDialog(self, u'删除分类%s，此分类下的所有条目将自动归类到 "未分类" 中' % (name),
                                u'注意!',
                                wx.OK | wx.ICON_INFORMATION | wx.CANCEL | wx.ICON_INFORMATION)
         if dlg.ShowModal() == wx.ID_OK:
-            sql = "select * from category where id=" + str(data['id'])
+            # 检查要删除的所有分类，包括子类
+            idlist = [str(data['id'])]
+            sql = "select * from category where parent=" + str(data['id'])
             ret = frame.db.query(sql)
-            if not ret:
-                logfile.info('not found del category:', data['id'])
-                return
-            mytype = ret[0]['type']
+            if ret:
+                for row in ret:
+                    idlist.append(str(row['id']))
+            ids = ','.join(idlist)
+            # 检查是否有 未分类
             sql = u"select * from category where name='未分类' and type=" + str(mytype)
             ret = frame.db.query(sql)
             if not ret:
@@ -105,10 +135,13 @@ class CategoryPanel (wx.Panel):
                 ret = frame.db.query(sql)
  
             mycid = ret[0]['id']
+
+            # 更新
             try:
-                sql = "update capital set category=%d where category=%d and type=%d" % (mycid, data['id'], mytype)
+                sql = "update capital set category=%d where category in (%s) and type=%d" % (mycid, ids, mytype)
+                logfile.info('update category:', sql)
                 frame.db.execute(sql, False)
-                sql = "delete from category where id=" + str(data['id'])
+                sql = "delete from category where id=%d or parent=%d" % (data['id'], data['id'])
                 frame.db.execute(sql, False)
             except Exception, e:
                 frame.db.rollback()
@@ -117,7 +150,9 @@ class CategoryPanel (wx.Panel):
                 frame.db.commit()
             frame.reload()
         dlg.Destroy()
-
+    
+    def OnItemSelected(self, event):
+        self.currentItem = event.GetItem()
 
 class PayoutListPanel (wx.Panel):
     def __init__(self, parent):
@@ -146,10 +181,12 @@ class PayoutListPanel (wx.Panel):
 
         self.SetSizer(sizer)
         self.SetAutoLayout(True)
-
+        
+        self.currentItem = None
         self.Bind(wx.EVT_COMBOBOX, self.OnChooseYear, self.year)
         self.Bind(wx.EVT_COMBOBOX, self.OnChooseMonth, self.month)
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnItemActivated, self.list)
+        self.Bind(wx.EVT_LIST_ITEM_SELECTED, self.OnItemSelected, self.list)
         self.Bind(wx.EVT_CONTEXT_MENU, self.OnPopupMenu) 
         #self.init()
         self.load()
@@ -183,7 +220,6 @@ class PayoutListPanel (wx.Panel):
         sql = "select * from capital where year=%s and month=%s and type=0 order by id" % (year, month)
         logfile.info(sql)
         rets = self.parent.parent.db.query(sql)
-        logfile.info('list:', rets)
         if rets:
             numall = 0
             for row in rets:
@@ -238,12 +274,17 @@ class PayoutListPanel (wx.Panel):
 
 
     def OnPayoutDel(self, event):
-        currentItem = event.m_itemIndex
-        id = self.list.GetItemData(currentItem)
+        if self.currentItem is None:
+            return
+        id = self.list.GetItemData(self.currentItem)
         sql = "delete from capital where id=" + str(id)
+        logfile.info('del:', sql)
         self.parent.parent.db.execute(sql)
-        self.parent.parent.payout_dialog(ready)
- 
+        self.parent.parent.reload()
+
+    def OnItemSelected(self, event):
+        self.currentItem = event.m_itemIndex
+        event.Skip()
 
 
 class ContentTab (wx.Notebook):
