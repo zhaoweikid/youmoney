@@ -4,7 +4,7 @@ import datetime
 import wx
 import wx.lib.sized_controls as sc
 import wx.gizmos as gizmos
-import logfile
+import logfile, statpanel
 
 class CategoryPanel (wx.Panel):
     def __init__(self, parent):
@@ -295,7 +295,9 @@ class ContentTab (wx.Notebook):
         self.AddPage(self.cate, u"分类")
         self.payoutlist = PayoutListPanel(self)
         self.AddPage(self.payoutlist, u"支出列表")
-
+        cates = self.parent.category.catelist_parent()
+        self.stat = statpanel.StatPanel(self, cates)
+        self.AddPage(self.stat, u"统计")
 
     def load_category(self, cate):
         self.cate.load(cate)
