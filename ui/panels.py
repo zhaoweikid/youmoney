@@ -27,8 +27,8 @@ class CategoryPanel (wx.Panel):
         self.Bind(wx.EVT_TREE_SEL_CHANGED, self.OnItemSelected, self.tree)
 
     def init(self):
-        self.tree.AddColumn(u'分类')
-        self.tree.AddColumn(u'本月总计')
+        self.tree.AddColumn(_("Category"))
+        self.tree.AddColumn(_("Month Total"))
 
         self.tree.SetMainColumn(0)
         self.tree.SetColumnWidth(0, 200)
@@ -65,7 +65,7 @@ class CategoryPanel (wx.Panel):
             self.ID_POPUP_DEL = wx.NewId()
             self.Bind(wx.EVT_MENU, self.OnCategoryDel, id=self.ID_POPUP_DEL)
         menu = wx.Menu()
-        menu.Append(self.ID_POPUP_DEL, u"删除")
+        menu.Append(self.ID_POPUP_DEL, _('Delete')) 
         self.PopupMenu(menu)
         menu.Destroy()
 
@@ -81,11 +81,11 @@ class CategoryPanel (wx.Panel):
                 if row['parent'] > 0:
                     upcate = frame.category.catemap(row['type'], row['parent'])
                 else:
-                    upcate = u'无上级分类'
+                    upcate = _("No Higher Category")
                 if row['type'] == 0:
-                    ct = u'支出'
+                    ct = _('Payout')
                 else:
-                    ct = u'收入'
+                    ct = _('Income')
                 ready = {'cates':[], 'cate':row['name'], 'upcate':upcate, 'catetype':ct, 'mode':'update', 'id':row['id']}
 
                 frame.cateedit_dialog(ready)
@@ -105,16 +105,16 @@ class CategoryPanel (wx.Panel):
         mytype = ret[0]['type']
         name   = ret[0]['name']
         
-        if name == u'未分类':
-            dlg = wx.MessageDialog(self, u'此分类不能不删除',
-                               u'注意!',
+        if name == _('No Category'):
+            dlg = wx.MessageDialog(self, _('Can not delete this category!'),
+                               _('Notice:'),
                                wx.OK | wx.ICON_INFORMATION | wx.ICON_INFORMATION)
             dlg.ShowModal()
             dlg.Destroy()
             return   
         else:
-            dlg = wx.MessageDialog(self, u'删除分类%s，此分类下的所有条目将自动归类到 "未分类" 中' % (name),
-                               u'注意!',
+            dlg = wx.MessageDialog(self, _('To delete category') + name + _(', all child categories will move to "No Category"'),
+                               _('Notice:'),
                                wx.OK | wx.ICON_INFORMATION | wx.CANCEL | wx.ICON_INFORMATION)
         if dlg.ShowModal() == wx.ID_OK:
             # 检查要删除的所有分类，包括子类
@@ -126,12 +126,13 @@ class CategoryPanel (wx.Panel):
                     idlist.append(str(row['id']))
             ids = ','.join(idlist)
             # 检查是否有 未分类
-            sql = u"select * from category where name='未分类' and type=" + str(mytype)
+            sql = u"select * from category where name='%s' and type=%d" %(_('No Category'), mytype)
             ret = frame.db.query(sql)
             if not ret:
-                sql = "insert into category (name,parent,type) values ('未分类',0,%d)" % (mytype)
+                sql = "insert into category (name,parent,type) values ('%s',0,%d)" % (_('No Category'), mytype)
                 frame.db.execute(sql)
-                sql = u"select * from category where name='未分类' and type=" + str(mytype)
+                sql = u"select * from category where name='%s' and type=" % (_('No Category'), mytype)
+
                 ret = frame.db.query(sql)
  
             mycid = ret[0]['id']
@@ -145,7 +146,7 @@ class CategoryPanel (wx.Panel):
                 frame.db.execute(sql, False)
             except Exception, e:
                 frame.db.rollback()
-                wx.MessageBox(u'删除分类失败:' + str(e), u'删除分类操作信息!', wx.OK|wx.ICON_INFORMATION)
+                wx.MessageBox(_('Delete category failure!') + str(e), _('Delete category information'), wx.OK|wx.ICON_INFORMATION)
             else:
                 frame.db.commit()
             frame.reload()
@@ -165,12 +166,12 @@ class PayoutListPanel (wx.Panel):
         self.year  = wx.ComboBox(self, 500, str(tday.year), (60, 50), (60, -1), items, wx.CB_DROPDOWN)
         items = [ str(x) for x in range(1, 13) ]
         self.month = wx.ComboBox(self, 500, str(tday.month), (60, 50), (60, -1), items, wx.CB_DROPDOWN)
-        box.Add(wx.StaticText(self, -1, u"日期: ", (8, 10)), 0, wx.ALIGN_CENTER)
+        box.Add(wx.StaticText(self, -1, _(' Date: '), (8, 10)), 0, wx.ALIGN_CENTER)
         box.Add(self.year, 0, wx.EXPAND)
-        box.Add(wx.StaticText(self, -1, u" 年 ", (8, 10)), 0, wx.ALIGN_CENTER)
+        box.Add(wx.StaticText(self, -1, _(" Year: "), (8, 10)), 0, wx.ALIGN_CENTER)
         box.Add(self.month, 0, wx.EXPAND)
-        box.Add(wx.StaticText(self, -1, u" 月", (8, 10)), 0, wx.ALIGN_CENTER)
-        box.Add(wx.StaticText(self, -1, u"  总计: ", (8, 10)), 0, wx.ALIGN_CENTER)
+        box.Add(wx.StaticText(self, -1, _(" Month:"), (8, 10)), 0, wx.ALIGN_CENTER)
+        box.Add(wx.StaticText(self, -1, _("  Sum: "), (8, 10)), 0, wx.ALIGN_CENTER)
         self.total = wx.TextCtrl(self, -1, size=(100,-1), style=wx.TE_READONLY)
         box.Add(self.total, 0, wx.ALIGN_CENTER)
 
@@ -197,17 +198,17 @@ class PayoutListPanel (wx.Panel):
             
             self.Bind(wx.EVT_MENU, self.OnPayoutDel, id=self.ID_POPUP_DEL)
         menu = wx.Menu()
-        menu.Append(self.ID_POPUP_DEL, u"删除")
+        menu.Append(self.ID_POPUP_DEL, _("Delete"))
         self.PopupMenu(menu)
         menu.Destroy()
 
 
     def init(self):
-        self.list.InsertColumn(0, u"日期")
-        self.list.InsertColumn(1, u"分类")
-        self.list.InsertColumn(2, u"金额")
-        self.list.InsertColumn(3, u"支付方式")
-        self.list.InsertColumn(4, u"说明")
+        self.list.InsertColumn(0, _("Date:"))
+        self.list.InsertColumn(1, _("Category"))
+        self.list.InsertColumn(2, _("Money"))
+        self.list.InsertColumn(3, _("Payment"))
+        self.list.InsertColumn(4, _("Explain"))
         self.list.SetColumnWidth(4, 300)
 
     def load(self):
@@ -230,9 +231,9 @@ class PayoutListPanel (wx.Panel):
                 self.list.SetStringItem(item, 2, str(row['num']))
                 self.list.SetItemData(item, row['id'])
                 if row['payway'] == 1:
-                    payway = u'现金'
+                    payway = _('Cash')
                 else:
-                    payway = u'信用卡'
+                    payway = _('Credit Card')
                 self.list.SetStringItem(item, 3, payway)
                 self.list.SetStringItem(item, 4, row['explain'])
                 numall += row['num']
@@ -258,9 +259,9 @@ class PayoutListPanel (wx.Panel):
         if ret:
             row = ret[0]
             if row['payway'] == 1:
-                payway = u'现金'
+                payway = _('Cash')
             else:
-                payway = u'信用卡'
+                payway = _('Credit Card')
 
             ready = {'cates':category.payout_catelist, 
                      'cate':category.catestr_by_id('payout', row['category']), 'num': row['num'], 
@@ -292,12 +293,12 @@ class ContentTab (wx.Notebook):
         wx.Notebook.__init__(self, parent, -1, size=(21,21), style=wx.BK_DEFAULT)
         self.parent = parent
         self.cate = CategoryPanel(self)
-        self.AddPage(self.cate, u"分类")
+        self.AddPage(self.cate, _('Category'))
         self.payoutlist = PayoutListPanel(self)
-        self.AddPage(self.payoutlist, u"支出列表")
+        self.AddPage(self.payoutlist, _('Payout List'))
         cates = self.parent.category.catelist_parent()
         self.stat = statpanel.StatPanel(self, cates)
-        self.AddPage(self.stat, u"统计")
+        self.AddPage(self.stat, _('Statistic'))
 
     def load_category(self, cate):
         self.cate.load(cate)

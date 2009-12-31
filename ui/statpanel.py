@@ -12,7 +12,7 @@ class StatPanel (wx.Panel):
         self.data = readydata
         
         for k in self.data:
-            self.data[k].insert(0, u'所有分类')        
+            self.data[k].insert(0, _('All Categories'))        
 
         box = wx.BoxSizer(wx.HORIZONTAL)
         tday = datetime.date.today()
@@ -23,31 +23,31 @@ class StatPanel (wx.Panel):
         self.frommonth = wx.ComboBox(self, -1, str(tday.month), (60, 50), (60, -1), items, wx.CB_DROPDOWN)
         self.tomonth = wx.ComboBox(self, -1, str(tday.month), (60, 50), (60, -1), items, wx.CB_DROPDOWN)
 
-        box.Add(wx.StaticText(self, -1, u"开始日期: ", (8, 10)), 0, wx.ALIGN_CENTER)
+        box.Add(wx.StaticText(self, -1, _('Date Start:'), (8, 10)), 0, wx.ALIGN_CENTER)
         box.Add(self.fromyear, 0, wx.EXPAND)
-        box.Add(wx.StaticText(self, -1, u" 年 ", (8, 10)), 0, wx.ALIGN_CENTER)
+        box.Add(wx.StaticText(self, -1, _(" Year "), (8, 10)), 0, wx.ALIGN_CENTER)
         box.Add(self.frommonth, 0, wx.EXPAND)
-        box.Add(wx.StaticText(self, -1, u" 月", (8, 10)), 0, wx.ALIGN_CENTER)
+        box.Add(wx.StaticText(self, -1, _(" Month "), (8, 10)), 0, wx.ALIGN_CENTER)
 
-        box.Add(wx.StaticText(self, -1, u"  结束日期: ", (8, 10)), 0, wx.ALIGN_CENTER)
+        box.Add(wx.StaticText(self, -1, _("  Date End: "), (8, 10)), 0, wx.ALIGN_CENTER)
         box.Add(self.toyear, 0, wx.EXPAND)
-        box.Add(wx.StaticText(self, -1, u" 年 ", (8, 10)), 0, wx.ALIGN_CENTER)
+        box.Add(wx.StaticText(self, -1, _(" Year "), (8, 10)), 0, wx.ALIGN_CENTER)
         box.Add(self.tomonth, 0, wx.EXPAND)
-        box.Add(wx.StaticText(self, -1, u" 月", (8, 10)), 0, wx.ALIGN_CENTER)
+        box.Add(wx.StaticText(self, -1, _(" Month "), (8, 10)), 0, wx.ALIGN_CENTER)
         
-        box.Add(wx.StaticText(self, -1, u"   记录: ", (8, 10)), 0, wx.ALIGN_CENTER)
-        items = [u'支出', u'收入']
+        box.Add(wx.StaticText(self, -1, _("   Type "), (8, 10)), 0, wx.ALIGN_CENTER)
+        items = [_('Payout'), _('Income')]
         self.default_type = items[0]
         self.type = wx.ComboBox(self, -1, items[0], (60, 50), (60, -1), items, wx.CB_DROPDOWN)
         box.Add(self.type, 0, wx.EXPAND)
     
-        box.Add(wx.StaticText(self, -1, u"   分类: ", (8, 10)), 0, wx.ALIGN_CENTER)
+        box.Add(wx.StaticText(self, -1, _("   Category "), (8, 10)), 0, wx.ALIGN_CENTER)
         items = self.data[self.default_type]
         self.category = wx.ComboBox(self, -1, items[0], (60, 50), (100, -1), items, wx.CB_DROPDOWN)
         box.Add(self.category, 0, wx.EXPAND)
 
         box.Add(wx.StaticText(self, -1, u"    ", (8, 10)), 0, wx.ALIGN_CENTER)
-        self.go = wx.Button(self, -1, u"开始统计", (20, 20)) 
+        self.go = wx.Button(self, -1, _("Statistic!"), (20, 20)) 
         box.Add(self.go, 0, wx.EXPAND)
  
         sizer = wx.BoxSizer(wx.VERTICAL)
@@ -69,13 +69,13 @@ class StatPanel (wx.Panel):
         type      = self.type.GetValue()
         cate      = self.category.GetValue()
         
-        if type == u'支出':
+        if type == _('Payout'):
             mytype = 0
         else:
             mytype = 1
 
         sql = "select num,year,month from capital where type=%d and year>=%s and year<=%s and month>=%s and month<=%s" % (mytype, fromyear, toyear, frommonth, tomonth)
-        if cate != u'所有分类':
+        if cate != _('All Categories'):
             sql += ' and category=%d' % (self.parent.parent.category.catemap(mytype, cate))
         sql += " order by year,month"
         logfile.info('stat:', sql)
@@ -101,13 +101,13 @@ class StatPanel (wx.Panel):
             s += "</tr>"
            
             for rowi in range(1, 13):
-                s += u"<tr><td>%d月</td>" % (rowi)
+                s += u"<tr><td>%d%s</td>" % (rowi, _('Month'))
                 for k in keys:
                     item = result[k]
                     s += "<td>%.2f</td>" % (item[rowi])
                 s += "</tr>"
 
-            s += u"<tr><td>总计</td>"
+            s += u"<tr><td>%s</td>" % (_('Sum'))
             for k in keys:
                 item = result[k]
                 s += "<td>%.2f</td>" % (item[0])

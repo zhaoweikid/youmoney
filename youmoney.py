@@ -2,6 +2,9 @@
 import os, sys
 import wx
 sys.path.insert(0, os.path.join(os.getcwd(), "ui"))
+import i18n
+i18n.install("lang", ['zh_CN'])
+
 import window, logfile
 
 VERSION = "YouMoney 0.2"

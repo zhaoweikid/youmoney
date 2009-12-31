@@ -70,8 +70,8 @@ class Category:
         self.payout_rela = {}
         self.income_rela = {}
 
-        self.payout_tree = TreeNode(None, u'支出', 0)
-        self.income_tree = TreeNode(None, u'收入', 0)
+        self.payout_tree = TreeNode(None, _('payout'), 0)
+        self.income_tree = TreeNode(None, _('income'), 0)
 
         self.init()
 
@@ -208,11 +208,11 @@ class Category:
 
 
     def catelist(self):
-        return {u'支出':self.payout_catelist, u'收入':self.income_catelist}
+        return {_('payout'):self.payout_catelist, _('income'):self.income_catelist}
 
    
     def catelist_parent(self):
-        return {u'支出':self.payout_parentlist, u'收入':self.income_parentlist}
+        return {_('payout'):self.payout_parentlist, _('income'):self.income_parentlist}
 
     def parentcate(self, catype):
         if type(catype) == types.IntType:

@@ -7,8 +7,8 @@ import sqlite3, datetime
 from category import Category
 import pprint, traceback, logfile
 
-catetypes = {0:u'支出', 1:u'收入', u'支出':0, u'收入':1}
-payways   = {1:u'现金', 2:u'信用卡', u'现金':1, u'信用卡':2}
+catetypes = {0:_('Payout'), 1:_('Income'), _('Payout'):0, _('Income'):1}
+payways   = {1:_('Cash'), 2:_('Credit Card'), _('Cash'):1, _('Credit Card'):2}
 
 class MainFrame (wx.Frame):
     def __init__(self, parent, id, title):
@@ -64,12 +64,12 @@ class MainFrame (wx.Frame):
         
         menubar = wx.MenuBar()
         self.filemenu = wx.Menu()
-        self.filemenu.Append(self.ID_FILE_OPEN, u'打开数据库文件')
-        self.filemenu.Append(self.ID_FILE_SAVE, u'保存数据库文件')
-        self.filemenu.Append(self.ID_FILE_SAVEAS, u'数据库文件另存为')
+        self.filemenu.Append(self.ID_FILE_OPEN, _('Open database file'))
+        self.filemenu.Append(self.ID_FILE_SAVE, _('Save database file'))
+        self.filemenu.Append(self.ID_FILE_SAVEAS, _('Save as'))
         self.filemenu.AppendSeparator()
-        self.filemenu.Append(self.ID_FILE_EXIT, u'退出')
-        menubar.Append(self.filemenu, u'文件')
+        self.filemenu.Append(self.ID_FILE_EXIT, _('Exit'))
+        menubar.Append(self.filemenu, _('File'))
         
         self.SetMenuBar(menubar)
 
@@ -85,9 +85,9 @@ class MainFrame (wx.Frame):
         
         self.toolbar = wx.ToolBar(self, -1, wx.DefaultPosition, wx.Size(64,64), wx.TB_HORIZONTAL|wx.TB_FLAT|wx.TB_TEXT)
         self.toolbar.SetToolBitmapSize(wx.Size (64, 64))
-        self.toolbar.AddLabelTool(self.ID_TB_CATEEDIT, u"添加分类", load_bitmap('images/categories.png'), shortHelp=u"添加分类", longHelp=u"添加分类") 
-        self.toolbar.AddLabelTool(self.ID_TB_INCOME, u"添加收入", load_bitmap('images/cashin.png'), shortHelp=u"添加收入", longHelp=u"添加收入") 
-        self.toolbar.AddLabelTool(self.ID_TB_PAYOUT, u"添加支出", load_bitmap('images/cashout.png'), shortHelp=u"添加支出", longHelp=u"添加支出") 
+        self.toolbar.AddLabelTool(self.ID_TB_CATEEDIT, _('Add Category'), load_bitmap('images/categories.png'), shortHelp=_('Add Category'), longHelp=_('Add Category')) 
+        self.toolbar.AddLabelTool(self.ID_TB_INCOME, _('Add Income'), load_bitmap('images/cashin.png'), shortHelp=_('Add Income'), longHelp=_('Add Income')) 
+        self.toolbar.AddLabelTool(self.ID_TB_PAYOUT, _("Add Payout"), load_bitmap('images/cashout.png'), shortHelp=_("Add Payout"), longHelp=_("Add Payout")) 
 
         self.toolbar.Realize ()
         self.SetToolBar(self.toolbar)
@@ -111,10 +111,10 @@ class MainFrame (wx.Frame):
 
     def OnFileOpen(self, event):
         dlg = wx.FileDialog(
-            self, message=u"选择数据库文件",
+            self, message=_("Choose database file:"),
             defaultDir=os.getcwd(), 
             defaultFile="",
-            wildcard=u"YouMoney数据库文件 (*.db)|*.db",
+            wildcard=_("YouMoney Database (*.db)|*.db"),
             style=wx.OPEN | wx.CHANGE_DIR
             )
 
@@ -126,8 +126,8 @@ class MainFrame (wx.Frame):
 
     def OnFileSave(self, event):
         dlg = wx.FileDialog(
-            self, message=u"数据库文件另存为 ...", defaultDir=os.getcwd(), 
-            defaultFile="", wildcard=u"YouMoney数据库文件 (*.db)|*.db", style=wx.SAVE)
+            self, message=_("Database file save..."), defaultDir=os.getcwd(), 
+            defaultFile="", wildcard=_("YouMoney Database (*.db)|*.db"), style=wx.SAVE)
         dlg.SetFilterIndex(2)
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
@@ -137,8 +137,8 @@ class MainFrame (wx.Frame):
 
     def OnFileSaveAs(self, event):
         dlg = wx.FileDialog(
-            self, message=u"数据库文件另存为 ...", defaultDir=os.getcwd(), 
-            defaultFile="", wildcard=u"YouMoney数据库文件 (*.db)|*.db", style=wx.SAVE)
+            self, message="Database file save...", defaultDir=os.getcwd(), 
+            defaultFile="", wildcard=_("YouMoney Database (*.db)|*.db"), style=wx.SAVE)
         dlg.SetFilterIndex(2)
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
@@ -149,18 +149,18 @@ class MainFrame (wx.Frame):
 
 
     def OnCateEdit(self, event):
-        ready = {'cates':[], 'cate':'', 'upcate':u'无上级分类', 'catetype':u'支出', 'mode':'insert'}
+        ready = {'cates':[], 'cate':'', 'upcate':_('No Higher Category'), 'catetype':_('Payout'), 'mode':'insert'}
         self.cateedit_dialog(ready)
 
 
     def cateedit_dialog(self, ready):
         cates = copy.deepcopy(self.category.catelist_parent())
-        cates[u'收入'].insert(0, u'无上级分类')
-        cates[u'支出'].insert(0, u'无上级分类')
+        cates[_('Income')].insert(0, _('No Higher Category'))
+        cates[_('Payout')].insert(0, _('No Higher Category'))
 
         ready['cates'] = cates
         if not ready['upcate']:
-            ready['upcate'] = u'无上级分类'
+            ready['upcate'] = _('No Higher Category')
         #ready = {'cates':cates, 'cate':'', 'upcate':u'无上级分类', 'catetype':u'支出'}
 
         dlg = dialogs.CategoryDialog(self, ready)
@@ -169,11 +169,11 @@ class MainFrame (wx.Frame):
             logfile.info(item)
             type = catetypes[item['catetype']]
             parent = 0
-            if item['catetype'] == u'收入':
-                if item['upcate'] != u'无上级分类':
+            if item['catetype'] == _('Income'):
+                if item['upcate'] != _('No Higher Category'):
                     parent = self.category.income_catemap[item['upcate']]
-            elif item['catetype'] == u'支出':
-                if item['upcate'] != u'无上级分类':
+            elif item['catetype'] == _('Payout'):
+                if item['upcate'] != _('No Higher Category'):
                     parent = self.category.payout_catemap[item['upcate']]
             
             if item['mode'] == 'insert':
@@ -182,7 +182,7 @@ class MainFrame (wx.Frame):
                 try:
                     self.db.execute(sql)
                 except Exception, e:
-                    wx.MessageBox(u'添加分类失败:' + str(e), u'添加分类操作信息!', wx.OK|wx.ICON_INFORMATION)
+                    wx.MessageBox(_('Add category failture:') + str(e), _('Add category information'), wx.OK|wx.ICON_INFORMATION)
                 else:
                     self.reload()
             elif item['mode'] == 'update':
@@ -191,7 +191,7 @@ class MainFrame (wx.Frame):
                 try:
                     self.db.execute(sql)
                 except Exception, e:
-                    wx.MessageBox(u'修改分类失败:' + str(e), u'修改分类操作信息!', wx.OK|wx.ICON_INFORMATION)
+                    wx.MessageBox(_('Change category failture:') + str(e), _('Change category information'), wx.OK|wx.ICON_INFORMATION)
                 else:
                     self.reload()
  
@@ -225,7 +225,7 @@ class MainFrame (wx.Frame):
                 logfile.info(sql)
                 self.db.execute(sql)
             except Exception, e:
-                wx.MessageBox(u'添加收入信息失败: ' + str(e), u'添加收入信息', wx.OK|wx.ICON_INFORMATION)
+                wx.MessageBox(_('Add payout failture:') + str(e), _('Add payout information'), wx.OK|wx.ICON_INFORMATION)
                 logfile.info(traceback.format_exc())
             else:
                 self.reload()
@@ -234,7 +234,7 @@ class MainFrame (wx.Frame):
         tday = datetime.date.today()
         ready = {'cates':self.category.payout_catelist, 'cate':self.category.payout_catelist[0], 'num':'', 
                  'explain':'', 'year':tday.year, 'month':tday.month, 'day':tday.day,
-                 'pay':u'现金', 'mode':'insert'}
+                 'pay':_('Cash'), 'mode':'insert'}
         #print 'payout insert:', ready 
         self.payout_dialog(ready)
 
@@ -260,7 +260,7 @@ class MainFrame (wx.Frame):
                     logfile.info(sql)
                     self.db.execute(sql)
                 except Exception, e:
-                    wx.MessageBox(u'添加支出信息失败: ' + str(e), u'添加支出信息', wx.OK|wx.ICON_INFORMATION)
+                    wx.MessageBox(_('Add income failture:') + str(e), _('Add income information'), wx.OK|wx.ICON_INFORMATION)
                     logfile.info(traceback.format_exc())
                 else:
                     self.reload()
@@ -278,7 +278,7 @@ class MainFrame (wx.Frame):
                     logfile.info(sql)
                     self.db.execute(sql)
                 except Exception, e:
-                    wx.MessageBox(u'修改支出信息失败: ' + str(e), u'修改支出信息', wx.OK|wx.ICON_INFORMATION)
+                    wx.MessageBox(_('Change income failture:') + str(e), _('Change income information'), wx.OK|wx.ICON_INFORMATION)
                     logfile.info(traceback.format_exc())
                 else:
                     self.reload()

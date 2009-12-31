@@ -5,7 +5,7 @@ import wx.lib.sized_controls as sc
 
 class IncomeDialog (sc.SizedDialog):
     def __init__(self, parent, readydata):
-        sc.SizedDialog.__init__(self, None, -1, u"添加收入条目", 
+        sc.SizedDialog.__init__(self, None, -1, _('Add income item'), 
                                 style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         self.parent = parent
         self.data = readydata
@@ -13,7 +13,7 @@ class IncomeDialog (sc.SizedDialog):
         panel = self.GetContentsPane()
         panel.SetSizerType("form")
          
-        wx.StaticText(panel, -1, u'日期:')
+        wx.StaticText(panel, -1, _('Date:'))
         #self.date = wx.DatePickerCtrl(panel, size=(120, -1), style=wx.DP_DROPDOWN|
         #            wx.DP_SHOWCENTURY|wx.DP_ALLOWNONE)
         tm = wx.DateTime()
@@ -22,14 +22,14 @@ class IncomeDialog (sc.SizedDialog):
                     wx.DP_SHOWCENTURY|wx.DP_ALLOWNONE)
 
         
-        wx.StaticText(panel, -1, u'分类:')
+        wx.StaticText(panel, -1, _('Category:'))
         items = readydata['cates']
         self.cate = wx.ComboBox(panel, -1, readydata['cate'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
 
-        wx.StaticText(panel, -1, u'金额:')
+        wx.StaticText(panel, -1, _('Money:'))
         self.num = wx.TextCtrl(panel, -1, str(readydata['num']), size=(125, -1))
 
-        wx.StaticText(panel, -1, u'说明:')
+        wx.StaticText(panel, -1, _('Explain:'))
         self.explain = wx.TextCtrl(panel, -1, readydata['explain'], size=(220,100), style=wx.TE_MULTILINE)
 
         self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
@@ -52,7 +52,7 @@ class IncomeDialog (sc.SizedDialog):
 
 class PayoutDialog (sc.SizedDialog):
     def __init__(self, parent, readydata):
-        sc.SizedDialog.__init__(self, None, -1, u"添加支出条目", 
+        sc.SizedDialog.__init__(self, None, -1, _('Add payout item'), 
                                 style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         self.parent = parent
         self.data = readydata
@@ -60,7 +60,7 @@ class PayoutDialog (sc.SizedDialog):
         panel = self.GetContentsPane()
         panel.SetSizerType("form")
          
-        wx.StaticText(panel, -1, u'日期:')
+        wx.StaticText(panel, -1, _('Date:'))
         #self.date = wx.DatePickerCtrl(panel, size=(120, -1), style=wx.DP_DROPDOWN|
         tm = wx.DateTime()
         tm.Set(readydata['day'], readydata['month'], readydata['year'])
@@ -68,19 +68,19 @@ class PayoutDialog (sc.SizedDialog):
                     wx.DP_SHOWCENTURY|wx.DP_ALLOWNONE)
 
         
-        wx.StaticText(panel, -1, u'分类:')
+        wx.StaticText(panel, -1, _('Category:'))
         items = readydata['cates']
         self.cate = wx.ComboBox(panel, -1, readydata['cate'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
 
-        wx.StaticText(panel, -1, u'支付:')
-        items = [u'现金', u'信用卡']
+        wx.StaticText(panel, -1, _('Payment:'))
+        items = [_('cash'), _('credit card')]
         self.pay = wx.ComboBox(panel, -1, readydata['pay'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
 
 
-        wx.StaticText(panel, -1, u'金额:')
+        wx.StaticText(panel, -1, _('Money:'))
         self.num = wx.TextCtrl(panel, -1, str(readydata['num']), size=(125, -1))
 
-        wx.StaticText(panel, -1, u'说明:')
+        wx.StaticText(panel, -1, _('Explain:'))
         self.explain = wx.TextCtrl(panel, -1, readydata['explain'], size=(220,100), style=wx.TE_MULTILINE)
 
         self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
@@ -106,22 +106,22 @@ class CategoryDialog (sc.SizedDialog):
     def __init__(self, parent, readydata):
         self.data = readydata
         #print 'ready:', readydata
-        sc.SizedDialog.__init__(self, None, -1, u"添加分类", 
+        sc.SizedDialog.__init__(self, None, -1, _('Add Category'), 
                                 style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         self.parent = parent
 
         panel = self.GetContentsPane()
         panel.SetSizerType("form")
        
-        wx.StaticText(panel, -1, u'分类类型:')
-        items = [u'支出', u'收入']
+        wx.StaticText(panel, -1, _("Type:"))
+        items = [_('Payout'), _('Income')]
         self.catetype = wx.ComboBox(panel, -1, readydata['catetype'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
 
-        wx.StaticText(panel, -1, u'分类名字:')
+        wx.StaticText(panel, -1, _("Category:"))
         self.cate = wx.TextCtrl(panel, -1, readydata['cate'], size=(125, -1))
 
 
-        wx.StaticText(panel, -1, u'上级分类:')
+        wx.StaticText(panel, -1, _('Higher Category:'))
         items = readydata['cates'][readydata['catetype']]
         self.upcate = wx.ComboBox(panel, -1, readydata['upcate'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
 
