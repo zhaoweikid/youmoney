@@ -1,9 +1,12 @@
 # coding: utf-8
 import os, sys
+import locale
+print locale.getdefaultlocale()
 import wx
 sys.path.insert(0, os.path.join(os.getcwd(), "ui"))
 import i18n
-i18n.install("lang", ['zh_CN'])
+i18n.install("lang", ['zh_CN', 'en'])
+
 
 import window, logfile
 
