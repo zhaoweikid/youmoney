@@ -274,15 +274,18 @@ class ItemListPanel (wx.Panel):
             else:
                 payway = _('Credit Card')
 
-            ready = {'cates':category.catelist('payout'), 
-                     'cate':category.catestr_by_id('payout', row['category']), 'num': row['num'], 
+            ready = {'cates':category.catelist(self.type), 
+                     'cate':category.catestr_by_id(self.type, row['category']), 'num': row['num'], 
                      'explain':row['explain'], 
                      'year':row['year'], 'month':row['month'], 'day':row['day'], 
                      'pay':payway, 'mode':'update', 'id':row['id']}
 
             logfile.info('ready:', ready)
             #print 'update data:', ready
-            self.parent.parent.payout_dialog(ready)
+            if self.type == 'payout':
+                self.parent.parent.payout_dialog(ready)
+            else:
+                self.parent.parent.income_dialog(ready)
 
 
     def OnPayoutDel(self, event):

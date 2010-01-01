@@ -20,7 +20,7 @@ class IncomeDialog (sc.SizedDialog):
         logfile.info('year:', readydata['year'], ' month:', readydata['month'])
 
         tm = wx.DateTime()
-        tm.Set(readydata['day'], readydata['month'], readydata['year'])
+        tm.Set(readydata['day'], readydata['month']-1, readydata['year'])
         self.date = wx.GenericDatePickerCtrl(panel, dt=tm, size=(120, -1), style=wx.DP_DROPDOWN|
                     wx.DP_SHOWCENTURY|wx.DP_ALLOWNONE)
 
@@ -66,7 +66,7 @@ class PayoutDialog (sc.SizedDialog):
         wx.StaticText(panel, -1, _('Date:'))
         #self.date = wx.DatePickerCtrl(panel, size=(120, -1), style=wx.DP_DROPDOWN|
         tm = wx.DateTime()
-        tm.Set(readydata['day'], readydata['month'], readydata['year'])
+        tm.Set(readydata['day'], readydata['month']-1, readydata['year'])
         self.date = wx.GenericDatePickerCtrl(panel, dt=tm, size=(120, -1), style=wx.DP_DROPDOWN|
                     wx.DP_SHOWCENTURY|wx.DP_ALLOWNONE)
 

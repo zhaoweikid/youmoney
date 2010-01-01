@@ -243,9 +243,10 @@ class Category:
                 castr = 'income'
         else:
             castr = catype
-        
+
         parent_dict  = getattr(self, castr + '_parent')
         catemap_dict = getattr(self, castr + '_catemap')
+        
         p = parent_dict[name]
         if p == 0:
             return catemap_dict[name]
@@ -275,12 +276,12 @@ class Category:
             castr = catype
         catemap_dict = getattr(self, castr + '_catemap')
         if type(name) == types.IntType:
-            logfile.info('cate subs, name:', name)
+            #logfile.info('cate subs, name:', name)
             namestr = catemap_dict[name]
         else:
             namestr = name
         rela_dict  = getattr(self, castr + '_rela')
-        logfile.info('cate subs, namestr:', namestr)
+        #logfile.info('cate subs, namestr:', namestr)
         ret = rela_dict[namestr]
         if rela_dict:
             return [ str(catemap_dict[k]) for k in ret ]

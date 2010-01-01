@@ -90,8 +90,8 @@ class MainFrame (wx.Frame):
         self.ID_TB_INCOME   = wx.NewId()
         self.ID_TB_PAYOUT   = wx.NewId()
         
-        self.toolbar = wx.ToolBar(self, -1, wx.DefaultPosition, wx.Size(64,64), wx.TB_HORIZONTAL|wx.TB_FLAT|wx.TB_TEXT)
-        self.toolbar.SetToolBitmapSize(wx.Size (64, 64))
+        self.toolbar = wx.ToolBar(self, -1, wx.DefaultPosition, wx.Size(48,48), wx.TB_HORIZONTAL|wx.TB_FLAT|wx.TB_TEXT)
+        self.toolbar.SetToolBitmapSize(wx.Size (48, 48))
         self.toolbar.AddLabelTool(self.ID_TB_CATEEDIT, _('Add Category'), load_bitmap('images/categories.png'), shortHelp=_('Add Category'), longHelp=_('Add Category')) 
         self.toolbar.AddLabelTool(self.ID_TB_INCOME, _('Add Income'), load_bitmap('images/cashin.png'), shortHelp=_('Add Income'), longHelp=_('Add Income')) 
         self.toolbar.AddLabelTool(self.ID_TB_PAYOUT, _("Add Payout"), load_bitmap('images/cashout.png'), shortHelp=_("Add Payout"), longHelp=_("Add Payout")) 
@@ -212,7 +212,7 @@ class MainFrame (wx.Frame):
         dlg = dialogs.CategoryDialog(self, ready)
         if dlg.ShowModal() == wx.ID_OK:
             item = dlg.values()
-            logfile.info(item)
+            logfile.info('cateedit:', item)
             type = catetypes[item['catetype']]
             parent = 0
             if item['catetype'] == _('Income'):
@@ -224,7 +224,7 @@ class MainFrame (wx.Frame):
             
             if item['mode'] == 'insert':
                 sql = "insert into category (name,parent,type) values ('%s',%d,%d)" % (item['cate'], parent, type)
-                logfile.info(sql)
+                logfile.info('insert category:', sql)
                 try:
                     self.db.execute(sql)
                 except Exception, e:
@@ -233,7 +233,7 @@ class MainFrame (wx.Frame):
                     self.reload()
             elif item['mode'] == 'update':
                 sql = "update category set name='%s',parent=%d,type=%d where id=%d" % (item['cate'], parent, type, item['id'])
-                logfile.info(sql)
+                logfile.info('update category:', sql)
                 try:
                     self.db.execute(sql)
                 except Exception, e:
@@ -258,7 +258,7 @@ class MainFrame (wx.Frame):
         dlg = dialogs.IncomeDialog(self, ready)
         if dlg.ShowModal() == wx.ID_OK:
             data = dlg.values()
-            logfile.info(data)
+            logfile.info('income dialog:', data)
             sql = "insert into capital (category,num,ctime,year,month,day,payway,explain,type) values (%d,%f,%d,%d,%d,%d,%d,'%s',1)"
             cate = data['cate'].split('->')[-1]
             try:
@@ -272,11 +272,11 @@ class MainFrame (wx.Frame):
                 day    = data['date'].GetDay()
 
                 sql = sql % (cateid, num, tnow, year, month, day, payway, data['explain'])
-                logfile.info(sql)
+                logfile.info('insert capital:', sql)
                 self.db.execute(sql)
             except Exception, e:
                 wx.MessageBox(_('Add payout failture:') + str(e), _('Add payout information'), wx.OK|wx.ICON_INFORMATION)
-                logfile.info(traceback.format_exc())
+                logfile.info('insert income error:', traceback.format_exc())
             else:
                 self.reload()
 
@@ -297,7 +297,7 @@ class MainFrame (wx.Frame):
         dlg = dialogs.PayoutDialog(self, ready)
         if dlg.ShowModal() == wx.ID_OK:
             data = dlg.values()
-            logfile.info(data)
+            logfile.info('payout dialog:', data)
             
             cate = data['cate'].split('->')[-1]
             if data['mode'] == 'insert':
@@ -312,11 +312,11 @@ class MainFrame (wx.Frame):
                     day    = data['date'].GetDay()
 
                     sql = sql % (cateid, num, tnow, year, month, day, payway, data['explain'])
-                    logfile.info(sql)
+                    logfile.info('insert capital payout:', sql)
                     self.db.execute(sql)
                 except Exception, e:
                     wx.MessageBox(_('Add income failture:') + str(e), _('Add income information'), wx.OK|wx.ICON_INFORMATION)
-                    logfile.info(traceback.format_exc())
+                    logfile.info('insert payout error:', traceback.format_exc())
                 else:
                     self.reload()
             elif data['mode'] == 'update':
@@ -330,11 +330,11 @@ class MainFrame (wx.Frame):
                     day    = data['date'].GetDay()
 
                     sql = sql % (cateid, num, year, month, day, payway, data['explain'], data['id'])
-                    logfile.info(sql)
+                    logfile.info('update capital:', sql)
                     self.db.execute(sql)
                 except Exception, e:
                     wx.MessageBox(_('Change income failture:') + str(e), _('Change income information'), wx.OK|wx.ICON_INFORMATION)
-                    logfile.info(traceback.format_exc())
+                    logfile.info('update error:', traceback.format_exc())
                 else:
                     self.reload()
 

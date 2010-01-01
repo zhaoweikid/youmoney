@@ -1,9 +1,9 @@
 # coding: utf-8
 import os, sys
 
-def merge():
+def merge(samplefile, fromfile, tofile):
     olddict = {}
-    oldf = open("messages.po", 'r')
+    oldf = open(samplefile, 'r')
     while True:
         line = oldf.readline()
         if not line:
@@ -15,8 +15,8 @@ def merge():
             olddict[idstr] = vastr
     oldf.close()
 
-    f = open("messages.txt", 'w')
-    newf = open("messages.pot", 'r')
+    f = open(tofile, 'w')
+    newf = open(fromfile, 'r')
     
     while True:
         line = newf.readline()
@@ -31,12 +31,18 @@ def merge():
                 f.write('msgstr ""\n')
 
             newf.readline()
+        elif line.startswith('"'):
+            line = line.replace('CHARSET', 'utf-8')
+            line = line.replace('ENCODING', '8bit')
+            f.write(line)
         else:
             f.write(line)
 
     newf.close()
     f.close()
-   
-merge()
+  
+if __name__ == '__main__':
+    #merge()
+    pass
 
 
