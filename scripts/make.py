@@ -3,6 +3,7 @@ import os, sys, datetime, shutil
 import random
 import merge
 
+
 tm = datetime.datetime.now()
 postfix = '%s%02d%02d.%02d%02d%02d' % tuple(tm.timetuple())[:6]
 

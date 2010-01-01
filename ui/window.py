@@ -62,6 +62,8 @@ class MainFrame (wx.Frame):
         self.ID_FILE_SAVEAS = wx.NewId()
         self.ID_FILE_EXIT = wx.NewId()
         self.ID_VIEW_LANG = wx.NewId()
+        self.ID_VIEW_LANG_EN = wx.NewId()
+        self.ID_VIEW_LANG_CN = wx.NewId()
 
         
         menubar = wx.MenuBar()
@@ -73,8 +75,14 @@ class MainFrame (wx.Frame):
         self.filemenu.Append(self.ID_FILE_EXIT, _('Exit'))
         menubar.Append(self.filemenu, _('File'))
 
+       
+        self.langmenu = wx.Menu()
+        self.langmenu.Append(self.ID_VIEW_LANG_CN, _('Simple Chinese'))
+        self.langmenu.Append(self.ID_VIEW_LANG_EN, _('English'))
+        
         self.viewmenu = wx.Menu()
-        self.viewmenu.Append(self.ID_VIEW_LANG, _('Language'))
+        self.viewmenu.AppendMenu(self.ID_VIEW_LANG, _('Language'), self.langmenu)
+ 
         menubar.Append(self.viewmenu, _('View'))
         
         self.SetMenuBar(menubar)
