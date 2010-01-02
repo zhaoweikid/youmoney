@@ -1,6 +1,7 @@
 # coding: utf-8
 import os, sys
 import types, datetime
+import shutil
 
 logobj = None
 
@@ -8,6 +9,11 @@ class LogFile:
     def __init__(self, filename, charset='utf-8'):
         self.filename = filename
         self.charset = charset
+        if os.path.isfile(filename):
+            bakfile = filename + '.bak'
+            if os.path.isfile(bakfile):
+                os.remove(bakfile)
+            shutil.move(filename, bakfile)
         self.file = open(filename, 'a+')
 
     def info(self, *s):
