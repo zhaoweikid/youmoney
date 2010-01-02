@@ -319,7 +319,7 @@ class ContentTab (wx.Notebook):
         self.incomelist = IncomeListPanel(self)
         self.AddPage(self.incomelist, _('Income List'))
 
-        cates = copy.copy(self.parent.category.catelist_parent())
+        cates = copy.deepcopy(self.parent.category.catelist_parent())
         self.stat = statpanel.StatPanel(self, cates)
         self.AddPage(self.stat, _('Statistic'))
 
