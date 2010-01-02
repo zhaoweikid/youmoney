@@ -1,6 +1,6 @@
 # coding: utf-8
 import os, sys
-import datetime
+import datetime, copy
 import wx
 import wx.lib.sized_controls as sc
 import wx.gizmos as gizmos
@@ -319,7 +319,7 @@ class ContentTab (wx.Notebook):
         self.incomelist = IncomeListPanel(self)
         self.AddPage(self.incomelist, _('Income List'))
 
-        cates = self.parent.category.catelist_parent()
+        cates = copy.copy(self.parent.category.catelist_parent())
         self.stat = statpanel.StatPanel(self, cates)
         self.AddPage(self.stat, _('Statistic'))
 
