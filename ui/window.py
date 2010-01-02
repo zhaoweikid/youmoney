@@ -16,6 +16,12 @@ class MainFrame (wx.Frame):
                 name=u'YouMoney', style=wx.DEFAULT_FRAME_STYLE)
 
         self.rundir = os.path.dirname(os.path.abspath(sys.argv[0]))
+        self.bmpdir = os.path.join(self.rundir, 'images')
+        icon = wx.EmptyIcon()
+        iconpath = os.path.join(self.bmpdir, 'small.png')
+        icon.CopyFromBitmap(wx.BitmapFromImage(wx.Image(iconpath, wx.BITMAP_TYPE_PNG)))
+        self.SetIcon(icon)
+
         self.conf = config.Configure()
         
         self.make_menu()
