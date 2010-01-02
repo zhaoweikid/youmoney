@@ -3,7 +3,7 @@ import os, sys, copy, time
 import wx
 import panels, dialogs, config, storage
 from loader import load_bitmap
-import sqlite3, datetime
+import sqlite3, datetime, shutil
 from category import Category
 import pprint, traceback, logfile
 
@@ -16,16 +16,13 @@ class MainFrame (wx.Frame):
                 name=u'YouMoney', style=wx.DEFAULT_FRAME_STYLE)
 
         self.rundir = os.path.dirname(os.path.abspath(sys.argv[0]))
-        try:
-            self.conf   = config.Configure()
-        except:
-            pass
+        self.conf = config.Configure()
         
         self.make_menu()
         self.make_toolbar()
         self.make_statusbar()
 
-        self.init()
+        self.initdb()
         self.load()
         self.book = panels.ContentTab(self)
         self.book.load_category(self.category)
@@ -33,13 +30,16 @@ class MainFrame (wx.Frame):
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.book, 1, wx.EXPAND|wx.ALL)
         self.SetSizer(sizer)
-        #self.SetAutoLayout(True)
+        self.SetAutoLayout(True)
 
         self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
         
 
-    def init(self):
-        self.db = storage.DBStorage(os.path.join(self.rundir, "data", "youmoney.db"))
+    def initdb(self, path=None):
+        if not path:
+            path = self.conf['lastdb']
+        self.db = storage.DBStorage(path)
+        self.SetStatusText(_('Database file: ') + path, 0)
         
     def load(self):
         tday = datetime.date.today()
@@ -54,29 +54,36 @@ class MainFrame (wx.Frame):
     def reload(self):
         self.load()
         self.book.load_category(self.category)
-        self.book.load_payout()
+        self.book.load_list()
     
     def make_menu(self):
+        self.ID_FILE_NEW  = wx.NewId()
         self.ID_FILE_OPEN = wx.NewId()
-        self.ID_FILE_SAVE = wx.NewId()
         self.ID_FILE_SAVEAS = wx.NewId()
         self.ID_FILE_EXIT = wx.NewId()
+        self.ID_VIEW_LANG = wx.NewId()
+
         
         menubar = wx.MenuBar()
         self.filemenu = wx.Menu()
+        self.filemenu.Append(self.ID_FILE_NEW, _('New database file'))
         self.filemenu.Append(self.ID_FILE_OPEN, _('Open database file'))
-        self.filemenu.Append(self.ID_FILE_SAVE, _('Save database file'))
-        self.filemenu.Append(self.ID_FILE_SAVEAS, _('Save as'))
+        self.filemenu.Append(self.ID_FILE_SAVEAS, _('Database file save as'))
         self.filemenu.AppendSeparator()
         self.filemenu.Append(self.ID_FILE_EXIT, _('Exit'))
         menubar.Append(self.filemenu, _('File'))
+
+        self.viewmenu = wx.Menu()
+        self.viewmenu.Append(self.ID_VIEW_LANG, _('Language'))
+        menubar.Append(self.viewmenu, _('View'))
         
         self.SetMenuBar(menubar)
 
+        self.Bind(wx.EVT_MENU, self.OnFileNew, id=self.ID_FILE_NEW)
         self.Bind(wx.EVT_MENU, self.OnFileOpen, id=self.ID_FILE_OPEN)
-        self.Bind(wx.EVT_MENU, self.OnFileSave, id=self.ID_FILE_SAVE)
         self.Bind(wx.EVT_MENU, self.OnFileSaveAs, id=self.ID_FILE_SAVEAS)
         self.Bind(wx.EVT_MENU, self.OnCloseWindow, id=self.ID_FILE_EXIT)
+        self.Bind(wx.EVT_MENU, self.OnLanguage, id=self.ID_VIEW_LANG)
 
     def make_toolbar(self):
         self.ID_TB_CATEEDIT = wx.NewId()
@@ -119,33 +126,73 @@ class MainFrame (wx.Frame):
             )
 
         if dlg.ShowModal() == wx.ID_OK:
-            paths = dlg.GetPath()
-            logfile.info("open file:", paths) 
+            path = dlg.GetPath()
+            logfile.info("open file:", path) 
+
+            self.db.close()
+            self.initdb(path)
+            #self.db = storage.DBStorage(path)
+            self.reload()
+            self.conf['lastdb'] = path
+            self.conf.dump()
         
         dlg.Destroy()
 
-    def OnFileSave(self, event):
+    def OnFileNew(self, event):
         dlg = wx.FileDialog(
-            self, message=_("Database file save..."), defaultDir=os.getcwd(), 
+            self, message="New database file save...", defaultDir=os.getcwd(), 
             defaultFile="", wildcard=_("YouMoney Database (*.db)|*.db"), style=wx.SAVE)
         dlg.SetFilterIndex(2)
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
-            logfile.info("save file:", paths) 
-        
+            logfile.info("save file:", path) 
+            if not path.endswith('.db'):
+                path += ".db"
+ 
+            if os.path.isfile(path):
+                wx.MessageBox(_('File exist'), _('Can not save database file'), wx.OK|wx.ICON_INFORMATION) 
+                return
+ 
+            self.db.close()
+            self.initdb(path)
+            #self.db = storage.DBStorage(path)
+            self.reload()
+            self.conf['lastdb'] = path
+            self.conf.dump()
+ 
         dlg.Destroy()
+
 
     def OnFileSaveAs(self, event):
         dlg = wx.FileDialog(
-            self, message="Database file save...", defaultDir=os.getcwd(), 
+            self, message="Database file save as...", defaultDir=os.getcwd(), 
             defaultFile="", wildcard=_("YouMoney Database (*.db)|*.db"), style=wx.SAVE)
         dlg.SetFilterIndex(2)
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
-            logfile.info("save file:", paths) 
+            logfile.info("save file:", path) 
+            if not path.endswith('.db'):
+                path += ".db"
+            
+            oldfile = self.conf['lastdb']
+            if os.path.isfile(path):
+                wx.MessageBox(_('File exist'), _('Can not save database file'), wx.OK|wx.ICON_INFORMATION) 
+                return
+            try:
+                shutil.copyfile(self.conf['lastdb'], path)
+            except Exception, e:
+                wx.MessageBox(_('Save databse file failture:') + str(e), _('Can not save database file'), wx.OK|wx.ICON_INFORMATION)
+                return
+
+            shutil.remove(oldfile)
+            self.db.close()
+            self.initdb(path)
+            #self.db = storage.DBStorage(path)
+            self.reload()
+            self.conf['lastdb'] = path
+            self.conf.dump()
         
         dlg.Destroy()
-
 
 
     def OnCateEdit(self, event):
@@ -161,7 +208,6 @@ class MainFrame (wx.Frame):
         ready['cates'] = cates
         if not ready['upcate']:
             ready['upcate'] = _('No Higher Category')
-        #ready = {'cates':cates, 'cate':'', 'upcate':u'无上级分类', 'catetype':u'支出'}
 
         dlg = dialogs.CategoryDialog(self, ready)
         if dlg.ShowModal() == wx.ID_OK:
@@ -198,7 +244,11 @@ class MainFrame (wx.Frame):
 
     def OnIncome(self, event):
         tday = datetime.date.today()
-        ready = {'cates':self.category.income_catelist, 'cate':self.category.income_catelist[0], 
+        catelist = self.category.income_catelist
+        if len(catelist) == 0:
+            wx.MessageBox(_('Add category first!'), _('Can not add income item'), wx.OK|wx.ICON_INFORMATION)
+            return
+        ready = {'cates':catelist, 'cate':catelist[0], 
                  'year':tday.year, 'month':tday.month, 'day':tday.day,
                  'num':'', 'explain':'', 'mode':'insert'}
 
@@ -232,7 +282,12 @@ class MainFrame (wx.Frame):
 
     def OnPayout(self, event):
         tday = datetime.date.today()
-        ready = {'cates':self.category.payout_catelist, 'cate':self.category.payout_catelist[0], 'num':'', 
+        catelist = self.category.payout_catelist
+        if len(catelist) == 0:
+            wx.MessageBox(_('Add category first!'), _('Can not add payout item'), wx.OK|wx.ICON_INFORMATION)
+            return
+ 
+        ready = {'cates':catelist, 'cate':catelist[0], 'num':'', 
                  'explain':'', 'year':tday.year, 'month':tday.month, 'day':tday.day,
                  'pay':_('Cash'), 'mode':'insert'}
         #print 'payout insert:', ready 
@@ -284,6 +339,9 @@ class MainFrame (wx.Frame):
                     self.reload()
 
 
+
+    def OnLanguage(self, event):
+        pass
 
 
 

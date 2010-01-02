@@ -2,6 +2,7 @@
 import os, sys
 import wx
 import wx.lib.sized_controls as sc
+import logfile
 
 class IncomeDialog (sc.SizedDialog):
     def __init__(self, parent, readydata):
@@ -16,6 +17,8 @@ class IncomeDialog (sc.SizedDialog):
         wx.StaticText(panel, -1, _('Date:'))
         #self.date = wx.DatePickerCtrl(panel, size=(120, -1), style=wx.DP_DROPDOWN|
         #            wx.DP_SHOWCENTURY|wx.DP_ALLOWNONE)
+        logfile.info('year:', readydata['year'], ' month:', readydata['month'])
+
         tm = wx.DateTime()
         tm.Set(readydata['day'], readydata['month'], readydata['year'])
         self.date = wx.GenericDatePickerCtrl(panel, dt=tm, size=(120, -1), style=wx.DP_DROPDOWN|

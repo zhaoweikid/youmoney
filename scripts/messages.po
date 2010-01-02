@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Thu Dec 31 16:40:22 2009\n"
+"POT-Creation-Date: Sat Jan  2 22:53:56 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,286 +15,336 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 
-#: ui\category.py:73 ui\category.py:211 ui\category.py:215
+#: ../ui/category.py:77 ../ui/category.py:218 ../ui/category.py:228
 msgid "payout"
 msgstr "支出"
 
-#: ui\category.py:74 ui\category.py:211 ui\category.py:215
+#: ../ui/category.py:78 ../ui/category.py:218 ../ui/category.py:228
 msgid "income"
 msgstr "收入"
 
-#: ui\dialogs.py:8
+#: ../ui/dialogs.py:8
 msgid "Add income item"
 msgstr "添加收入条目"
 
-#: ui\dialogs.py:16 ui\dialogs.py:63 ui\panels.py:207
+#: ../ui/dialogs.py:16 ../ui/dialogs.py:63 ../ui/panels.py:208
 msgid "Date:"
 msgstr "日期:"
 
-#: ui\dialogs.py:25 ui\dialogs.py:71 ui\dialogs.py:120
+#: ../ui/dialogs.py:25 ../ui/dialogs.py:71 ../ui/dialogs.py:120
 msgid "Category:"
 msgstr "分类:"
 
-#: ui\dialogs.py:29 ui\dialogs.py:80
+#: ../ui/dialogs.py:29 ../ui/dialogs.py:80
 msgid "Money:"
 msgstr "金额:"
 
-#: ui\dialogs.py:32 ui\dialogs.py:83
+#: ../ui/dialogs.py:32 ../ui/dialogs.py:83
 msgid "Explain:"
 msgstr "说明:"
 
-#: ui\dialogs.py:55
+#: ../ui/dialogs.py:55
 msgid "Add payout item"
 msgstr "添加支出条目"
 
-#: ui\dialogs.py:75
+#: ../ui/dialogs.py:75
 msgid "Payment:"
 msgstr "支付方式:"
 
-#: ui\dialogs.py:76
+#: ../ui/dialogs.py:76
 msgid "cash"
 msgstr "现金"
 
-#: ui\dialogs.py:76
+#: ../ui/dialogs.py:76
 msgid "credit card"
 msgstr "信用卡"
 
-#: ui\dialogs.py:109 ui\window.py:88
+#: ../ui/dialogs.py:109 ../ui/window.py:95
 msgid "Add Category"
 msgstr "添加分类"
 
-#: ui\dialogs.py:116
+#: ../ui/dialogs.py:116
 msgid "Type:"
 msgstr "类型:"
 
-#: ui\dialogs.py:117 ui\panels.py:86 ui\statpanel.py:39 ui\statpanel.py:72
-#: ui\window.py:10 ui\window.py:152 ui\window.py:159 ui\window.py:175
+#: ../ui/dialogs.py:117 ../ui/panels.py:86 ../ui/statpanel.py:39
+#: ../ui/statpanel.py:126 ../ui/statpanel.py:159 ../ui/window.py:10
+#: ../ui/window.py:199 ../ui/window.py:206 ../ui/window.py:221
 msgid "Payout"
 msgstr "支出"
 
-#: ui\dialogs.py:117 ui\panels.py:88 ui\statpanel.py:39 ui\window.py:10
-#: ui\window.py:158 ui\window.py:172
+#: ../ui/dialogs.py:117 ../ui/panels.py:88 ../ui/statpanel.py:39
+#: ../ui/statpanel.py:126 ../ui/statpanel.py:161 ../ui/window.py:10
+#: ../ui/window.py:205 ../ui/window.py:218
 msgid "Income"
 msgstr "收入"
 
-#: ui\dialogs.py:124
+#: ../ui/dialogs.py:124
 msgid "Higher Category:"
 msgstr "上级分类:"
 
-#: ui\i18n.py:14
+#: ../ui/i18n.py:14
 msgid "hello"
 msgstr ""
 
-#: ui\i18n.py:15
+#: ../ui/i18n.py:15
 msgid "me"
 msgstr ""
 
-#: ui\panels.py:30 ui\panels.py:208 ui\panels.py:296
+#: ../ui/panels.py:30 ../ui/panels.py:209 ../ui/panels.py:309
 msgid "Category"
 msgstr "分类"
 
-#: ui\panels.py:31
+#: ../ui/panels.py:31
 msgid "Month Total"
 msgstr "本月总计"
 
-#: ui\panels.py:68 ui\panels.py:201
+#: ../ui/panels.py:68 ../ui/panels.py:202
 msgid "Delete"
 msgstr "删除"
 
-#: ui\panels.py:84 ui\window.py:152 ui\window.py:158 ui\window.py:159
-#: ui\window.py:163 ui\window.py:173 ui\window.py:176
+#: ../ui/panels.py:84 ../ui/window.py:199 ../ui/window.py:205
+#: ../ui/window.py:206 ../ui/window.py:210 ../ui/window.py:219
+#: ../ui/window.py:222
 msgid "No Higher Category"
 msgstr "无上级分类"
 
-#: ui\panels.py:108 ui\panels.py:129 ui\panels.py:132 ui\panels.py:134
+#: ../ui/panels.py:108 ../ui/panels.py:129 ../ui/panels.py:132
+#: ../ui/panels.py:134
 msgid "No Category"
 msgstr "未分类"
 
-#: ui\panels.py:109
+#: ../ui/panels.py:109
 msgid "Can not delete this category!"
 msgstr "该分类不能删除"
 
-#: ui\panels.py:110 ui\panels.py:117
+#: ../ui/panels.py:110 ../ui/panels.py:117
 msgid "Notice:"
 msgstr "注意:"
 
-#: ui\panels.py:116
+#: ../ui/panels.py:116
 msgid ", all child categories will move to \"No Category\""
 msgstr ", 该分类下所有子类将移动到\"未分类\"下"
 
-#: ui\panels.py:116
+#: ../ui/panels.py:116
 msgid "To delete category"
 msgstr "删除分类"
 
-#: ui\panels.py:149
+#: ../ui/panels.py:149
 msgid "Delete category failure!"
 msgstr "删除分类失败!"
 
-#: ui\panels.py:149
+#: ../ui/panels.py:149
 msgid "Delete category information"
 msgstr "删除分类信息"
 
-#: ui\panels.py:169
+#: ../ui/panels.py:170
 msgid " Date: "
 msgstr " 日期: "
 
-#: ui\panels.py:171
+#: ../ui/panels.py:172
 msgid " Year: "
 msgstr " 年: "
 
-#: ui\panels.py:173
+#: ../ui/panels.py:174
 msgid " Month:"
 msgstr " 月: "
 
-#: ui\panels.py:174
+#: ../ui/panels.py:175
 msgid "  Sum: "
 msgstr "  总计: "
 
-#: ui\panels.py:209
+#: ../ui/panels.py:210
 msgid "Money"
 msgstr "金额"
 
-#: ui\panels.py:210
+#: ../ui/panels.py:211
 msgid "Payment"
 msgstr "支付方式"
 
-#: ui\panels.py:211
+#: ../ui/panels.py:212
 msgid "Explain"
 msgstr "说明"
 
-#: ui\panels.py:234 ui\panels.py:262 ui\window.py:11 ui\window.py:237
+#: ../ui/panels.py:241 ../ui/panels.py:269 ../ui/window.py:11
+#: ../ui/window.py:292
 msgid "Cash"
 msgstr "现金"
 
-#: ui\panels.py:236 ui\panels.py:264 ui\window.py:11
+#: ../ui/panels.py:243 ../ui/panels.py:271 ../ui/window.py:11
 msgid "Credit Card"
 msgstr "信用卡"
 
-#: ui\panels.py:298
+#: ../ui/panels.py:311
 msgid "Payout List"
 msgstr "支出列表"
 
-#: ui\panels.py:301
+#: ../ui/panels.py:313
+msgid "Income List"
+msgstr "收入列表"
+
+#: ../ui/panels.py:317
 msgid "Statistic"
 msgstr "统计"
 
-#: ui\statpanel.py:15 ui\statpanel.py:78
+#: ../ui/statpanel.py:15 ../ui/statpanel.py:46 ../ui/statpanel.py:171
+#: ../ui/statpanel.py:194 ../ui/statpanel.py:195
 msgid "All Categories"
 msgstr "所有分类"
 
-#: ui\statpanel.py:26
+#: ../ui/statpanel.py:26
 msgid "Date Start:"
 msgstr "开始日期:"
 
-#: ui\statpanel.py:28 ui\statpanel.py:34
+#: ../ui/statpanel.py:28 ../ui/statpanel.py:34
 msgid " Year "
 msgstr " 年 "
 
-#: ui\statpanel.py:30 ui\statpanel.py:36
-msgid " Month "
-msgstr " 月 "
-
-#: ui\statpanel.py:32
+#: ../ui/statpanel.py:32
 msgid "  Date End: "
 msgstr "  结束日期: "
 
-#: ui\statpanel.py:38
+#: ../ui/statpanel.py:38
 msgid "   Type "
 msgstr " 类型 "
 
-#: ui\statpanel.py:44
+#: ../ui/statpanel.py:39 ../ui/statpanel.py:193
+msgid "Payout and Income"
+msgstr "支出和收入"
+
+#: ../ui/statpanel.py:44
 msgid "   Category "
 msgstr "  分类 "
 
-#: ui\statpanel.py:50
+#: ../ui/statpanel.py:51
 msgid "Statistic!"
 msgstr "开始统计"
 
-#: ui\statpanel.py:104
+#: ../ui/statpanel.py:91 ../ui/statpanel.py:130
 msgid "Month"
 msgstr "月"
 
-#: ui\statpanel.py:110
+#: ../ui/statpanel.py:97 ../ui/statpanel.py:136
 msgid "Sum"
 msgstr "总计"
 
-#: ui\window.py:67
+#: ../ui/statpanel.py:141
+msgid "Balance"
+msgstr "结余"
+
+#: ../ui/statpanel.py:184
+msgid "No data"
+msgstr "没有数据"
+
+#: ../ui/window.py:42
+msgid "Database file: "
+msgstr "数据库文件: "
+
+#: ../ui/window.py:69
+msgid "New database file"
+msgstr "新建数据库文件"
+
+#: ../ui/window.py:70
 msgid "Open database file"
 msgstr "打开数据库文件"
 
-#: ui\window.py:68
-msgid "Save database file"
-msgstr "保存数据库文件"
+#: ../ui/window.py:71
+msgid "Database file save as"
+msgstr "数据库文件另存为"
 
-#: ui\window.py:69
-msgid "Save as"
-msgstr "另存为"
-
-#: ui\window.py:71
+#: ../ui/window.py:73
 msgid "Exit"
 msgstr "退出"
 
-#: ui\window.py:72
+#: ../ui/window.py:74
 msgid "File"
 msgstr "文件"
 
-#: ui\window.py:89
+#: ../ui/window.py:77
+msgid "Language"
+msgstr "语言"
+
+#: ../ui/window.py:78
+msgid "View"
+msgstr "查看"
+
+#: ../ui/window.py:96
 msgid "Add Income"
 msgstr "添加收入"
 
-#: ui\window.py:90
+#: ../ui/window.py:97
 msgid "Add Payout"
 msgstr "添加支出"
 
-#: ui\window.py:114
+#: ../ui/window.py:121
 msgid "Choose database file:"
 msgstr "选择数据库文件"
 
-#: ui\window.py:117 ui\window.py:130 ui\window.py:141
+#: ../ui/window.py:124 ../ui/window.py:144 ../ui/window.py:169
 msgid "YouMoney Database (*.db)|*.db"
 msgstr "YouMoney 数据库文件 (*.db)|*.db"
 
-#: ui\window.py:129
-msgid "Database file save..."
-msgstr "保存数据库文件"
+#: ../ui/window.py:153 ../ui/window.py:179
+msgid "File exist"
+msgstr "文件已存在"
 
-#: ui\window.py:185
+#: ../ui/window.py:153 ../ui/window.py:179 ../ui/window.py:184
+msgid "Can not save database file"
+msgstr "不能保存数据库文件"
+
+#: ../ui/window.py:184
+msgid "Save databse file failture:"
+msgstr "保存数据库文件失败"
+
+#: ../ui/window.py:231
 msgid "Add category failture:"
 msgstr "添加分类失败:"
 
-#: ui\window.py:185
+#: ../ui/window.py:231
 msgid "Add category information"
 msgstr "添加分类信息"
 
-#: ui\window.py:194
+#: ../ui/window.py:240
 msgid "Change category failture:"
 msgstr "修改分类失败:"
 
-#: ui\window.py:194
+#: ../ui/window.py:240
 msgid "Change category information"
 msgstr "修改分类信息"
 
-#: ui\window.py:228
+#: ../ui/window.py:249
+msgid "Can not add income item"
+msgstr "不能添加收入项"
+
+#: ../ui/window.py:249 ../ui/window.py:287
+msgid "Add category first!"
+msgstr "没有分类，请先添加分类!"
+
+#: ../ui/window.py:278
 msgid "Add payout failture:"
 msgstr "添加支出失败:"
 
-#: ui\window.py:228
+#: ../ui/window.py:278
 msgid "Add payout information"
 msgstr "添加支出信息"
 
-#: ui\window.py:263
+#: ../ui/window.py:287
+msgid "Can not add payout item"
+msgstr "不能添加支出项"
+
+#: ../ui/window.py:318
 msgid "Add income failture:"
 msgstr "添加收入失败:"
 
-#: ui\window.py:263
+#: ../ui/window.py:318
 msgid "Add income information"
 msgstr "添加收入信息"
 
-#: ui\window.py:281
+#: ../ui/window.py:336
 msgid "Change income failture:"
 msgstr "修改收入失败:"
 
-#: ui\window.py:281
+#: ../ui/window.py:336
 msgid "Change income information"
 msgstr "修改收入信息"
 

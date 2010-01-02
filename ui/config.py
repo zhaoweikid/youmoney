@@ -4,12 +4,17 @@ import os, sys
 class Configure:
     def __init__(self):
         self.rundir = os.path.dirname(os.path.abspath(sys.argv[0]))
-        self.conffile = os.path.join(self.rundir, "mycash.conf") 
+        self.conffile = os.path.join(self.rundir, "data", "youmoney.conf") 
         self.data = {}
         self.load()
 
     def load(self):
-        f = open(self.conffile, 'r')
+        try:
+            f = open(self.conffile, 'r')
+        except:
+            self.data['lastdb'] = os.path.join(os.path.dirname(self.conffile), "youmoney.db")
+            self.dump()
+            return
         lines = f.readlines()
         f.close()
 
@@ -19,7 +24,7 @@ class Configure:
                 continue
             
             parts = [ x.strip() for x in line.split('=') ]
-            self.data[parts[0]] = parts[2]
+            self.data[parts[0]] = parts[1]
 
     def dump(self):
         f = open(self.conffile, 'w')

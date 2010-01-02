@@ -155,7 +155,8 @@ class CategoryPanel (wx.Panel):
     def OnItemSelected(self, event):
         self.currentItem = event.GetItem()
 
-class PayoutListPanel (wx.Panel):
+class ItemListPanel (wx.Panel):
+    type = "payout"
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, -1, style=0)
         self.parent = parent
@@ -163,7 +164,7 @@ class PayoutListPanel (wx.Panel):
         box = wx.BoxSizer(wx.HORIZONTAL)
         tday = datetime.date.today()
         items = [ str(x) for x in range(2009, 2020) ]
-        self.year  = wx.ComboBox(self, 500, str(tday.year), (60, 50), (60, -1), items, wx.CB_DROPDOWN)
+        self.year  = wx.ComboBox(self, 500, str(tday.year), (60, 50), (80, -1), items, wx.CB_DROPDOWN)
         items = [ str(x) for x in range(1, 13) ]
         self.month = wx.ComboBox(self, 500, str(tday.month), (60, 50), (60, -1), items, wx.CB_DROPDOWN)
         box.Add(wx.StaticText(self, -1, _(' Date: '), (8, 10)), 0, wx.ALIGN_CENTER)
@@ -207,7 +208,8 @@ class PayoutListPanel (wx.Panel):
         self.list.InsertColumn(0, _("Date:"))
         self.list.InsertColumn(1, _("Category"))
         self.list.InsertColumn(2, _("Money"))
-        self.list.InsertColumn(3, _("Payment"))
+        if self.type == 'payout':
+            self.list.InsertColumn(3, _("Payment"))
         self.list.InsertColumn(4, _("Explain"))
         self.list.SetColumnWidth(4, 300)
 
@@ -218,7 +220,12 @@ class PayoutListPanel (wx.Panel):
         year  = self.year.GetValue()
         month = self.month.GetValue()
 
-        sql = "select * from capital where year=%s and month=%s and type=0 order by id" % (year, month)
+        if self.type == 'payout':
+            mytype = 0
+        else:
+            mytype = 1
+
+        sql = "select * from capital where year=%s and month=%s and type=%d order by id" % (year, month, mytype)
         logfile.info(sql)
         rets = self.parent.parent.db.query(sql)
         if rets:
@@ -226,7 +233,8 @@ class PayoutListPanel (wx.Panel):
             for row in rets:
                 mytime = '%d-%02d-%02d' % (row['year'], row['month'], row['day'])
                 item = self.list.InsertStringItem(0, mytime)
-                cate = self.parent.parent.category.payout_catemap[row['category']]
+                #cate = self.parent.parent.category.payout_catemap[row['category']]
+                cate = self.parent.parent.category.catemap(self.type, row['category'])
                 self.list.SetStringItem(item, 1, cate)
                 self.list.SetStringItem(item, 2, str(row['num']))
                 self.list.SetItemData(item, row['id'])
@@ -234,8 +242,11 @@ class PayoutListPanel (wx.Panel):
                     payway = _('Cash')
                 else:
                     payway = _('Credit Card')
-                self.list.SetStringItem(item, 3, payway)
-                self.list.SetStringItem(item, 4, row['explain'])
+                if self.type == 'payout':
+                    self.list.SetStringItem(item, 3, payway)
+                    self.list.SetStringItem(item, 4, row['explain'])
+                else:
+                    self.list.SetStringItem(item, 3, row['explain'])
                 numall += row['num']
             self.total.SetValue(str(numall))
         else:
@@ -263,7 +274,7 @@ class PayoutListPanel (wx.Panel):
             else:
                 payway = _('Credit Card')
 
-            ready = {'cates':category.payout_catelist, 
+            ready = {'cates':category.catelist('payout'), 
                      'cate':category.catestr_by_id('payout', row['category']), 'num': row['num'], 
                      'explain':row['explain'], 
                      'year':row['year'], 'month':row['month'], 'day':row['day'], 
@@ -288,6 +299,12 @@ class PayoutListPanel (wx.Panel):
         event.Skip()
 
 
+class PayoutListPanel (ItemListPanel):
+    type = "payout"
+
+class IncomeListPanel (ItemListPanel):
+    type = "income"
+
 class ContentTab (wx.Notebook):
     def __init__(self, parent):
         wx.Notebook.__init__(self, parent, -1, size=(21,21), style=wx.BK_DEFAULT)
@@ -296,6 +313,9 @@ class ContentTab (wx.Notebook):
         self.AddPage(self.cate, _('Category'))
         self.payoutlist = PayoutListPanel(self)
         self.AddPage(self.payoutlist, _('Payout List'))
+        self.incomelist = IncomeListPanel(self)
+        self.AddPage(self.incomelist, _('Income List'))
+
         cates = self.parent.category.catelist_parent()
         self.stat = statpanel.StatPanel(self, cates)
         self.AddPage(self.stat, _('Statistic'))
@@ -304,5 +324,9 @@ class ContentTab (wx.Notebook):
         self.cate.load(cate)
     
 
-    def load_payout(self):
+    def load_list(self):
         self.payoutlist.load()
+        self.incomelist.load()
+
+
+
