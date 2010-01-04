@@ -198,7 +198,7 @@ class MainFrame (wx.Frame):
                 wx.MessageBox(_('Save databse file failture:') + str(e), _('Can not save database file'), wx.OK|wx.ICON_INFORMATION)
                 return
 
-            shutil.remove(oldfile)
+            os.remove(oldfile)
             self.db.close()
             self.initdb(path)
             #self.db = storage.DBStorage(path)

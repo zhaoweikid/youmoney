@@ -34,7 +34,10 @@ def main():
     
     shutil.rmtree('build')
     #shutil.rmtree('dist')
-    os.rename('dist', 'YouMoney-noinstall-%s' % (version.VERSION))
+    newname = 'YouMoney-noinstall-%s' % (version.VERSION) 
+    if os.path.isfile(newname):
+        shutil.rmtree(newname)
+    os.rename('dist', newname)
 
 
 if __name__ == '__main__':
