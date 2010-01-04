@@ -10,7 +10,7 @@ def main():
     f = open("youmoney.nsi.new", 'w')
     for line in lines:
         if line.startswith('OutFile'):
-            f.write('OutFile "YouMoney_%s.exe"\n' % (version.VERSION))
+            f.write('OutFile "YouMoney-%s.exe"\n' % (version.VERSION))
         else:
             f.write(line)
 
@@ -27,7 +27,9 @@ def main():
 
     cmd = "setup.py py2exe"
     print cmd
-    os.system(cmd)
+    if os.system(cmd) != 0:
+        print 'setup.py py2exe error!'
+        return
     cmd = "makensis.exe youmoney.nsi"
     print cmd
     os.system(cmd)
@@ -35,9 +37,9 @@ def main():
     shutil.rmtree('build')
     #shutil.rmtree('dist')
     newname = 'YouMoney-noinstall-%s' % (version.VERSION) 
-    if os.path.isfile(newname):
+    if os.path.isdir(newname):
         shutil.rmtree(newname)
-    os.rename('dist', newname)
+    shutil.move('dist', newname)
 
 
 if __name__ == '__main__':
