@@ -22,6 +22,9 @@ def main():
     shutil.move("youmoney.nsi", "youmoney.nsi.bak")
     shutil.move("youmoney.nsi.new", "youmoney.nsi")
     
+    if os.path.isdir('dist'):
+        shutil.rmtree('dist')
+
     cmd = "setup.py py2exe"
     print cmd
     os.system(cmd)
@@ -30,8 +33,8 @@ def main():
     os.system(cmd)
     
     shutil.rmtree('build')
-    shutil.rmtree('dist')
-
+    #shutil.rmtree('dist')
+    os.rename('dist', 'YouMoney-noinstall-%s' % (version.VERSION))
 
 
 if __name__ == '__main__':
