@@ -131,7 +131,7 @@ class CategoryPanel (wx.Panel):
             if not ret:
                 sql = "insert into category (name,parent,type) values ('%s',0,%d)" % (_('No Category'), mytype)
                 frame.db.execute(sql)
-                sql = u"select * from category where name='%s' and type=" % (_('No Category'), mytype)
+                sql = u"select * from category where name='%s' and type=%d" % (_('No Category'), mytype)
 
                 ret = frame.db.query(sql)
  
@@ -197,7 +197,7 @@ class ItemListPanel (wx.Panel):
         if not hasattr(self, "ID_POPUP_DEL"):
             self.ID_POPUP_DEL = wx.NewId()
             
-            self.Bind(wx.EVT_MENU, self.OnPayoutDel, id=self.ID_POPUP_DEL)
+            self.Bind(wx.EVT_MENU, self.OnDelete, id=self.ID_POPUP_DEL)
         menu = wx.Menu()
         menu.Append(self.ID_POPUP_DEL, _("Delete"))
         self.PopupMenu(menu)
@@ -288,7 +288,7 @@ class ItemListPanel (wx.Panel):
                 self.parent.parent.income_dialog(ready)
 
 
-    def OnPayoutDel(self, event):
+    def OnDelete(self, event):
         if self.currentItem is None:
             return
         id = self.list.GetItemData(self.currentItem)
