@@ -59,7 +59,10 @@ Section "Uninstall"
 
     Delete "$INSTDIR\Uninstall.exe"
 
-    RMDir /r "$INSTDIR"
+    RMDir /r "$INSTDIR\images"
+    RMDir /r "$INSTDIR\lang"
+    RMDir /r "$INSTDIR\ui"
+    RMDir "$INSTDIR\*"
 
     DeleteRegKey /ifempty HKCU "Software\YouMoney"
 
