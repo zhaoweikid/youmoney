@@ -1,7 +1,7 @@
 !include "MUI2.nsh"
 
 Name "YouMoney"
-OutFile "YouMoney-0.3.4.exe"
+OutFile "YouMoney-0.3.5.exe"
 
 InstallDir "$PROGRAMFILES\YouMoney"
 
@@ -62,7 +62,7 @@ Section "Uninstall"
     RMDir /r "$INSTDIR\images"
     RMDir /r "$INSTDIR\lang"
     RMDir /r "$INSTDIR\ui"
-    RMDir "$INSTDIR\*"
+    Delete "$INSTDIR\*"
 
     DeleteRegKey /ifempty HKCU "Software\YouMoney"
 
