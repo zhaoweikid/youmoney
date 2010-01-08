@@ -6,6 +6,7 @@ import version
 
 includes = ['encodings', 'encodings.*', 'gettext', 'glob', 
             'wx.lib.sized_controls', 'wx.gizmos', 'wx.html',
+            'wx.lib.wordwrap',
             'sqlite3', 'shutil', 'pprint']
 options  = {'py2exe': {
                 'compressed': 0,
