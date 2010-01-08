@@ -34,6 +34,12 @@ def main():
         os.mkdir(datadir)
     filename = os.path.join(home, "youmoney.log")
     logfile.install(filename)
+        
+    versionfile = os.path.join(home, '')
+    f = open('version.dat', 'w')
+    f.write(version.VERSION)
+    f.close()
+
     app = YouMoney()
     app.MainLoop()
 

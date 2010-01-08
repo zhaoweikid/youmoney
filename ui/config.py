@@ -33,6 +33,14 @@ class Configure:
 
         f.close()
 
+    def have(self):
+        return os.path.isfile(self.conffile)
+
+    def lastdb_is_default(self):
+        if self.data['lastdb'] == os.path.join(self.rundir, 'data', 'youmoney.db'):
+            return True
+        return False
+
     def __getitem__(self, k):
         return self.data[k]
 

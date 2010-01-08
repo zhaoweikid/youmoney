@@ -40,6 +40,12 @@ class MainFrame (wx.Frame):
 
         self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
         
+        wx.CallLater(100, self.notify)
+
+    def notify(self):
+        if self.conf.lastdb_is_default():
+            wx.MessageBox(_('You db file is in default path, strongly advise save it to other path.'), _('Note:'), wx.OK|wx.ICON_INFORMATION)
+        
 
     def initdb(self, path=None):
         if not path:
@@ -188,6 +194,7 @@ class MainFrame (wx.Frame):
             if not path.endswith('.db'):
                 path += ".db"
             
+            self.conf.dump()
             oldfile = self.conf['lastdb']
             if os.path.isfile(path):
                 wx.MessageBox(_('File exist'), _('Can not save database file'), wx.OK|wx.ICON_INFORMATION) 
@@ -197,9 +204,9 @@ class MainFrame (wx.Frame):
             except Exception, e:
                 wx.MessageBox(_('Save databse file failture:') + str(e), _('Can not save database file'), wx.OK|wx.ICON_INFORMATION)
                 return
-
-            os.remove(oldfile)
             self.db.close()
+            if os.path.isfile(oldfile):
+                os.remove(oldfile)
             self.initdb(path)
             #self.db = storage.DBStorage(path)
             self.reload()
