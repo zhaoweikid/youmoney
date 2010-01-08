@@ -1,11 +1,12 @@
 # coding: utf-8
 import os, sys, copy, time
 import wx
+from wx.lib.wordwrap import wordwrap
 import panels, dialogs, config, storage
 from loader import load_bitmap
 import sqlite3, datetime, shutil
 from category import Category
-import pprint, traceback, logfile
+import pprint, traceback, logfile, version
 
 catetypes = {0:_('Payout'), 1:_('Income'), _('Payout'):0, _('Income'):1}
 payways   = {1:_('Cash'), 2:_('Credit Card'), _('Cash'):1, _('Credit Card'):2}
@@ -76,6 +77,7 @@ class MainFrame (wx.Frame):
         self.ID_VIEW_LANG = wx.NewId()
         self.ID_VIEW_LANG_EN = wx.NewId()
         self.ID_VIEW_LANG_CN = wx.NewId()
+        self.ID_ABOUT_WEBSITE = wx.NewId()
 
         
         menubar = wx.MenuBar()
@@ -94,9 +96,13 @@ class MainFrame (wx.Frame):
         
         self.viewmenu = wx.Menu()
         self.viewmenu.AppendMenu(self.ID_VIEW_LANG, _('Language'), self.langmenu)
- 
         menubar.Append(self.viewmenu, _('View'))
         
+        self.aboutmenu = wx.Menu()
+        self.aboutmenu.Append(self.ID_ABOUT_WEBSITE, _('About Information'))
+        menubar.Append(self.aboutmenu, _('About'))
+
+
         self.SetMenuBar(menubar)
 
         self.Bind(wx.EVT_MENU, self.OnFileNew, id=self.ID_FILE_NEW)
@@ -104,6 +110,7 @@ class MainFrame (wx.Frame):
         self.Bind(wx.EVT_MENU, self.OnFileSaveAs, id=self.ID_FILE_SAVEAS)
         self.Bind(wx.EVT_MENU, self.OnCloseWindow, id=self.ID_FILE_EXIT)
         self.Bind(wx.EVT_MENU, self.OnLanguage, id=self.ID_VIEW_LANG)
+        self.Bind(wx.EVT_MENU, self.OnAboutInfo, id=self.ID_ABOUT_WEBSITE)
 
     def make_toolbar(self):
         self.ID_TB_CATEEDIT = wx.NewId()
@@ -388,6 +395,18 @@ class MainFrame (wx.Frame):
 
 
 
+    def OnAboutInfo(self, event):
+        info = wx.AboutDialogInfo()
+        info.Name = u"YouMoney"
+        info.Version = version.VERSION
+        info.Copyright = "(C) 2010 zhaoweikid"
+        info.Description = wordwrap(_("YouMoney is a opensource personal finance software write by Python language.") + '\n',
+            350, wx.ClientDC(self))
+        info.WebSite = ("http://code.google.com/p/youmoney", _("YouMoney home page"))
+        info.Developers = ["zhaoweikid"]
+
+        info.License = wordwrap("GPL", 500, wx.ClientDC(self))
+        wx.AboutBox(info)
 
 
 

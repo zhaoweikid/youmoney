@@ -4,7 +4,7 @@ import random
 import merge
 
 
-def create_pot():
+def create_po():
     tm = datetime.datetime.now()
     postfix = '%s%02d%02d.%02d%02d%02d' % tuple(tm.timetuple())[:6]
 

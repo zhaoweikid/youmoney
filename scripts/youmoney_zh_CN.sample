@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Sat Jan  2 01:24:51 2010\n"
+"POT-Creation-Date: Fri Jan 08 16:08:09 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,393 +15,389 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 
-#: /data/home/zhaowei/projects/youmoney/ui/category.py:77
-#: /data/home/zhaowei/projects/youmoney/ui/category.py:218
-#: /data/home/zhaowei/projects/youmoney/ui/category.py:228
+#: D:\projects\youmoney\ui\category.py:77
+#: D:\projects\youmoney\ui\category.py:218
+#: D:\projects\youmoney\ui\category.py:228
 msgid "payout"
 msgstr "支出"
 
-#: /data/home/zhaowei/projects/youmoney/ui/category.py:78
-#: /data/home/zhaowei/projects/youmoney/ui/category.py:218
-#: /data/home/zhaowei/projects/youmoney/ui/category.py:228
+#: D:\projects\youmoney\ui\category.py:78
+#: D:\projects\youmoney\ui\category.py:218
+#: D:\projects\youmoney\ui\category.py:228
 msgid "income"
 msgstr "收入"
 
-#: /data/home/zhaowei/projects/youmoney/ui/dialogs.py:9
+#: D:\projects\youmoney\ui\dialogs.py:9
 msgid "Add income item"
 msgstr "添加收入条目"
 
-#: /data/home/zhaowei/projects/youmoney/ui/dialogs.py:17
-#: /data/home/zhaowei/projects/youmoney/ui/dialogs.py:66
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:208
+#: D:\projects\youmoney\ui\dialogs.py:17 D:\projects\youmoney\ui\dialogs.py:66
+#: D:\projects\youmoney\ui\panels.py:208
 msgid "Date:"
 msgstr "日期:"
 
-#: /data/home/zhaowei/projects/youmoney/ui/dialogs.py:28
-#: /data/home/zhaowei/projects/youmoney/ui/dialogs.py:74
-#: /data/home/zhaowei/projects/youmoney/ui/dialogs.py:123
+#: D:\projects\youmoney\ui\dialogs.py:28 D:\projects\youmoney\ui\dialogs.py:74
+#: D:\projects\youmoney\ui\dialogs.py:123
 msgid "Category:"
 msgstr "分类:"
 
-#: /data/home/zhaowei/projects/youmoney/ui/dialogs.py:32
-#: /data/home/zhaowei/projects/youmoney/ui/dialogs.py:83
+#: D:\projects\youmoney\ui\dialogs.py:32 D:\projects\youmoney\ui\dialogs.py:83
 msgid "Money:"
 msgstr "金额:"
 
-#: /data/home/zhaowei/projects/youmoney/ui/dialogs.py:35
-#: /data/home/zhaowei/projects/youmoney/ui/dialogs.py:86
+#: D:\projects\youmoney\ui\dialogs.py:35 D:\projects\youmoney\ui\dialogs.py:86
 msgid "Explain:"
 msgstr "说明:"
 
-#: /data/home/zhaowei/projects/youmoney/ui/dialogs.py:58
+#: D:\projects\youmoney\ui\dialogs.py:58
 msgid "Add payout item"
 msgstr "添加支出条目"
 
-#: /data/home/zhaowei/projects/youmoney/ui/dialogs.py:78
+#: D:\projects\youmoney\ui\dialogs.py:78
 msgid "Payment:"
 msgstr "支付方式:"
 
-#: /data/home/zhaowei/projects/youmoney/ui/dialogs.py:79
+#: D:\projects\youmoney\ui\dialogs.py:79
 msgid "cash"
 msgstr "现金"
 
-#: /data/home/zhaowei/projects/youmoney/ui/dialogs.py:79
+#: D:\projects\youmoney\ui\dialogs.py:79
 msgid "credit card"
 msgstr "信用卡"
 
-#: /data/home/zhaowei/projects/youmoney/ui/dialogs.py:112
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:103
+#: D:\projects\youmoney\ui\dialogs.py:112
+#: D:\projects\youmoney\ui\window.py:122
 msgid "Add Category"
 msgstr "添加分类"
 
-#: /data/home/zhaowei/projects/youmoney/ui/dialogs.py:119
+#: D:\projects\youmoney\ui\dialogs.py:119
 msgid "Type:"
 msgstr "类型:"
 
-#: /data/home/zhaowei/projects/youmoney/ui/dialogs.py:120
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:86
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:39
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:126
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:159
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:10
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:207
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:214
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:229
+#: D:\projects\youmoney\ui\dialogs.py:120 D:\projects\youmoney\ui\panels.py:86
+#: D:\projects\youmoney\ui\statpanel.py:39
+#: D:\projects\youmoney\ui\statpanel.py:126
+#: D:\projects\youmoney\ui\statpanel.py:159
+#: D:\projects\youmoney\ui\window.py:11 D:\projects\youmoney\ui\window.py:227
+#: D:\projects\youmoney\ui\window.py:234 D:\projects\youmoney\ui\window.py:249
 msgid "Payout"
 msgstr "支出"
 
-#: /data/home/zhaowei/projects/youmoney/ui/dialogs.py:120
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:88
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:39
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:126
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:161
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:10
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:213
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:226
+#: D:\projects\youmoney\ui\dialogs.py:120 D:\projects\youmoney\ui\panels.py:88
+#: D:\projects\youmoney\ui\statpanel.py:39
+#: D:\projects\youmoney\ui\statpanel.py:126
+#: D:\projects\youmoney\ui\statpanel.py:161
+#: D:\projects\youmoney\ui\window.py:11 D:\projects\youmoney\ui\window.py:233
+#: D:\projects\youmoney\ui\window.py:246
 msgid "Income"
 msgstr "收入"
 
-#: /data/home/zhaowei/projects/youmoney/ui/dialogs.py:127
+#: D:\projects\youmoney\ui\dialogs.py:127
 msgid "Higher Category:"
 msgstr "上级分类:"
 
-#: /data/home/zhaowei/projects/youmoney/ui/i18n.py:14
+#: D:\projects\youmoney\ui\i18n.py:12
 msgid "hello"
 msgstr ""
 
-#: /data/home/zhaowei/projects/youmoney/ui/i18n.py:15
+#: D:\projects\youmoney\ui\i18n.py:13
 msgid "me"
 msgstr ""
 
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:30
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:209
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:316
+#: D:\projects\youmoney\ui\panels.py:30 D:\projects\youmoney\ui\panels.py:209
+#: D:\projects\youmoney\ui\panels.py:316
 msgid "Category"
 msgstr "分类"
 
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:31
+#: D:\projects\youmoney\ui\panels.py:31
 msgid "Month Total"
 msgstr "本月总计"
 
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:68
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:202
+#: D:\projects\youmoney\ui\panels.py:68 D:\projects\youmoney\ui\panels.py:202
 msgid "Delete"
 msgstr "删除"
 
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:84
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:207
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:213
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:214
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:218
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:227
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:230
+#: D:\projects\youmoney\ui\panels.py:84 D:\projects\youmoney\ui\window.py:227
+#: D:\projects\youmoney\ui\window.py:233 D:\projects\youmoney\ui\window.py:234
+#: D:\projects\youmoney\ui\window.py:238 D:\projects\youmoney\ui\window.py:247
+#: D:\projects\youmoney\ui\window.py:250
 msgid "No Higher Category"
 msgstr "无上级分类"
 
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:108
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:129
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:132
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:134
+#: D:\projects\youmoney\ui\panels.py:108 D:\projects\youmoney\ui\panels.py:129
+#: D:\projects\youmoney\ui\panels.py:132 D:\projects\youmoney\ui\panels.py:134
 msgid "No Category"
 msgstr "未分类"
 
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:109
+#: D:\projects\youmoney\ui\panels.py:109
 msgid "Can not delete this category!"
 msgstr "该分类不能删除"
 
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:110
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:117
+#: D:\projects\youmoney\ui\panels.py:110 D:\projects\youmoney\ui\panels.py:117
 msgid "Notice:"
 msgstr "注意:"
 
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:116
+#: D:\projects\youmoney\ui\panels.py:116
 msgid ", all child categories will move to \"No Category\""
 msgstr ", 该分类下所有子类将移动到\"未分类\"下"
 
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:116
+#: D:\projects\youmoney\ui\panels.py:116
 msgid "To delete category"
 msgstr "删除分类"
 
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:149
+#: D:\projects\youmoney\ui\panels.py:149
 msgid "Delete category failure!"
 msgstr "删除分类失败!"
 
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:149
+#: D:\projects\youmoney\ui\panels.py:149
 msgid "Delete category information"
 msgstr "删除分类信息"
 
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:170
+#: D:\projects\youmoney\ui\panels.py:170
 msgid " Date: "
 msgstr " 日期: "
 
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:172
+#: D:\projects\youmoney\ui\panels.py:172
 msgid " Year: "
 msgstr " 年: "
 
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:174
+#: D:\projects\youmoney\ui\panels.py:174
 msgid " Month:"
 msgstr " 月: "
 
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:175
+#: D:\projects\youmoney\ui\panels.py:175
 msgid "  Sum: "
 msgstr "  总计: "
 
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:210
+#: D:\projects\youmoney\ui\panels.py:210
 msgid "Money"
 msgstr "金额"
 
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:212
+#: D:\projects\youmoney\ui\panels.py:212
 msgid "Payment"
 msgstr "支付方式"
 
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:213
+#: D:\projects\youmoney\ui\panels.py:213
 msgid "Explain"
 msgstr "说明"
 
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:242
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:273
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:11
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:300
+#: D:\projects\youmoney\ui\panels.py:242 D:\projects\youmoney\ui\panels.py:273
+#: D:\projects\youmoney\ui\window.py:12 D:\projects\youmoney\ui\window.py:342
 msgid "Cash"
 msgstr "现金"
 
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:244
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:275
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:11
+#: D:\projects\youmoney\ui\panels.py:244 D:\projects\youmoney\ui\panels.py:275
+#: D:\projects\youmoney\ui\window.py:12
 msgid "Credit Card"
 msgstr "信用卡"
 
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:318
+#: D:\projects\youmoney\ui\panels.py:318
 msgid "Payout List"
 msgstr "支出列表"
 
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:320
+#: D:\projects\youmoney\ui\panels.py:320
 msgid "Income List"
 msgstr "收入列表"
 
-#: /data/home/zhaowei/projects/youmoney/ui/panels.py:324
+#: D:\projects\youmoney\ui\panels.py:324
 msgid "Statistic"
 msgstr "统计"
 
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:15
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:46
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:171
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:194
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:195
+#: D:\projects\youmoney\ui\statpanel.py:15
+#: D:\projects\youmoney\ui\statpanel.py:46
+#: D:\projects\youmoney\ui\statpanel.py:171
+#: D:\projects\youmoney\ui\statpanel.py:194
+#: D:\projects\youmoney\ui\statpanel.py:195
 msgid "All Categories"
 msgstr "所有分类"
 
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:26
+#: D:\projects\youmoney\ui\statpanel.py:26
 msgid "Date Start:"
 msgstr "开始日期:"
 
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:28
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:34
+#: D:\projects\youmoney\ui\statpanel.py:28
+#: D:\projects\youmoney\ui\statpanel.py:34
 msgid " Year "
 msgstr " 年 "
 
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:32
+#: D:\projects\youmoney\ui\statpanel.py:32
 msgid "  Date End: "
 msgstr "  结束日期: "
 
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:38
+#: D:\projects\youmoney\ui\statpanel.py:38
 msgid "   Type "
 msgstr " 类型 "
 
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:39
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:193
+#: D:\projects\youmoney\ui\statpanel.py:39
+#: D:\projects\youmoney\ui\statpanel.py:193
 msgid "Payout and Income"
 msgstr "支出和收入"
 
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:44
+#: D:\projects\youmoney\ui\statpanel.py:44
 msgid "   Category "
 msgstr "  分类 "
 
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:51
+#: D:\projects\youmoney\ui\statpanel.py:51
 msgid "Statistic!"
 msgstr "开始统计"
 
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:91
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:130
+#: D:\projects\youmoney\ui\statpanel.py:91
+#: D:\projects\youmoney\ui\statpanel.py:130
 msgid "Month"
 msgstr "月"
 
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:97
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:136
+#: D:\projects\youmoney\ui\statpanel.py:97
+#: D:\projects\youmoney\ui\statpanel.py:136
 msgid "Sum"
 msgstr "总计"
 
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:141
+#: D:\projects\youmoney\ui\statpanel.py:141
 msgid "Balance"
 msgstr "结余"
 
-#: /data/home/zhaowei/projects/youmoney/ui/statpanel.py:184
+#: D:\projects\youmoney\ui\statpanel.py:184
 msgid "No data"
 msgstr "没有数据"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:42
+#: D:\projects\youmoney\ui\window.py:48
+msgid "Note:"
+msgstr "注意:"
+
+#: D:\projects\youmoney\ui\window.py:48
+msgid "You db file is in default path, strongly advise save it to other path."
+msgstr "当前数据库文件在安装目录下，强烈建议另存到其他路径，以免卸载或重装系统后丢失。"
+
+#: D:\projects\youmoney\ui\window.py:55
 msgid "Database file: "
 msgstr "数据库文件: "
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:71
+#: D:\projects\youmoney\ui\window.py:85
 msgid "New database file"
 msgstr "新建数据库文件"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:72
+#: D:\projects\youmoney\ui\window.py:86
 msgid "Open database file"
 msgstr "打开数据库文件"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:73
+#: D:\projects\youmoney\ui\window.py:87
 msgid "Database file save as"
 msgstr "数据库文件另存为"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:75
+#: D:\projects\youmoney\ui\window.py:89
 msgid "Exit"
 msgstr "退出"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:76
+#: D:\projects\youmoney\ui\window.py:90
 msgid "File"
 msgstr "文件"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:80
+#: D:\projects\youmoney\ui\window.py:94
 msgid "Simple Chinese"
 msgstr "简体中文"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:81
+#: D:\projects\youmoney\ui\window.py:95
 msgid "English"
 msgstr "英语"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:84
+#: D:\projects\youmoney\ui\window.py:98
 msgid "Language"
 msgstr "语言"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:86
+#: D:\projects\youmoney\ui\window.py:99
 msgid "View"
 msgstr "查看"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:104
+#: D:\projects\youmoney\ui\window.py:102
+msgid "About Information"
+msgstr "关于YouMoney"
+
+#: D:\projects\youmoney\ui\window.py:103
+msgid "About"
+msgstr "关于"
+
+#: D:\projects\youmoney\ui\window.py:123
 msgid "Add Income"
 msgstr "添加收入"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:105
+#: D:\projects\youmoney\ui\window.py:124
 msgid "Add Payout"
 msgstr "添加支出"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:129
+#: D:\projects\youmoney\ui\window.py:148
 msgid "Choose database file:"
 msgstr "选择数据库文件"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:132
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:152
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:177
+#: D:\projects\youmoney\ui\window.py:151 D:\projects\youmoney\ui\window.py:171
+#: D:\projects\youmoney\ui\window.py:196
 msgid "YouMoney Database (*.db)|*.db"
 msgstr "YouMoney 数据库文件 (*.db)|*.db"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:161
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:187
+#: D:\projects\youmoney\ui\window.py:180 D:\projects\youmoney\ui\window.py:207
 msgid "File exist"
 msgstr "文件已存在"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:161
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:187
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:192
+#: D:\projects\youmoney\ui\window.py:180 D:\projects\youmoney\ui\window.py:207
+#: D:\projects\youmoney\ui\window.py:212
 msgid "Can not save database file"
 msgstr "不能保存数据库文件"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:192
+#: D:\projects\youmoney\ui\window.py:212
 msgid "Save databse file failture:"
 msgstr "保存数据库文件失败"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:239
+#: D:\projects\youmoney\ui\window.py:259
 msgid "Add category failture:"
 msgstr "添加分类失败:"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:239
+#: D:\projects\youmoney\ui\window.py:259
 msgid "Add category information"
 msgstr "添加分类信息"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:248
+#: D:\projects\youmoney\ui\window.py:268
 msgid "Change category failture:"
 msgstr "修改分类失败:"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:248
+#: D:\projects\youmoney\ui\window.py:268
 msgid "Change category information"
 msgstr "修改分类信息"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:257
+#: D:\projects\youmoney\ui\window.py:277
 msgid "Can not add income item"
 msgstr "不能添加收入项"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:257
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:295
+#: D:\projects\youmoney\ui\window.py:277 D:\projects\youmoney\ui\window.py:337
 msgid "Add category first!"
 msgstr "没有分类，请先添加分类!"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:286
+#: D:\projects\youmoney\ui\window.py:308
 msgid "Add payout failture:"
 msgstr "添加支出失败:"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:286
+#: D:\projects\youmoney\ui\window.py:308
 msgid "Add payout information"
 msgstr "添加支出信息"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:295
-msgid "Can not add payout item"
-msgstr "不能添加支出项"
-
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:326
-msgid "Add income failture:"
-msgstr "添加收入失败:"
-
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:326
-msgid "Add income information"
-msgstr "添加收入信息"
-
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:344
+#: D:\projects\youmoney\ui\window.py:325 D:\projects\youmoney\ui\window.py:386
 msgid "Change income failture:"
 msgstr "修改收入失败:"
 
-#: /data/home/zhaowei/projects/youmoney/ui/window.py:344
+#: D:\projects\youmoney\ui\window.py:325 D:\projects\youmoney\ui\window.py:386
 msgid "Change income information"
 msgstr "修改收入信息"
+
+#: D:\projects\youmoney\ui\window.py:337
+msgid "Can not add payout item"
+msgstr "不能添加支出项"
+
+#: D:\projects\youmoney\ui\window.py:368
+msgid "Add income failture:"
+msgstr "添加收入失败:"
+
+#: D:\projects\youmoney\ui\window.py:368
+msgid "Add income information"
+msgstr "添加收入信息"
+
+#: D:\projects\youmoney\ui\window.py:405
+msgid "YouMoney home page"
+msgstr "YouMoney官方主页"
 
