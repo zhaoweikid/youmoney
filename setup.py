@@ -24,6 +24,7 @@ setup(
     url = 'http://code.google.com/p/youomoney/',
     data_files = [('images', glob.glob('images/*.png')),
                   ('lang/zh_CN/LC_MESSAGES', glob.glob('lang/zh_CN/LC_MESSAGES/*')),
+                  ('lang/en_US/LC_MESSAGES', glob.glob('lang/en_US/LC_MESSAGES/*')),
                   ('ui', glob.glob('ui/*.py')),
                   ('.', [os.path.join(os.environ['SystemRoot'], 'system32', 'msvcp71.dll')]),
                   ],
