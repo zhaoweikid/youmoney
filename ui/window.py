@@ -23,7 +23,11 @@ class MainFrame (wx.Frame):
         icon.CopyFromBitmap(wx.BitmapFromImage(wx.Image(iconpath, wx.BITMAP_TYPE_PNG)))
         self.SetIcon(icon)
 
-        self.conf = config.Configure()
+        #self.conf = config.Configure()
+        if config.cf:
+            self.conf = config.cf
+        else:
+            raise ValueError, 'config.cf is None'
         
         self.make_menu()
         self.make_toolbar()
@@ -91,8 +95,8 @@ class MainFrame (wx.Frame):
 
        
         self.langmenu = wx.Menu()
-        self.langmenu.Append(self.ID_VIEW_LANG_CN, _('Simple Chinese'))
-        self.langmenu.Append(self.ID_VIEW_LANG_EN, _('English'))
+        self.langmenu.AppendRadioItem(self.ID_VIEW_LANG_CN, _('Simple Chinese'))
+        self.langmenu.AppendRadioItem(self.ID_VIEW_LANG_EN, _('English'))
         
         self.viewmenu = wx.Menu()
         self.viewmenu.AppendMenu(self.ID_VIEW_LANG, _('Language'), self.langmenu)
@@ -109,8 +113,16 @@ class MainFrame (wx.Frame):
         self.Bind(wx.EVT_MENU, self.OnFileOpen, id=self.ID_FILE_OPEN)
         self.Bind(wx.EVT_MENU, self.OnFileSaveAs, id=self.ID_FILE_SAVEAS)
         self.Bind(wx.EVT_MENU, self.OnCloseWindow, id=self.ID_FILE_EXIT)
-        self.Bind(wx.EVT_MENU, self.OnLanguage, id=self.ID_VIEW_LANG)
+        self.Bind(wx.EVT_MENU, self.OnLanguage, id=self.ID_VIEW_LANG_CN)
+        self.Bind(wx.EVT_MENU, self.OnLanguage, id=self.ID_VIEW_LANG_EN)
         self.Bind(wx.EVT_MENU, self.OnAboutInfo, id=self.ID_ABOUT_WEBSITE)
+        
+        lang = self.conf['lang']
+        if lang == 'zh_CN':
+            mid = self.ID_VIEW_LANG_CN
+        else:
+            mid = self.ID_VIEW_LANG_EN
+        self.langmenu.Check(mid, True)
 
     def make_toolbar(self):
         self.ID_TB_CATEEDIT = wx.NewId()
@@ -391,9 +403,22 @@ class MainFrame (wx.Frame):
 
 
     def OnLanguage(self, event):
-        pass
+        mid = event.GetId()  
+        clang = self.conf['lang']
+        ischange = False
+        if mid == self.ID_VIEW_LANG_CN:
+            if clang != 'zh_CN':
+                ischange = True
+            self.conf['lang'] = 'zh_CN'
+            self.conf.dump()
+        elif mid == self.ID_VIEW_LANG_EN:
+            if not clang.startswith('en_'):
+                ischange = True
+            self.conf['lang'] = 'en_US'
+            self.conf.dump()
 
-
+        if ischange:
+            wx.MessageBox(_('Language changed! You must restart youmoney !'), _('Note:'), wx.OK|wx.ICON_INFORMATION)
 
     def OnAboutInfo(self, event):
         info = wx.AboutDialogInfo()

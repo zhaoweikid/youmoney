@@ -1,5 +1,8 @@
 # coding: utf-8
 import os, sys
+import locale
+
+cf = None
 
 class Configure:
     def __init__(self):
@@ -13,6 +16,7 @@ class Configure:
             f = open(self.conffile, 'r')
         except:
             self.data['lastdb'] = os.path.join(os.path.dirname(self.conffile), "youmoney.db")
+            self.data['lang'] = locale.getdefaultlocale()[0] 
             self.dump()
             return
         lines = f.readlines()
@@ -25,6 +29,9 @@ class Configure:
             
             parts = [ x.strip() for x in line.split('=') ]
             self.data[parts[0]] = parts[1]
+
+        if not self.data.has_key('lang'):
+            self.data['lang'] = locale.getdefaultlocale()[0] 
 
     def dump(self):
         f = open(self.conffile, 'w')

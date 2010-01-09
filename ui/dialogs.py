@@ -76,7 +76,7 @@ class PayoutDialog (sc.SizedDialog):
         self.cate = wx.ComboBox(panel, -1, readydata['cate'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
 
         wx.StaticText(panel, -1, _('Payment:'))
-        items = [_('cash'), _('credit card')]
+        items = [_('Cash'), _('Credit Card')]
         self.pay = wx.ComboBox(panel, -1, readydata['pay'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
 
 

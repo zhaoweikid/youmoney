@@ -215,7 +215,7 @@ class Category:
 
     def catelist(self, ctype=None):
         if ctype is None:
-            return {_('payout'):self.payout_catelist, _('income'):self.income_catelist}
+            return {_('Payout'):self.payout_catelist, _('Income'):self.income_catelist}
         elif ctype == 'payout':
             return self.payout_catelist
         elif ctype == 'income':
@@ -225,7 +225,7 @@ class Category:
 
    
     def catelist_parent(self):
-        return {_('payout'):self.payout_parentlist, _('income'):self.income_parentlist}
+        return {_('Payout'):self.payout_parentlist, _('Income'):self.income_parentlist}
 
     def parentcate(self, catype):
         if type(catype) == types.IntType:
