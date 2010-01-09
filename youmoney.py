@@ -15,6 +15,7 @@ class YouMoney (wx.App):
     def OnInit(self):
         self.frame = window.MainFrame(None, 101, 'YouMoney ' + version.VERSION)
         self.frame.Show(True)
+        self.frame.CenterOnScreen()
         self.SetTopWindow(self.frame)
 
         self.Bind(wx.EVT_ACTIVATE_APP, self.OnActivate)
@@ -30,9 +31,9 @@ class YouMoney (wx.App):
 
 def main():
     home = os.path.dirname(os.path.abspath(sys.argv[0]))
-    datadir = os.path.join(home, 'data')
-    if not os.path.isdir(datadir):
-        os.mkdir(datadir)
+    #datadir = os.path.join(home, 'data')
+    #if not os.path.isdir(datadir):
+    #    os.mkdir(datadir)
     filename = os.path.join(home, "youmoney.log")
     logfile.install(filename)
         

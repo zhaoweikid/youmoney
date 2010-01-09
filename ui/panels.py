@@ -210,8 +210,11 @@ class ItemListPanel (wx.Panel):
         self.list.InsertColumn(2, _("Money"))
         if self.type == 'payout':
             self.list.InsertColumn(3, _("Payment"))
-        self.list.InsertColumn(4, _("Explain"))
-        self.list.SetColumnWidth(4, 300)
+            self.list.InsertColumn(4, _("Explain"))
+            self.list.SetColumnWidth(4, 300)
+        else:
+            self.list.InsertColumn(3, _("Explain"))
+            self.list.SetColumnWidth(3, 300)
 
     def load(self):
         self.list.ClearAll()

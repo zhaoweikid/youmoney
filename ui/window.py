@@ -250,6 +250,7 @@ class MainFrame (wx.Frame):
             ready['upcate'] = _('No Higher Category')
 
         dlg = dialogs.CategoryDialog(self, ready)
+        dlg.CenterOnScreen()
         if dlg.ShowModal() == wx.ID_OK:
             item = dlg.values()
             logfile.info('cateedit:', item)
@@ -296,6 +297,7 @@ class MainFrame (wx.Frame):
 
     def income_dialog(self, ready):
         dlg = dialogs.IncomeDialog(self, ready)
+        dlg.CenterOnScreen()
         if dlg.ShowModal() == wx.ID_OK:
             data = dlg.values()
             logfile.info('income dialog:', data)
@@ -357,6 +359,7 @@ class MainFrame (wx.Frame):
 
     def payout_dialog(self, ready):
         dlg = dialogs.PayoutDialog(self, ready)
+        dlg.CenterOnScreen()
         if dlg.ShowModal() == wx.ID_OK:
             data = dlg.values()
             logfile.info('payout dialog:', data)
