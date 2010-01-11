@@ -7,23 +7,10 @@ cf = None
 class Configure:
     def __init__(self):
         self.rundir = os.path.dirname(os.path.abspath(sys.argv[0]))
-        datadir = os.path.join(self.rundir, 'data')
-        if not os.path.isdir(datadir):
-            os.mkdir(datadir)
+        dirname = os.path.join(self.rundir, 'data')
+        if not os.path.isdir(dirname):
+            os.mkdir(dirname)
         self.conffile = os.path.join(self.rundir, "data", "youmoney.conf") 
-        self.default_lang = 'zh_CN'
-        self.lang = locale.getdefaultlocale()[0]
-        if not self.lang:
-            self.lang = self.default_lang
-            try:
-                langstr = os.environ['LANG']
-            except:
-                pass
-            else:
-                parts = langstr.split('.')
-                if len(parts) == 2:
-                    self.lang = parts[0]
-
         self.data = {}
         self.load()
 
@@ -32,7 +19,7 @@ class Configure:
             f = open(self.conffile, 'r')
         except:
             self.data['lastdb'] = os.path.join(os.path.dirname(self.conffile), "youmoney.db")
-            self.data['lang'] = self.lang
+            self.data['lang'] = locale.getdefaultlocale()[0] 
             self.dump()
             return
         lines = f.readlines()
@@ -47,7 +34,7 @@ class Configure:
             self.data[parts[0]] = parts[1]
 
         if not self.data.has_key('lang'):
-            self.data['lang'] = self.lang
+            self.data['lang'] = locale.getdefaultlocale()[0] 
 
     def dump(self):
         f = open(self.conffile, 'w')
