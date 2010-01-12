@@ -1,8 +1,43 @@
 # coding: utf-8
-import os, sys
+import os, sys, string, re
 import wx
 import wx.lib.sized_controls as sc
 import logfile
+
+class DigitValidator(wx.PyValidator):
+    def __init__(self, pyVar=None):
+        wx.PyValidator.__init__(self)
+        self.Bind(wx.EVT_CHAR, self.OnChar)
+
+    def Clone(self):
+        return DigitValidator()
+
+    def Validate(self, win):
+        tc = self.GetWindow()
+        val = tc.GetValue()
+
+        for x in val:
+            if x != '.' and x not in string.digits:
+                return False
+
+        return True
+
+    def OnChar(self, event):
+        key = event.GetKeyCode()
+        print 'key:', key
+        if key < wx.WXK_SPACE or key == wx.WXK_DELETE or key > 255:
+            event.Skip()
+            return
+
+        if key == '.' or chr(key) in string.digits:
+            event.Skip()
+            return
+
+        if not wx.Validator_IsSilent():
+            wx.Bell()
+
+        return
+
 
 class IncomeDialog (sc.SizedDialog):
     def __init__(self, parent, readydata):
@@ -43,9 +78,16 @@ class IncomeDialog (sc.SizedDialog):
         self.Fit()
 
     def values(self):
+        num = self.num.GetValue()
+        ret = re.search(u'^[0-9]+(\.[0-9]+)?', num)
+        if not ret:
+            numstr = '0'
+        else:
+            numstr = ret.group()
+
         data = {'date': self.date.GetValue(),
                 'cate': self.cate.GetValue(),
-                'num': self.num.GetValue(),
+                'num': numstr,
                 'explain': self.explain.GetValue(),
                 'mode': self.data['mode']}
         if self.data.has_key('id'):
@@ -94,10 +136,17 @@ class PayoutDialog (sc.SizedDialog):
         self.Fit()
     
     def values(self):
+        num = self.num.GetValue()
+        ret = re.search('^[0-9]+(\.[0-9]+)?', num)
+        if not ret:
+            numstr = '0'
+        else:
+            numstr = ret.group()
+
         data = {'date': self.date.GetValue(),
                 'cate': self.cate.GetValue(),
                 'pay': self.pay.GetValue(),
-                'num': self.num.GetValue(),
+                'num': numstr,
                 'explain': self.explain.GetValue(),
                 'mode': self.data['mode']}
         if self.data.has_key('id'):

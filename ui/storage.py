@@ -27,10 +27,14 @@ class DBStorage:
         self.db.execute(sql)
         if autocommit:
             self.db.commit()
-    
+
+    def execute_param(self, sql, param, autocommit=True):
+        self.db.execute(sql, param)
+        if autocommit:
+            self.db.commit()
+
     def commit(self):
         self.db.commit()
-        
         
     def rollback(self):
         self.db.rollback()

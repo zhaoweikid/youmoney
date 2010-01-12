@@ -4,7 +4,13 @@ import wx
 sys.path.insert(0, os.path.join(os.getcwd(), "ui"))
 import i18n, config
 config.cf = config.Configure()
-i18n.install("lang", [config.cf['lang']])
+try:
+    i18n.install("lang", [config.cf['lang']])
+except:
+    i18n.install("lang", ['en_US'])
+    config.cf['lang'] = 'en_US'
+    config.cf.dump()
+
 import window, logfile, version
 
 

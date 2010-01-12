@@ -264,19 +264,22 @@ class MainFrame (wx.Frame):
                     parent = self.category.payout_catemap[item['upcate']]
             
             if item['mode'] == 'insert':
-                sql = "insert into category (name,parent,type) values ('%s',%d,%d)" % (item['cate'], parent, type)
+                #sql = "insert into category (name,parent,type) values ('%s',%d,%d)" % (item['cate'], parent, type)
+                sql = "insert into category (name,parent,type) values (?,?,?)"
                 logfile.info('insert category:', sql)
                 try:
-                    self.db.execute(sql)
+                    #self.db.execute(sql, (item['cate'], parent, type, ))
+                    self.db.execute_param(sql, (item['cate'], parent, type, ))
                 except Exception, e:
                     wx.MessageBox(_('Add category failture:') + str(e), _('Add category information'), wx.OK|wx.ICON_INFORMATION)
                 else:
                     self.reload()
             elif item['mode'] == 'update':
-                sql = "update category set name='%s',parent=%d,type=%d where id=%d" % (item['cate'], parent, type, item['id'])
+                #sql = "update category set name='%s',parent=%d,type=%d where id=%d" % (item['cate'], parent, type, item['id'])
+                sql = "update category set name=?,parent=?,type=? where id=?"
                 logfile.info('update category:', sql)
                 try:
-                    self.db.execute(sql)
+                    self.db.execute_param(sql, (item['cate'],parent,type,item['id'],))
                 except Exception, e:
                     wx.MessageBox(_('Change category failture:') + str(e), _('Change category information'), wx.OK|wx.ICON_INFORMATION)
                 else:
@@ -301,7 +304,8 @@ class MainFrame (wx.Frame):
         if dlg.ShowModal() == wx.ID_OK:
             data = dlg.values()
             logfile.info('income dialog:', data)
-            sql = "insert into capital (category,num,ctime,year,month,day,payway,explain,type) values (%d,%f,%d,%d,%d,%d,%d,'%s',1)"
+            #sql = "insert into capital (category,num,ctime,year,month,day,payway,explain,type) values (%d,%f,%d,%d,%d,%d,%d,'%s',1)"
+            sql = "insert into capital (category,num,ctime,year,month,day,payway,explain,type) values (?,?,?,?,?,?,?,?,1)"
             cate = data['cate'].split('->')[-1]
 
             if data['mode'] == 'insert':
@@ -315,16 +319,17 @@ class MainFrame (wx.Frame):
                     month  = data['date'].GetMonth() + 1
                     day    = data['date'].GetDay()
 
-                    sql = sql % (cateid, num, tnow, year, month, day, payway, data['explain'])
+                    #sql = sql % (cateid, num, tnow, year, month, day, payway, data['explain'])
                     logfile.info('insert capital:', sql)
-                    self.db.execute(sql)
+                    self.db.execute_param(sql, (cateid, num, tnow, year, month, day, payway, data['explain'],))
                 except Exception, e:
                     wx.MessageBox(_('Add payout failture:') + str(e), _('Add payout information'), wx.OK|wx.ICON_INFORMATION)
                     logfile.info('insert income error:', traceback.format_exc())
                 else:
                     self.reload()
             elif data['mode'] == 'update':
-                sql = "update capital set category=%d,num=%d,year=%d,month=%d,day=%d,explain='%s' where id=%d"
+                #sql = "update capital set category=%d,num=%d,year=%d,month=%d,day=%d,explain='%s' where id=%d"
+                sql = "update capital set category=?,num=?,year=?,month=?,day=?,explain=? where id=?"
                 try:
                     cateid = self.category.income_catemap[cate]
                     num    = float(data['num'])
@@ -332,9 +337,9 @@ class MainFrame (wx.Frame):
                     month  = data['date'].GetMonth() + 1
                     day    = data['date'].GetDay()
 
-                    sql = sql % (cateid, num, year, month, day, data['explain'], data['id'])
+                    #sql = sql % (cateid, num, year, month, day, data['explain'], data['id'])
                     logfile.info('update capital:', sql)
-                    self.db.execute(sql)
+                    self.db.execute_param(sql, (cateid, num, year, month, day, data['explain'], data['id'],))
                 except Exception, e:
                     wx.MessageBox(_('Change income failture:') + str(e), _('Change income information'), wx.OK|wx.ICON_INFORMATION)
                     logfile.info('update error:', traceback.format_exc())
@@ -366,7 +371,8 @@ class MainFrame (wx.Frame):
             
             cate = data['cate'].split('->')[-1]
             if data['mode'] == 'insert':
-                sql = "insert into capital (category,num,ctime,year,month,day,payway,explain,type) values (%d,%f,%d,%d,%d,%d,%d,'%s',0)"
+                #sql = "insert into capital (category,num,ctime,year,month,day,payway,explain,type) values (%d,%f,%d,%d,%d,%d,%d,'%s',0)"
+                sql = "insert into capital (category,num,ctime,year,month,day,payway,explain,type) values (?,?,?,?,?,?,?,?,0)"
                 try:
                     cateid = self.category.payout_catemap[cate]
                     tnow   = int(time.time())
@@ -376,16 +382,17 @@ class MainFrame (wx.Frame):
                     month  = data['date'].GetMonth() + 1
                     day    = data['date'].GetDay()
 
-                    sql = sql % (cateid, num, tnow, year, month, day, payway, data['explain'])
+                    #sql = sql % (cateid, num, tnow, year, month, day, payway, data['explain'])
                     logfile.info('insert capital payout:', sql)
-                    self.db.execute(sql)
+                    self.db.execute_param(sql, (cateid, num, tnow, year, month, day, payway, data['explain'],))
                 except Exception, e:
                     wx.MessageBox(_('Add income failture:') + str(e), _('Add income information'), wx.OK|wx.ICON_INFORMATION)
                     logfile.info('insert payout error:', traceback.format_exc())
                 else:
                     self.reload()
             elif data['mode'] == 'update':
-                sql = "update capital set category=%d,num=%d,year=%d,month=%d,day=%d,payway=%d,explain='%s' where id=%d"
+                #sql = "update capital set category=%d,num=%d,year=%d,month=%d,day=%d,payway=%d,explain='%s' where id=%d"
+                sql = "update capital set category=?,num=?,year=?,month=?,day=?,payway=?,explain=? where id=?"
                 try:
                     cateid = self.category.payout_catemap[cate]
                     num    = float(data['num'])
@@ -394,9 +401,9 @@ class MainFrame (wx.Frame):
                     month  = data['date'].GetMonth() + 1
                     day    = data['date'].GetDay()
 
-                    sql = sql % (cateid, num, year, month, day, payway, data['explain'], data['id'])
+                    #sql = sql % (cateid, num, year, month, day, payway, data['explain'], data['id'])
                     logfile.info('update capital:', sql)
-                    self.db.execute(sql)
+                    self.db.execute_param(sql, (cateid, num, year, month, day, payway, data['explain'], data['id'],))
                 except Exception, e:
                     wx.MessageBox(_('Change income failture:') + str(e), _('Change income information'), wx.OK|wx.ICON_INFORMATION)
                     logfile.info('update error:', traceback.format_exc())
