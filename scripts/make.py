@@ -3,6 +3,7 @@ import os, sys, datetime, shutil
 import random
 import merge
 
+dstnames = ['youmoney_zh_CN', 'youmoney_ja_JP']
 
 def create_po():
     tm = datetime.datetime.now()
@@ -18,22 +19,34 @@ def create_po():
 
     cmd = 'move messages.pot youmoney.pot'
     print cmd
-    os.system(cmd)
+    shutil.move('messages.pot', 'youmoney.pot')
+    
+    #dstnames = ['youmoney_zh_CN', 'youmoney_ja_JP']
+    global dstnames 
+    for name in dstnames:
+        dstfile = name + '.po'
+        print dstfile
+        # backup old file
+        if os.path.isfile(dstfile):
+            shutil.move(dstfile, '%s.%s.%d' % (dstfile, postfix, random.randint(0, 10000)))
 
-    dstfile = 'youmoney_zh_CN.po'
-    if os.path.isfile(dstfile):
-        shutil.move(dstfile, '%s.%s.%d' % (dstfile, postfix, random.randint(0, 10000)))
-
-    merge.merge('youmoney_zh_CN.sample', "youmoney.pot", dstfile)
+        merge.merge(name + '.sample', "youmoney.pot", dstfile)
 
 def create_mo():
-    cmd = "python %s %s" % ('msgfmt.py', 'youmoney_zh_CN')
-    print cmd
-    os.system(cmd)
+    global dstnames
 
-    cmd = "copy youmoney_zh_CN.mo ../lang/zh_CN/LC_MESSAGES/youmoney.mo"
-    print cmd
-    shutil.copyfile('youmoney_zh_CN.mo', '../lang/zh_CN/LC_MESSAGES/youmoney.mo')
+    for name in dstnames:
+        parts = name.split('_', 1)
+
+        cmd = "python %s %s" % ('msgfmt.py', name)
+        print cmd
+        os.system(cmd)
+        dirname = '../lang/%s/LC_MESSAGES/' % (parts[1])
+        if not os.path.isdir(dirname):
+            os.makedirs(dirname)
+        cmd = "copy %s.mo ../lang/%s/LC_MESSAGES/youmoney.mo" % (name, parts[1])
+        print cmd
+        shutil.copyfile(name + '.mo', '../lang/%s/LC_MESSAGES/youmoney.mo' % (parts[1]))
 
 def create_en():
     home = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

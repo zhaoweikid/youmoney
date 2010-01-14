@@ -21,7 +21,7 @@ msgstr "支出"
 
 #: /Users/apple/projects/youmoney/ui/category.py:78
 msgid "income"
-msgstr "收入"
+msgstr "収入"
 
 #: /Users/apple/projects/youmoney/ui/category.py:218
 #: /Users/apple/projects/youmoney/ui/category.py:228
@@ -48,41 +48,41 @@ msgstr "支出"
 #: /Users/apple/projects/youmoney/ui/window.py:252
 #: /Users/apple/projects/youmoney/ui/window.py:266
 msgid "Income"
-msgstr "收入"
+msgstr "収入"
 
 #: /Users/apple/projects/youmoney/ui/dialogs.py:44
 msgid "Add income item"
-msgstr "添加收入条目"
+msgstr "収入を追加"
 
 #: /Users/apple/projects/youmoney/ui/dialogs.py:52
 #: /Users/apple/projects/youmoney/ui/dialogs.py:108
 #: /Users/apple/projects/youmoney/ui/panels.py:208
 msgid "Date:"
-msgstr "日期:"
+msgstr "日付:"
 
 #: /Users/apple/projects/youmoney/ui/dialogs.py:63
 #: /Users/apple/projects/youmoney/ui/dialogs.py:116
 #: /Users/apple/projects/youmoney/ui/dialogs.py:172
 msgid "Category:"
-msgstr "分类:"
+msgstr "カテゴリ:"
 
 #: /Users/apple/projects/youmoney/ui/dialogs.py:67
 #: /Users/apple/projects/youmoney/ui/dialogs.py:125
 msgid "Money:"
-msgstr "金额:"
+msgstr "金額:"
 
 #: /Users/apple/projects/youmoney/ui/dialogs.py:70
 #: /Users/apple/projects/youmoney/ui/dialogs.py:128
 msgid "Explain:"
-msgstr "说明:"
+msgstr "内訳:"
 
 #: /Users/apple/projects/youmoney/ui/dialogs.py:100
 msgid "Add payout item"
-msgstr "添加支出条目"
+msgstr "支出を追加"
 
 #: /Users/apple/projects/youmoney/ui/dialogs.py:120
 msgid "Payment:"
-msgstr "支付方式:"
+msgstr "支払方法:"
 
 #: /Users/apple/projects/youmoney/ui/dialogs.py:121
 #: /Users/apple/projects/youmoney/ui/panels.py:245
@@ -90,27 +90,27 @@ msgstr "支付方式:"
 #: /Users/apple/projects/youmoney/ui/window.py:12
 #: /Users/apple/projects/youmoney/ui/window.py:368
 msgid "Cash"
-msgstr "现金"
+msgstr "現金"
 
 #: /Users/apple/projects/youmoney/ui/dialogs.py:121
 #: /Users/apple/projects/youmoney/ui/panels.py:247
 #: /Users/apple/projects/youmoney/ui/panels.py:278
 #: /Users/apple/projects/youmoney/ui/window.py:12
 msgid "Credit Card"
-msgstr "信用卡"
+msgstr "クレジットカード"
 
 #: /Users/apple/projects/youmoney/ui/dialogs.py:161
 #: /Users/apple/projects/youmoney/ui/window.py:141
 msgid "Add Category"
-msgstr "添加分类"
+msgstr "カテゴリを追加"
 
 #: /Users/apple/projects/youmoney/ui/dialogs.py:168
 msgid "Type:"
-msgstr "类型:"
+msgstr "種類:"
 
 #: /Users/apple/projects/youmoney/ui/dialogs.py:176
 msgid "Higher Category:"
-msgstr "上级分类:"
+msgstr "上級カテゴリ:"
 
 #: /Users/apple/projects/youmoney/ui/i18n.py:12
 msgid "hello"
@@ -124,16 +124,16 @@ msgstr ""
 #: /Users/apple/projects/youmoney/ui/panels.py:209
 #: /Users/apple/projects/youmoney/ui/panels.py:319
 msgid "Category"
-msgstr "分类"
+msgstr "カテゴリ"
 
 #: /Users/apple/projects/youmoney/ui/panels.py:31
 msgid "Month Total"
-msgstr "本月总计"
+msgstr "今月総計"
 
 #: /Users/apple/projects/youmoney/ui/panels.py:68
 #: /Users/apple/projects/youmoney/ui/panels.py:202
 msgid "Delete"
-msgstr "删除"
+msgstr "削除"
 
 #: /Users/apple/projects/youmoney/ui/panels.py:84
 #: /Users/apple/projects/youmoney/ui/window.py:246
@@ -143,18 +143,18 @@ msgstr "删除"
 #: /Users/apple/projects/youmoney/ui/window.py:267
 #: /Users/apple/projects/youmoney/ui/window.py:270
 msgid "No Higher Category"
-msgstr "无上级分类"
+msgstr "上級のカテゴリがなし"
 
 #: /Users/apple/projects/youmoney/ui/panels.py:108
 #: /Users/apple/projects/youmoney/ui/panels.py:129
 #: /Users/apple/projects/youmoney/ui/panels.py:132
 #: /Users/apple/projects/youmoney/ui/panels.py:134
 msgid "No Category"
-msgstr "未分类"
+msgstr "カテゴリがなし"
 
 #: /Users/apple/projects/youmoney/ui/panels.py:109
 msgid "Can not delete this category!"
-msgstr "该分类不能删除"
+msgstr "このカテゴリを削除できない"
 
 #: /Users/apple/projects/youmoney/ui/panels.py:110
 #: /Users/apple/projects/youmoney/ui/panels.py:117
@@ -163,23 +163,23 @@ msgstr "注意:"
 
 #: /Users/apple/projects/youmoney/ui/panels.py:116
 msgid ", all child categories will move to \"No Category\""
-msgstr ", 该分类下所有子类将移动到\"未分类\"下"
+msgstr ", このカテゴリのすべてのチャルド\"カテゴリがなし\"へ移転"
 
 #: /Users/apple/projects/youmoney/ui/panels.py:116
 msgid "To delete category"
-msgstr "删除分类"
+msgstr "カテゴリを削除"
 
 #: /Users/apple/projects/youmoney/ui/panels.py:149
 msgid "Delete category failure!"
-msgstr "删除分类失败!"
+msgstr "カテゴリを削除失敗！"
 
 #: /Users/apple/projects/youmoney/ui/panels.py:149
 msgid "Delete category information"
-msgstr "删除分类信息"
+msgstr "カテゴリインフォメーションを削除"
 
 #: /Users/apple/projects/youmoney/ui/panels.py:170
 msgid " Date: "
-msgstr " 日期: "
+msgstr " 日付: "
 
 #: /Users/apple/projects/youmoney/ui/panels.py:172
 msgid " Year: "
@@ -191,32 +191,32 @@ msgstr " 月: "
 
 #: /Users/apple/projects/youmoney/ui/panels.py:175
 msgid "  Sum: "
-msgstr "  总计: "
+msgstr "  総計: "
 
 #: /Users/apple/projects/youmoney/ui/panels.py:210
 msgid "Money"
-msgstr "金额"
+msgstr "金額"
 
 #: /Users/apple/projects/youmoney/ui/panels.py:212
 msgid "Payment"
-msgstr "支付方式"
+msgstr "支払方法"
 
 #: /Users/apple/projects/youmoney/ui/panels.py:213
 #: /Users/apple/projects/youmoney/ui/panels.py:216
 msgid "Explain"
-msgstr "说明"
+msgstr "内訳"
 
 #: /Users/apple/projects/youmoney/ui/panels.py:321
 msgid "Payout List"
-msgstr "支出列表"
+msgstr "支出リスト"
 
 #: /Users/apple/projects/youmoney/ui/panels.py:323
 msgid "Income List"
-msgstr "收入列表"
+msgstr "収入リスト"
 
 #: /Users/apple/projects/youmoney/ui/panels.py:327
 msgid "Statistic"
-msgstr "统计"
+msgstr "統計"
 
 #: /Users/apple/projects/youmoney/ui/statpanel.py:15
 #: /Users/apple/projects/youmoney/ui/statpanel.py:46
@@ -224,11 +224,11 @@ msgstr "统计"
 #: /Users/apple/projects/youmoney/ui/statpanel.py:194
 #: /Users/apple/projects/youmoney/ui/statpanel.py:195
 msgid "All Categories"
-msgstr "所有分类"
+msgstr "すべてのカテゴリ"
 
 #: /Users/apple/projects/youmoney/ui/statpanel.py:26
 msgid "Date Start:"
-msgstr "开始日期:"
+msgstr "開始日付:"
 
 #: /Users/apple/projects/youmoney/ui/statpanel.py:28
 #: /Users/apple/projects/youmoney/ui/statpanel.py:34
@@ -237,24 +237,24 @@ msgstr " 年 "
 
 #: /Users/apple/projects/youmoney/ui/statpanel.py:32
 msgid "  Date End: "
-msgstr "  结束日期: "
+msgstr "  終了日付: "
 
 #: /Users/apple/projects/youmoney/ui/statpanel.py:38
 msgid "   Type "
-msgstr " 类型 "
+msgstr " 種類 "
 
 #: /Users/apple/projects/youmoney/ui/statpanel.py:39
 #: /Users/apple/projects/youmoney/ui/statpanel.py:193
 msgid "Payout and Income"
-msgstr "支出和收入"
+msgstr "出入金"
 
 #: /Users/apple/projects/youmoney/ui/statpanel.py:44
 msgid "   Category "
-msgstr "  分类 "
+msgstr "  カテゴリ "
 
 #: /Users/apple/projects/youmoney/ui/statpanel.py:51
 msgid "Statistic!"
-msgstr "开始统计"
+msgstr "統計スタート"
 
 #: /Users/apple/projects/youmoney/ui/statpanel.py:91
 #: /Users/apple/projects/youmoney/ui/statpanel.py:130
@@ -264,19 +264,19 @@ msgstr "月"
 #: /Users/apple/projects/youmoney/ui/statpanel.py:97
 #: /Users/apple/projects/youmoney/ui/statpanel.py:136
 msgid "Sum"
-msgstr "总计"
+msgstr "総計 "
 
 #: /Users/apple/projects/youmoney/ui/statpanel.py:141
 msgid "Balance"
-msgstr "结余"
+msgstr "残高"
 
 #: /Users/apple/projects/youmoney/ui/statpanel.py:184
 msgid "No data"
-msgstr "没有数据"
+msgstr "データがありません"
 
 #: /Users/apple/projects/youmoney/ui/window.py:54
 msgid "You db file is in default path, strongly advise save it to other path."
-msgstr "当前数据库文件在安装目录下，强烈建议另存到其他路径，以免卸载或重装系统后丢失。"
+msgstr "現在のデータベースファイルがインストールディレクトリに保存されていますので、ソフトをアンインストールしたり、システムを再インストールしたりよりデータをなくなる恐れがあるため、他の場所へ保存するのはお勧めです。"
 
 #: /Users/apple/projects/youmoney/ui/window.py:54
 #: /Users/apple/projects/youmoney/ui/window.py:444
@@ -285,153 +285,153 @@ msgstr "注意:"
 
 #: /Users/apple/projects/youmoney/ui/window.py:61
 msgid "Database file: "
-msgstr "数据库文件: "
+msgstr "データベースファイル: "
 
 #: /Users/apple/projects/youmoney/ui/window.py:95
 msgid "New database file"
-msgstr "新建数据库文件"
+msgstr "新規データベースファイル"
 
 #: /Users/apple/projects/youmoney/ui/window.py:96
 msgid "Open database file"
-msgstr "打开数据库文件"
+msgstr "データベースファイルを開く"
 
 #: /Users/apple/projects/youmoney/ui/window.py:97
 msgid "Database file save as"
-msgstr "数据库文件另存为"
+msgstr "データベースファイルを名前付けて保存"
 
 #: /Users/apple/projects/youmoney/ui/window.py:99
 msgid "Exit"
-msgstr "退出"
+msgstr "終了"
 
 #: /Users/apple/projects/youmoney/ui/window.py:100
 msgid "File"
-msgstr "文件"
+msgstr "ファイル"
 
 #: /Users/apple/projects/youmoney/ui/window.py:104
 msgid "Simple Chinese"
-msgstr "简体中文"
+msgstr "中国語"
 
 #: /Users/apple/projects/youmoney/ui/window.py:105
 msgid "English"
-msgstr "英语"
+msgstr "英語"
 
 #: /Users/apple/projects/youmoney/ui/window.py:106
 msgid "Japanese"
-msgstr "日语"
+msgstr "日本語"
 
 #: /Users/apple/projects/youmoney/ui/window.py:109
 msgid "Language"
-msgstr "语言"
+msgstr "言語"
 
 #: /Users/apple/projects/youmoney/ui/window.py:110
 msgid "View"
-msgstr "查看"
+msgstr "表示"
 
 #: /Users/apple/projects/youmoney/ui/window.py:113
 msgid "About Information"
-msgstr "关于YouMoney"
+msgstr "YouMoneyのバージョン情報"
 
 #: /Users/apple/projects/youmoney/ui/window.py:114
 msgid "About"
-msgstr "关于"
+msgstr "ヘルプ"
 
 #: /Users/apple/projects/youmoney/ui/window.py:142
 msgid "Add Income"
-msgstr "添加收入"
+msgstr "収入を追加"
 
 #: /Users/apple/projects/youmoney/ui/window.py:143
 msgid "Add Payout"
-msgstr "添加支出"
+msgstr "支出を追加"
 
 #: /Users/apple/projects/youmoney/ui/window.py:167
 msgid "Choose database file:"
-msgstr "选择数据库文件"
+msgstr "データベースファイルを選択"
 
 #: /Users/apple/projects/youmoney/ui/window.py:170
 #: /Users/apple/projects/youmoney/ui/window.py:190
 #: /Users/apple/projects/youmoney/ui/window.py:215
 msgid "YouMoney Database (*.db)|*.db"
-msgstr "YouMoney 数据库文件 (*.db)|*.db"
+msgstr "YouMoney データベースファイル (*.db)|*.db"
 
 #: /Users/apple/projects/youmoney/ui/window.py:199
 #: /Users/apple/projects/youmoney/ui/window.py:226
 msgid "File exist"
-msgstr "文件已存在"
+msgstr "ファイルを既に存在する"
 
 #: /Users/apple/projects/youmoney/ui/window.py:199
 #: /Users/apple/projects/youmoney/ui/window.py:226
 #: /Users/apple/projects/youmoney/ui/window.py:231
 msgid "Can not save database file"
-msgstr "不能保存数据库文件"
+msgstr "データベースファイルを保存できない"
 
 #: /Users/apple/projects/youmoney/ui/window.py:231
 msgid "Save databse file failture:"
-msgstr "保存数据库文件失败"
+msgstr "データベースファイルを保存失敗"
 
 #: /Users/apple/projects/youmoney/ui/window.py:281
 msgid "Add category failture:"
-msgstr "添加分类失败:"
+msgstr "カテゴリを追加失敗:"
 
 #: /Users/apple/projects/youmoney/ui/window.py:281
 msgid "Add category information"
-msgstr "添加分类信息"
+msgstr "カテゴリインフォメーションを追加"
 
 #: /Users/apple/projects/youmoney/ui/window.py:291
 msgid "Change category failture:"
-msgstr "修改分类失败:"
+msgstr "カテゴリを変更失敗:"
 
 #: /Users/apple/projects/youmoney/ui/window.py:291
 msgid "Change category information"
-msgstr "修改分类信息"
+msgstr "カテゴリインフォメーションを変更失敗"
 
 #: /Users/apple/projects/youmoney/ui/window.py:300
 msgid "Can not add income item"
-msgstr "不能添加收入项"
+msgstr "収入を追加できない"
 
 #: /Users/apple/projects/youmoney/ui/window.py:300
 #: /Users/apple/projects/youmoney/ui/window.py:363
 msgid "Add category first!"
-msgstr "没有分类，请先添加分类!"
+msgstr "カテゴリが無いため、カテゴリを追加してください!"
 
 #: /Users/apple/projects/youmoney/ui/window.py:333
 msgid "Add payout failture:"
-msgstr "添加支出失败:"
+msgstr "支出を追加できない:"
 
 #: /Users/apple/projects/youmoney/ui/window.py:333
 msgid "Add payout information"
-msgstr "添加支出信息"
+msgstr "支出明細を追加"
 
 #: /Users/apple/projects/youmoney/ui/window.py:351
 #: /Users/apple/projects/youmoney/ui/window.py:415
 msgid "Change income failture:"
-msgstr "修改收入失败:"
+msgstr "収入を変更失敗:"
 
 #: /Users/apple/projects/youmoney/ui/window.py:351
 #: /Users/apple/projects/youmoney/ui/window.py:415
 msgid "Change income information"
-msgstr "修改收入信息"
+msgstr "収入明細を変更"
 
 #: /Users/apple/projects/youmoney/ui/window.py:363
 msgid "Can not add payout item"
-msgstr "不能添加支出项"
+msgstr "支出を追加できない"
 
 #: /Users/apple/projects/youmoney/ui/window.py:396
 msgid "Add income failture:"
-msgstr "添加收入失败:"
+msgstr "収入を追加失敗:"
 
 #: /Users/apple/projects/youmoney/ui/window.py:396
 msgid "Add income information"
-msgstr "添加收入信息"
+msgstr "収入明細を追加"
 
 #: /Users/apple/projects/youmoney/ui/window.py:444
 msgid "Language changed! You must restart youmoney !"
-msgstr "语言切换！重启后生效"
+msgstr "言語を変更しました！再起動から生効！"
 
 #: /Users/apple/projects/youmoney/ui/window.py:451
 msgid "YouMoney is a opensource personal finance software write by Python language."
-msgstr "YouMoney是一个开源的个人记账软件，他使用python语言编写"
+msgstr "YouMoneyはpythonの言語を使用して作られたオペンソースソフトです。"
 
 #: /Users/apple/projects/youmoney/ui/window.py:453
 msgid "YouMoney home page"
-msgstr "YouMoney官方主页"
+msgstr "YouMoneyのホームペッジ"
 
