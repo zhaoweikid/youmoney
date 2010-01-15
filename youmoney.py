@@ -1,4 +1,9 @@
 # coding: utf-8
+# YouMoney is a opensource personal finance software
+# License: GPL
+# Author: zhaoweiakid <zhaoweikid@163.com>
+# 感谢 Jacky MA <jackyma1981@gmail.com> 制作的日文支持
+
 import os, sys
 import wx
 sys.path.insert(0, os.path.join(os.getcwd(), "ui"))
