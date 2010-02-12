@@ -5,7 +5,7 @@ import base64, pickle
 
 class Dropbox:
     def __init__(self):
-        if sys.platform.startswith('win23'):
+        if sys.platform.startswith('win32'):
             userdir = os.environ['USERPROFILE']       
             self.dropboxfile = os.path.join(userdir, "Application Data", "Dropbox", "dropbox.db")
         else:
