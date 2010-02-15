@@ -234,6 +234,36 @@ class Category:
             else:
                 castr = 'income'
 
+    def parent_cate_id(self, catype, name):
+        if type(catype) == types.IntType:
+            if catype == 0:
+                castr = 'payout'
+            else:
+                castr = 'income'
+        else:
+            castr = catype
+            
+        parent_dict  = getattr(self, castr + '_parent')
+        return parent_dict[name]
+
+
+    def parent_cate_name(self, catype, name):
+        if type(catype) == types.IntType:
+            if catype == 0:
+                castr = 'payout'
+            else:
+                castr = 'income'
+        else:
+            castr = catype
+            
+        parent_dict  = getattr(self, castr + '_parent')
+        catemap_dict = getattr(self, castr + '_catemap')
+         
+        p = parent_dict[name]
+        if not p:
+            return ''
+        else:
+            return catemap_dict[p]
 
     def catestr_by_id(self, catype, name):
         if type(catype) == types.IntType:

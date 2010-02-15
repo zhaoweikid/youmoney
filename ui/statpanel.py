@@ -4,6 +4,7 @@ import wx
 import  wx.html as  html
 import datetime
 import logfile
+import drawstat
 
 class StatPanel (wx.Panel):
     def __init__(self, parent, readydata):
@@ -17,28 +18,26 @@ class StatPanel (wx.Panel):
         box = wx.BoxSizer(wx.HORIZONTAL)
         tday = datetime.date.today()
         items = [ str(x) for x in range(2009, 2020) ]
-        self.fromyear  = wx.ComboBox(self, -1, str(tday.year), (60, 50), (70, -1), items, wx.CB_DROPDOWN)
-        self.toyear  = wx.ComboBox(self, 500, str(tday.year), (60, 50), (70, -1), items, wx.CB_DROPDOWN)
-        items = [ str(x) for x in range(1, 13) ]
-        #self.frommonth = wx.ComboBox(self, -1, str(tday.month), (60, 50), (60, -1), items, wx.CB_DROPDOWN)
-        #self.tomonth = wx.ComboBox(self, -1, str(tday.month), (60, 50), (60, -1), items, wx.CB_DROPDOWN)
+        tm = wx.DateTime()
+        tm.Set(tday.day, tday.month, tday.year)
+        self.fromdate = wx.DatePickerCtrl(self, dt=tm, size=(90, -1), 
+                            style=wx.DP_DROPDOWN|wx.DP_SHOWCENTURY)
+
+        self.todate   = wx.DatePickerCtrl(self, dt=tm, size=(90, -1), 
+                            style=wx.DP_DROPDOWN|wx.DP_SHOWCENTURY)
+
 
         box.Add(wx.StaticText(self, -1, _('Date Start:'), (8, 10)), 0, wx.ALIGN_CENTER)
-        box.Add(self.fromyear, 0, wx.EXPAND)
-        box.Add(wx.StaticText(self, -1, _(" Year "), (8, 10)), 0, wx.ALIGN_CENTER)
-        #box.Add(self.frommonth, 0, wx.EXPAND)
-        #box.Add(wx.StaticText(self, -1, _(" Month "), (8, 10)), 0, wx.ALIGN_CENTER)
+        box.Add(self.fromdate, 0, wx.EXPAND)
 
         box.Add(wx.StaticText(self, -1, _("  Date End: "), (8, 10)), 0, wx.ALIGN_CENTER)
-        box.Add(self.toyear, 0, wx.EXPAND)
-        box.Add(wx.StaticText(self, -1, _(" Year "), (8, 10)), 0, wx.ALIGN_CENTER)
-        #box.Add(self.tomonth, 0, wx.EXPAND)
-        #box.Add(wx.StaticText(self, -1, _(" Month "), (8, 10)), 0, wx.ALIGN_CENTER)
+        box.Add(self.todate, 0, wx.EXPAND)
         
         box.Add(wx.StaticText(self, -1, _("   Type "), (8, 10)), 0, wx.ALIGN_CENTER)
-        items = [_('Payout and Income'), _('Payout'), _('Income')]
+        #items = [_('Payout and Income'), _('Payout'), _('Income')]
+        items = [_('Payout'), _('Income'), _('Surplus')]
         self.default_type = items[0]
-        self.type = wx.ComboBox(self, -1, items[0], (60, 50), (100, -1), items, wx.CB_DROPDOWN)
+        self.type = wx.ComboBox(self, -1, items[0], (60, 50), (80, -1), items, wx.CB_DROPDOWN)
         box.Add(self.type, 0, wx.EXPAND)
     
         box.Add(wx.StaticText(self, -1, _("   Category "), (8, 10)), 0, wx.ALIGN_CENTER)
@@ -47,105 +46,24 @@ class StatPanel (wx.Panel):
         self.category = wx.ComboBox(self, -1, items[0], (60, 50), (100, -1), items, wx.CB_DROPDOWN)
         box.Add(self.category, 0, wx.EXPAND)
 
-        box.Add(wx.StaticText(self, -1, u"    ", (8, 10)), 0, wx.ALIGN_CENTER)
-        self.go = wx.Button(self, -1, _("Statistic!"), (20, 20)) 
-        box.Add(self.go, 0, wx.EXPAND)
+        box.Add(wx.StaticText(self, -1, u"  ", (8, 10)), 0, wx.ALIGN_CENTER)
+        self.catestat = wx.Button(self, -1, _("Categroy Stat"), (20, 20)) 
+        box.Add(self.catestat, 0, wx.EXPAND)
+        self.monthstat = wx.Button(self, -1, _("Month Stat"), (20, 20)) 
+        box.Add(self.monthstat, 0, wx.EXPAND)
  
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(box, 0, wx.EXPAND|wx.ALL, border=2)
-        self.content = html.HtmlWindow(self, -1, style=wx.NO_FULL_REPAINT_ON_RESIZE)
+        #self.content = html.HtmlWindow(self, -1, style=wx.NO_FULL_REPAINT_ON_RESIZE)
+        self.content = wx.Panel(self)
         sizer.Add(self.content, 1, wx.EXPAND|wx.ALL)
 
         self.SetSizer(sizer)
         self.SetAutoLayout(True)
             
-        self.Bind(wx.EVT_BUTTON, self.OnClick, self.go)
+        self.Bind(wx.EVT_BUTTON, self.OnCateStatClick, self.catestat)
+        self.Bind(wx.EVT_BUTTON, self.OnMonthStatClick, self.monthstat)
         self.Bind(wx.EVT_COMBOBOX, self.OnChooseType, self.type) 
-
-
-    def create_html_one(self, fromyear, toyear, data):
-        result = {}
-        for item in range(int(fromyear), int(toyear)+1):
-            # payout, income
-            result[item] = [[ 0 for x in range(0,13) ], [ 0 for x in range(0,13) ]]
-    
-        mytype = None
-        for row in data:
-            item = result[row['year']]
-            mytype = row['type']
-            item[mytype][row['month']] += row['num']
-
-        for k in result:
-            item = result[k]
-            item[0][0] = sum(item[0])
-            item[1][0] = sum(item[1])
-
-        keys = result.keys()
-        keys.sort()
-        s = '<center><table border=1 width="95%"><tr><td width=60></td>'
-        for k in keys:
-            s += u"<td>%d</td>" % (k)
-        s += "</tr>"
-           
-        for rowi in range(1, 13):
-            s += u"<tr><td>%d%s</td>" % (rowi, _('Month'))
-            for k in keys:
-                item = result[k]
-                s += "<td>%.2f</td>" % (item[mytype][rowi])
-            s += "</tr>"
-
-        s += u"<tr><td>%s</td>" % (_('Sum'))
-        for k in keys:
-            item = result[k]
-            s += "<td>%.2f</td>" % (item[mytype][0])
-            
-        s += "</tr></table></center>"
-
-        return s
-
-
-    def create_html_both(self, fromyear, toyear, data):
-        result = {}
-        for item in range(int(fromyear), int(toyear)+1):
-            # payout, income
-            result[item] = [[ 0 for x in range(0,13) ], [ 0 for x in range(0,13) ]]
-
-        for row in data:
-            item = result[row['year']]
-            item[row['type']][row['month']] += row['num']
-
-        for k in result:
-            item = result[k]
-            item[0][0] = sum(item[0])
-            item[1][0] = sum(item[1])
-
-        keys = result.keys()
-        keys.sort()
-        s = '<center><table border=1 width="95%"><tr><td width=60></td>'
-        for k in keys:
-            s += u"<td>%d <br>%s/%s</td>" % (k, _('Payout'), _('Income'))
-        s += "</tr>"
-           
-        for rowi in range(1, 13):
-            s += u"<tr><td>%d%s</td>" % (rowi, _('Month'))
-            for k in keys:
-                item = result[k]
-                s += "<td>%.2f/%.2f</td>" % (item[0][rowi], item[1][rowi])
-            s += "</tr>"
-
-        s += u"<tr><td>%s</td>" % (_('Sum'))
-        for k in keys:
-            item = result[k]
-            s += "<td>%.2f/%.2f</td>" % (item[0][0], item[1][0])
-            
-        s += u"</tr><tr><td>%s</td>" % (_('Balance'))
-        for k in keys:
-            item = result[k]
-            s += "<td>%.2f</td>" % (item[1][0] - item[0][0])
-
-        s += "</tr></table></center>"
-
-        return s
 
 
     def OnClick(self, event):
@@ -183,11 +101,77 @@ class StatPanel (wx.Panel):
         else:
             self.content.SetPage(_('No data'))
 
+    def OnCateStatClick(self, event):
+        fromdate  = self.fromdate.GetValue()
+        fromyear  = fromdate.GetYear()
+        frommonth = fromdate.GetMonth()
+        fromday   = fromdate.GetDay()
+        
+        todate  = self.todate.GetValue()
+        toyear  = todate.GetYear()
+        tomonth = todate.GetMonth()
+        today   = todate.GetDay()
+
+        type      = self.type.GetValue()
+        cate      = self.category.GetValue()
+        
+        frame = self.parent.parent
+        
+        if type == _('Payout'):
+            mytype = 0
+        elif type == _('Income'):
+            mytype = 1
+        else:
+            mytype = -1
+
+        #sql = "select num,year,month from capital where type=%d and year>=%s and year<=%s" % (mytype, fromyear, toyear)
+        sql = "select num,year,month,day,type,category from capital where year>=%d and year<=%d and month>=%d and month<=%d and day>=%d and day<=%d" % (fromyear, toyear, frommonth, tomonth, fromday, today)
+        if mytype >= 0:
+            sql += " and type=%d" % (mytype)
+
+        if cate != _('All Categories'):
+            cates = frame.category.cate_subs(mytype, cate)
+            sql += ' and category in (%s)' % (','.join(cates))
+        sql += " order by year,month,day"
+        logfile.info('stat:', sql)
+        rets = frame.db.query(sql)
+       
+        print 'rets:', rets
+
+        if rets:
+            catevals = {}
+            for row in rets:
+                cate = row['category'] 
+                pcate = frame.category.parent_cate_name(row['type'], cate) 
+                if not pcate:
+                    pcate = frame.category.catemap(row['type'], cate)
+
+                if catevals.has_key(pcate):
+                    catevals[pcate] += row['num']
+                else:
+                    catevals[pcate] = row['num']
+
+            
+            data = []
+            for k in catevals:
+                data.append({'data':catevals[k], 'name':k})
+            
+            print 'content data:', data
+            self.content = drawstat.ChartPie(self, data)
+            self.Refresh()
+            
+
+
+    def OnMonthStatClick(self, event):
+        pass
+
+
     def OnChooseType(self, event):
         val = self.type.GetValue()
         self.default_type = val
         self.category.Clear()
         
+
         logfile.info('Choose type:', val)
 
         if val == _('Payout and Income'):
