@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Thu Jan 14 09:57:45 2010\n"
+"POT-Creation-Date: Wed Feb 17 15:02:49 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jacky MA <jackyma1981@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,423 +15,386 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 
-#: /Users/apple/projects/youmoney/ui/category.py:77
+#: D:\projects\youmoney\ui\category.py:77
 msgid "payout"
 msgstr "支出"
 
-#: /Users/apple/projects/youmoney/ui/category.py:78
+#: D:\projects\youmoney\ui\category.py:78
 msgid "income"
 msgstr "収入"
 
-#: /Users/apple/projects/youmoney/ui/category.py:218
-#: /Users/apple/projects/youmoney/ui/category.py:228
-#: /Users/apple/projects/youmoney/ui/dialogs.py:169
-#: /Users/apple/projects/youmoney/ui/panels.py:86
-#: /Users/apple/projects/youmoney/ui/statpanel.py:39
-#: /Users/apple/projects/youmoney/ui/statpanel.py:126
-#: /Users/apple/projects/youmoney/ui/statpanel.py:159
-#: /Users/apple/projects/youmoney/ui/window.py:11
-#: /Users/apple/projects/youmoney/ui/window.py:246
-#: /Users/apple/projects/youmoney/ui/window.py:253
-#: /Users/apple/projects/youmoney/ui/window.py:269
+#: D:\projects\youmoney\ui\category.py:218
+#: D:\projects\youmoney\ui\category.py:228
+#: D:\projects\youmoney\ui\dialogs.py:169 D:\projects\youmoney\ui\panels.py:86
+#: D:\projects\youmoney\ui\statpanel.py:38
+#: D:\projects\youmoney\ui\statpanel.py:86
+#: D:\projects\youmoney\ui\window.py:11 D:\projects\youmoney\ui\window.py:247
+#: D:\projects\youmoney\ui\window.py:254 D:\projects\youmoney\ui\window.py:270
 msgid "Payout"
 msgstr "支出"
 
-#: /Users/apple/projects/youmoney/ui/category.py:218
-#: /Users/apple/projects/youmoney/ui/category.py:228
-#: /Users/apple/projects/youmoney/ui/dialogs.py:169
-#: /Users/apple/projects/youmoney/ui/panels.py:88
-#: /Users/apple/projects/youmoney/ui/statpanel.py:39
-#: /Users/apple/projects/youmoney/ui/statpanel.py:126
-#: /Users/apple/projects/youmoney/ui/statpanel.py:161
-#: /Users/apple/projects/youmoney/ui/window.py:11
-#: /Users/apple/projects/youmoney/ui/window.py:252
-#: /Users/apple/projects/youmoney/ui/window.py:266
+#: D:\projects\youmoney\ui\category.py:218
+#: D:\projects\youmoney\ui\category.py:228
+#: D:\projects\youmoney\ui\dialogs.py:169 D:\projects\youmoney\ui\panels.py:88
+#: D:\projects\youmoney\ui\statpanel.py:38
+#: D:\projects\youmoney\ui\statpanel.py:88
+#: D:\projects\youmoney\ui\window.py:11 D:\projects\youmoney\ui\window.py:253
+#: D:\projects\youmoney\ui\window.py:267
 msgid "Income"
 msgstr "収入"
 
-#: /Users/apple/projects/youmoney/ui/dialogs.py:44
+#: D:\projects\youmoney\ui\dialogs.py:44
 msgid "Add income item"
 msgstr "収入を追加"
 
-#: /Users/apple/projects/youmoney/ui/dialogs.py:52
-#: /Users/apple/projects/youmoney/ui/dialogs.py:108
-#: /Users/apple/projects/youmoney/ui/panels.py:208
+#: D:\projects\youmoney\ui\dialogs.py:52
+#: D:\projects\youmoney\ui\dialogs.py:108
+#: D:\projects\youmoney\ui\panels.py:208
 msgid "Date:"
 msgstr "日付:"
 
-#: /Users/apple/projects/youmoney/ui/dialogs.py:63
-#: /Users/apple/projects/youmoney/ui/dialogs.py:116
-#: /Users/apple/projects/youmoney/ui/dialogs.py:172
+#: D:\projects\youmoney\ui\dialogs.py:63
+#: D:\projects\youmoney\ui\dialogs.py:116
+#: D:\projects\youmoney\ui\dialogs.py:172
 msgid "Category:"
 msgstr "カテゴリ:"
 
-#: /Users/apple/projects/youmoney/ui/dialogs.py:67
-#: /Users/apple/projects/youmoney/ui/dialogs.py:125
+#: D:\projects\youmoney\ui\dialogs.py:67
+#: D:\projects\youmoney\ui\dialogs.py:125
 msgid "Money:"
 msgstr "金額:"
 
-#: /Users/apple/projects/youmoney/ui/dialogs.py:70
-#: /Users/apple/projects/youmoney/ui/dialogs.py:128
+#: D:\projects\youmoney\ui\dialogs.py:70
+#: D:\projects\youmoney\ui\dialogs.py:128
 msgid "Explain:"
 msgstr "内訳:"
 
-#: /Users/apple/projects/youmoney/ui/dialogs.py:100
+#: D:\projects\youmoney\ui\dialogs.py:100
 msgid "Add payout item"
 msgstr "支出を追加"
 
-#: /Users/apple/projects/youmoney/ui/dialogs.py:120
+#: D:\projects\youmoney\ui\dialogs.py:120
 msgid "Payment:"
 msgstr "支払方法:"
 
-#: /Users/apple/projects/youmoney/ui/dialogs.py:121
-#: /Users/apple/projects/youmoney/ui/panels.py:245
-#: /Users/apple/projects/youmoney/ui/panels.py:276
-#: /Users/apple/projects/youmoney/ui/window.py:12
-#: /Users/apple/projects/youmoney/ui/window.py:368
+#: D:\projects\youmoney\ui\dialogs.py:121
+#: D:\projects\youmoney\ui\panels.py:246 D:\projects\youmoney\ui\panels.py:277
+#: D:\projects\youmoney\ui\window.py:12 D:\projects\youmoney\ui\window.py:369
 msgid "Cash"
 msgstr "現金"
 
-#: /Users/apple/projects/youmoney/ui/dialogs.py:121
-#: /Users/apple/projects/youmoney/ui/panels.py:247
-#: /Users/apple/projects/youmoney/ui/panels.py:278
-#: /Users/apple/projects/youmoney/ui/window.py:12
+#: D:\projects\youmoney\ui\dialogs.py:121
+#: D:\projects\youmoney\ui\panels.py:248 D:\projects\youmoney\ui\panels.py:279
+#: D:\projects\youmoney\ui\window.py:12
 msgid "Credit Card"
 msgstr "クレジットカード"
 
-#: /Users/apple/projects/youmoney/ui/dialogs.py:161
-#: /Users/apple/projects/youmoney/ui/window.py:141
+#: D:\projects\youmoney\ui\dialogs.py:161
+#: D:\projects\youmoney\ui\window.py:142
 msgid "Add Category"
 msgstr "カテゴリを追加"
 
-#: /Users/apple/projects/youmoney/ui/dialogs.py:168
+#: D:\projects\youmoney\ui\dialogs.py:168
 msgid "Type:"
 msgstr "種類:"
 
-#: /Users/apple/projects/youmoney/ui/dialogs.py:176
+#: D:\projects\youmoney\ui\dialogs.py:176
 msgid "Higher Category:"
 msgstr "上級カテゴリ:"
 
-#: /Users/apple/projects/youmoney/ui/i18n.py:12
-msgid "hello"
-msgstr ""
+#: D:\projects\youmoney\ui\drawstat.py:321
+msgid "Time"
+msgstr "時間"
 
-#: /Users/apple/projects/youmoney/ui/i18n.py:13
-msgid "me"
-msgstr ""
-
-#: /Users/apple/projects/youmoney/ui/panels.py:30
-#: /Users/apple/projects/youmoney/ui/panels.py:209
-#: /Users/apple/projects/youmoney/ui/panels.py:319
-msgid "Category"
-msgstr "カテゴリ"
-
-#: /Users/apple/projects/youmoney/ui/panels.py:31
-msgid "Month Total"
-msgstr "今月総計"
-
-#: /Users/apple/projects/youmoney/ui/panels.py:68
-#: /Users/apple/projects/youmoney/ui/panels.py:202
-msgid "Delete"
-msgstr "削除"
-
-#: /Users/apple/projects/youmoney/ui/panels.py:84
-#: /Users/apple/projects/youmoney/ui/window.py:246
-#: /Users/apple/projects/youmoney/ui/window.py:252
-#: /Users/apple/projects/youmoney/ui/window.py:253
-#: /Users/apple/projects/youmoney/ui/window.py:257
-#: /Users/apple/projects/youmoney/ui/window.py:267
-#: /Users/apple/projects/youmoney/ui/window.py:270
-msgid "No Higher Category"
-msgstr "上級のカテゴリがなし"
-
-#: /Users/apple/projects/youmoney/ui/panels.py:108
-#: /Users/apple/projects/youmoney/ui/panels.py:129
-#: /Users/apple/projects/youmoney/ui/panels.py:132
-#: /Users/apple/projects/youmoney/ui/panels.py:134
-msgid "No Category"
-msgstr "カテゴリがなし"
-
-#: /Users/apple/projects/youmoney/ui/panels.py:109
-msgid "Can not delete this category!"
-msgstr "このカテゴリを削除できない"
-
-#: /Users/apple/projects/youmoney/ui/panels.py:110
-#: /Users/apple/projects/youmoney/ui/panels.py:117
-msgid "Notice:"
-msgstr "注意:"
-
-#: /Users/apple/projects/youmoney/ui/panels.py:116
-msgid ", all child categories will move to \"No Category\""
-msgstr ", このカテゴリのすべてのチャルド\"カテゴリがなし\"へ移転"
-
-#: /Users/apple/projects/youmoney/ui/panels.py:116
-msgid "To delete category"
-msgstr "カテゴリを削除"
-
-#: /Users/apple/projects/youmoney/ui/panels.py:149
-msgid "Delete category failure!"
-msgstr "カテゴリを削除失敗！"
-
-#: /Users/apple/projects/youmoney/ui/panels.py:149
-msgid "Delete category information"
-msgstr "カテゴリインフォメーションを削除"
-
-#: /Users/apple/projects/youmoney/ui/panels.py:170
-msgid " Date: "
-msgstr " 日付: "
-
-#: /Users/apple/projects/youmoney/ui/panels.py:172
-msgid " Year: "
-msgstr " 年: "
-
-#: /Users/apple/projects/youmoney/ui/panels.py:174
-msgid " Month:"
-msgstr " 月: "
-
-#: /Users/apple/projects/youmoney/ui/panels.py:175
-msgid "  Sum: "
-msgstr "  総計: "
-
-#: /Users/apple/projects/youmoney/ui/panels.py:210
+#: D:\projects\youmoney\ui\drawstat.py:323
+#: D:\projects\youmoney\ui\panels.py:211
 msgid "Money"
 msgstr "金額"
 
-#: /Users/apple/projects/youmoney/ui/panels.py:212
+#: D:\projects\youmoney\ui\i18n.py:12
+msgid "hello"
+msgstr ""
+
+#: D:\projects\youmoney\ui\i18n.py:13
+msgid "me"
+msgstr ""
+
+#: D:\projects\youmoney\ui\panels.py:30 D:\projects\youmoney\ui\panels.py:210
+#: D:\projects\youmoney\ui\panels.py:320
+msgid "Category"
+msgstr "カテゴリ"
+
+#: D:\projects\youmoney\ui\panels.py:31
+msgid "Month Total"
+msgstr "今月総計"
+
+#: D:\projects\youmoney\ui\panels.py:68 D:\projects\youmoney\ui\panels.py:202
+msgid "Delete"
+msgstr "削除"
+
+#: D:\projects\youmoney\ui\panels.py:84 D:\projects\youmoney\ui\window.py:247
+#: D:\projects\youmoney\ui\window.py:253 D:\projects\youmoney\ui\window.py:254
+#: D:\projects\youmoney\ui\window.py:258 D:\projects\youmoney\ui\window.py:268
+#: D:\projects\youmoney\ui\window.py:271
+msgid "No Higher Category"
+msgstr "上級のカテゴリがなし"
+
+#: D:\projects\youmoney\ui\panels.py:108 D:\projects\youmoney\ui\panels.py:129
+#: D:\projects\youmoney\ui\panels.py:132 D:\projects\youmoney\ui\panels.py:134
+msgid "No Category"
+msgstr "カテゴリがなし"
+
+#: D:\projects\youmoney\ui\panels.py:109
+msgid "Can not delete this category!"
+msgstr "このカテゴリを削除できない"
+
+#: D:\projects\youmoney\ui\panels.py:110 D:\projects\youmoney\ui\panels.py:117
+msgid "Notice:"
+msgstr "注意:"
+
+#: D:\projects\youmoney\ui\panels.py:116
+msgid ", all child categories will move to \"No Category\""
+msgstr ", このカテゴリのすべてのチャルド\"カテゴリがなし\"へ移転"
+
+#: D:\projects\youmoney\ui\panels.py:116
+msgid "To delete category"
+msgstr "カテゴリを削除"
+
+#: D:\projects\youmoney\ui\panels.py:149
+msgid "Delete category failure!"
+msgstr "カテゴリを削除失敗！"
+
+#: D:\projects\youmoney\ui\panels.py:149
+msgid "Delete category information"
+msgstr "カテゴリインフォメーションを削除"
+
+#: D:\projects\youmoney\ui\panels.py:170
+msgid " Date: "
+msgstr " 日付: "
+
+#: D:\projects\youmoney\ui\panels.py:172
+msgid " Year: "
+msgstr " 年: "
+
+#: D:\projects\youmoney\ui\panels.py:174
+msgid " Month:"
+msgstr " 月: "
+
+#: D:\projects\youmoney\ui\panels.py:175
+msgid "  Sum: "
+msgstr "  総計: "
+
+#: D:\projects\youmoney\ui\panels.py:213
 msgid "Payment"
 msgstr "支払方法"
 
-#: /Users/apple/projects/youmoney/ui/panels.py:213
-#: /Users/apple/projects/youmoney/ui/panels.py:216
+#: D:\projects\youmoney\ui\panels.py:214 D:\projects\youmoney\ui\panels.py:217
 msgid "Explain"
 msgstr "内訳"
 
-#: /Users/apple/projects/youmoney/ui/panels.py:321
+#: D:\projects\youmoney\ui\panels.py:322
 msgid "Payout List"
 msgstr "支出リスト"
 
-#: /Users/apple/projects/youmoney/ui/panels.py:323
+#: D:\projects\youmoney\ui\panels.py:324
 msgid "Income List"
 msgstr "収入リスト"
 
-#: /Users/apple/projects/youmoney/ui/panels.py:327
+#: D:\projects\youmoney\ui\panels.py:328
 msgid "Statistic"
 msgstr "統計"
 
-#: /Users/apple/projects/youmoney/ui/statpanel.py:15
-#: /Users/apple/projects/youmoney/ui/statpanel.py:46
-#: /Users/apple/projects/youmoney/ui/statpanel.py:171
-#: /Users/apple/projects/youmoney/ui/statpanel.py:194
-#: /Users/apple/projects/youmoney/ui/statpanel.py:195
+#: D:\projects\youmoney\ui\statpanel.py:16
+#: D:\projects\youmoney\ui\statpanel.py:45
+#: D:\projects\youmoney\ui\statpanel.py:105
+#: D:\projects\youmoney\ui\statpanel.py:214
+#: D:\projects\youmoney\ui\statpanel.py:215
 msgid "All Categories"
 msgstr "すべてのカテゴリ"
 
-#: /Users/apple/projects/youmoney/ui/statpanel.py:26
+#: D:\projects\youmoney\ui\statpanel.py:30
 msgid "Date Start:"
 msgstr "開始日付:"
 
-#: /Users/apple/projects/youmoney/ui/statpanel.py:28
-#: /Users/apple/projects/youmoney/ui/statpanel.py:34
-msgid " Year "
-msgstr " 年 "
-
-#: /Users/apple/projects/youmoney/ui/statpanel.py:32
+#: D:\projects\youmoney\ui\statpanel.py:33
 msgid "  Date End: "
 msgstr "  終了日付: "
 
-#: /Users/apple/projects/youmoney/ui/statpanel.py:38
+#: D:\projects\youmoney\ui\statpanel.py:36
 msgid "   Type "
 msgstr " 種類 "
 
-#: /Users/apple/projects/youmoney/ui/statpanel.py:39
-#: /Users/apple/projects/youmoney/ui/statpanel.py:193
-msgid "Payout and Income"
-msgstr "出入金"
+#: D:\projects\youmoney\ui\statpanel.py:38
+msgid "Surplus"
+msgstr "残金"
 
-#: /Users/apple/projects/youmoney/ui/statpanel.py:44
+#: D:\projects\youmoney\ui\statpanel.py:43
 msgid "   Category "
 msgstr "  カテゴリ "
 
-#: /Users/apple/projects/youmoney/ui/statpanel.py:51
-msgid "Statistic!"
-msgstr "統計スタート"
+#: D:\projects\youmoney\ui\statpanel.py:50
+msgid "Categroy Stat"
+msgstr "分類"
 
-#: /Users/apple/projects/youmoney/ui/statpanel.py:91
-#: /Users/apple/projects/youmoney/ui/statpanel.py:130
-msgid "Month"
-msgstr "月"
+#: D:\projects\youmoney\ui\statpanel.py:52
+msgid "Month Stat"
+msgstr "月額"
 
-#: /Users/apple/projects/youmoney/ui/statpanel.py:97
-#: /Users/apple/projects/youmoney/ui/statpanel.py:136
-msgid "Sum"
-msgstr "総計 "
+#: D:\projects\youmoney\ui\statpanel.py:213
+msgid "Payout and Income"
+msgstr "出入金"
 
-#: /Users/apple/projects/youmoney/ui/statpanel.py:141
-msgid "Balance"
-msgstr "残高"
-
-#: /Users/apple/projects/youmoney/ui/statpanel.py:184
-msgid "No data"
-msgstr "データがありません"
-
-#: /Users/apple/projects/youmoney/ui/window.py:54
+#: D:\projects\youmoney\ui\window.py:54
 msgid "You db file is in default path, strongly advise save it to other path."
 msgstr "現在のデータベースファイルがインストールディレクトリに保存されていますので、ソフトをアンインストールしたり、システムを再インストールしたりよりデータをなくなる恐れがあるため、他の場所へ保存するのはお勧めです。"
 
-#: /Users/apple/projects/youmoney/ui/window.py:54
-#: /Users/apple/projects/youmoney/ui/window.py:444
+#: D:\projects\youmoney\ui\window.py:54 D:\projects\youmoney\ui\window.py:445
 msgid "Note:"
 msgstr "注意:"
 
-#: /Users/apple/projects/youmoney/ui/window.py:61
+#: D:\projects\youmoney\ui\window.py:61
 msgid "Database file: "
 msgstr "データベースファイル: "
 
-#: /Users/apple/projects/youmoney/ui/window.py:95
+#: D:\projects\youmoney\ui\window.py:95
 msgid "New database file"
 msgstr "新規データベースファイル"
 
-#: /Users/apple/projects/youmoney/ui/window.py:96
+#: D:\projects\youmoney\ui\window.py:96
 msgid "Open database file"
 msgstr "データベースファイルを開く"
 
-#: /Users/apple/projects/youmoney/ui/window.py:97
+#: D:\projects\youmoney\ui\window.py:97
 msgid "Database file save as"
 msgstr "データベースファイルを名前付けて保存"
 
-#: /Users/apple/projects/youmoney/ui/window.py:99
+#: D:\projects\youmoney\ui\window.py:99
 msgid "Exit"
 msgstr "終了"
 
-#: /Users/apple/projects/youmoney/ui/window.py:100
+#: D:\projects\youmoney\ui\window.py:100
 msgid "File"
 msgstr "ファイル"
 
-#: /Users/apple/projects/youmoney/ui/window.py:104
+#: D:\projects\youmoney\ui\window.py:104
 msgid "Simple Chinese"
 msgstr "中国語"
 
-#: /Users/apple/projects/youmoney/ui/window.py:105
+#: D:\projects\youmoney\ui\window.py:105
 msgid "English"
 msgstr "英語"
 
-#: /Users/apple/projects/youmoney/ui/window.py:106
+#: D:\projects\youmoney\ui\window.py:106
 msgid "Japanese"
 msgstr "日本語"
 
-#: /Users/apple/projects/youmoney/ui/window.py:109
+#: D:\projects\youmoney\ui\window.py:109
 msgid "Language"
 msgstr "言語"
 
-#: /Users/apple/projects/youmoney/ui/window.py:110
+#: D:\projects\youmoney\ui\window.py:110
 msgid "View"
 msgstr "表示"
 
-#: /Users/apple/projects/youmoney/ui/window.py:113
+#: D:\projects\youmoney\ui\window.py:113
 msgid "About Information"
 msgstr "YouMoneyのバージョン情報"
 
-#: /Users/apple/projects/youmoney/ui/window.py:114
+#: D:\projects\youmoney\ui\window.py:114
 msgid "About"
 msgstr "ヘルプ"
 
-#: /Users/apple/projects/youmoney/ui/window.py:142
+#: D:\projects\youmoney\ui\window.py:143
 msgid "Add Income"
 msgstr "収入を追加"
 
-#: /Users/apple/projects/youmoney/ui/window.py:143
+#: D:\projects\youmoney\ui\window.py:144
 msgid "Add Payout"
 msgstr "支出を追加"
 
-#: /Users/apple/projects/youmoney/ui/window.py:167
+#: D:\projects\youmoney\ui\window.py:168
 msgid "Choose database file:"
 msgstr "データベースファイルを選択"
 
-#: /Users/apple/projects/youmoney/ui/window.py:170
-#: /Users/apple/projects/youmoney/ui/window.py:190
-#: /Users/apple/projects/youmoney/ui/window.py:215
+#: D:\projects\youmoney\ui\window.py:171 D:\projects\youmoney\ui\window.py:191
+#: D:\projects\youmoney\ui\window.py:216
 msgid "YouMoney Database (*.db)|*.db"
 msgstr "YouMoney データベースファイル (*.db)|*.db"
 
-#: /Users/apple/projects/youmoney/ui/window.py:199
-#: /Users/apple/projects/youmoney/ui/window.py:226
+#: D:\projects\youmoney\ui\window.py:200 D:\projects\youmoney\ui\window.py:227
 msgid "File exist"
 msgstr "ファイルを既に存在する"
 
-#: /Users/apple/projects/youmoney/ui/window.py:199
-#: /Users/apple/projects/youmoney/ui/window.py:226
-#: /Users/apple/projects/youmoney/ui/window.py:231
+#: D:\projects\youmoney\ui\window.py:200 D:\projects\youmoney\ui\window.py:227
+#: D:\projects\youmoney\ui\window.py:232
 msgid "Can not save database file"
 msgstr "データベースファイルを保存できない"
 
-#: /Users/apple/projects/youmoney/ui/window.py:231
+#: D:\projects\youmoney\ui\window.py:232
 msgid "Save databse file failture:"
 msgstr "データベースファイルを保存失敗"
 
-#: /Users/apple/projects/youmoney/ui/window.py:281
+#: D:\projects\youmoney\ui\window.py:282
 msgid "Add category failture:"
 msgstr "カテゴリを追加失敗:"
 
-#: /Users/apple/projects/youmoney/ui/window.py:281
+#: D:\projects\youmoney\ui\window.py:282
 msgid "Add category information"
 msgstr "カテゴリインフォメーションを追加"
 
-#: /Users/apple/projects/youmoney/ui/window.py:291
+#: D:\projects\youmoney\ui\window.py:292
 msgid "Change category failture:"
 msgstr "カテゴリを変更失敗:"
 
-#: /Users/apple/projects/youmoney/ui/window.py:291
+#: D:\projects\youmoney\ui\window.py:292
 msgid "Change category information"
 msgstr "カテゴリインフォメーションを変更失敗"
 
-#: /Users/apple/projects/youmoney/ui/window.py:300
+#: D:\projects\youmoney\ui\window.py:301
 msgid "Can not add income item"
 msgstr "収入を追加できない"
 
-#: /Users/apple/projects/youmoney/ui/window.py:300
-#: /Users/apple/projects/youmoney/ui/window.py:363
+#: D:\projects\youmoney\ui\window.py:301 D:\projects\youmoney\ui\window.py:364
 msgid "Add category first!"
 msgstr "カテゴリが無いため、カテゴリを追加してください!"
 
-#: /Users/apple/projects/youmoney/ui/window.py:333
+#: D:\projects\youmoney\ui\window.py:334
 msgid "Add payout failture:"
 msgstr "支出を追加できない:"
 
-#: /Users/apple/projects/youmoney/ui/window.py:333
+#: D:\projects\youmoney\ui\window.py:334
 msgid "Add payout information"
 msgstr "支出明細を追加"
 
-#: /Users/apple/projects/youmoney/ui/window.py:351
-#: /Users/apple/projects/youmoney/ui/window.py:415
+#: D:\projects\youmoney\ui\window.py:352 D:\projects\youmoney\ui\window.py:416
 msgid "Change income failture:"
 msgstr "収入を変更失敗:"
 
-#: /Users/apple/projects/youmoney/ui/window.py:351
-#: /Users/apple/projects/youmoney/ui/window.py:415
+#: D:\projects\youmoney\ui\window.py:352 D:\projects\youmoney\ui\window.py:416
 msgid "Change income information"
 msgstr "収入明細を変更"
 
-#: /Users/apple/projects/youmoney/ui/window.py:363
+#: D:\projects\youmoney\ui\window.py:364
 msgid "Can not add payout item"
 msgstr "支出を追加できない"
 
-#: /Users/apple/projects/youmoney/ui/window.py:396
+#: D:\projects\youmoney\ui\window.py:397
 msgid "Add income failture:"
 msgstr "収入を追加失敗:"
 
-#: /Users/apple/projects/youmoney/ui/window.py:396
+#: D:\projects\youmoney\ui\window.py:397
 msgid "Add income information"
 msgstr "収入明細を追加"
 
-#: /Users/apple/projects/youmoney/ui/window.py:444
+#: D:\projects\youmoney\ui\window.py:445
 msgid "Language changed! You must restart youmoney !"
 msgstr "言語を変更しました！再起動から生効！"
 
-#: /Users/apple/projects/youmoney/ui/window.py:451
+#: D:\projects\youmoney\ui\window.py:452
 msgid "YouMoney is a opensource personal finance software write by Python language."
 msgstr "YouMoneyはpythonの言語を使用して作られたオペンソースソフトです。"
 
-#: /Users/apple/projects/youmoney/ui/window.py:453
+#: D:\projects\youmoney\ui\window.py:454
 msgid "YouMoney home page"
 msgstr "YouMoneyのホームペッジ"
 

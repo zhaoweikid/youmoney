@@ -50,7 +50,8 @@ class MainFrame (wx.Frame):
         wx.CallLater(100, self.notify)
 
     def notify(self):
-        if self.conf.lastdb_is_default():
+        lastdb = self.conf['lastdb']
+        if sys.platform.startswith('win32') and lastdb.startswith(os.environ['SystemDrive']) and self.conf.lastdb_is_default():
             wx.MessageBox(_('You db file is in default path, strongly advise save it to other path.'), _('Note:'), wx.OK|wx.ICON_INFORMATION)
         
 

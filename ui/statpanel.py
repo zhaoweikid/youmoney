@@ -42,7 +42,8 @@ class StatPanel (wx.Panel):
     
         box.Add(wx.StaticText(self, -1, _("   Category "), (8, 10)), 0, wx.ALIGN_CENTER)
         #items = self.data[self.default_type]
-        items = [_('All Categories')]
+        #items = [_('All Categories')]
+        items = self.data[_('Payout')]
         self.category = wx.ComboBox(self, -1, items[0], (60, 50), (100, -1), items, wx.CB_DROPDOWN)
         box.Add(self.category, 0, wx.EXPAND)
 
@@ -78,8 +79,8 @@ class StatPanel (wx.Panel):
         tomonth = todate.GetMonth() + 1
         today   = todate.GetDay()
 
-        type      = self.type.GetValue()
-        cate      = self.category.GetValue()
+        type    = self.type.GetValue()
+        cate    = self.category.GetValue()
         
         frame = self.parent.parent
         
@@ -98,17 +99,22 @@ class StatPanel (wx.Panel):
             minmonth = frommonth
         
         endsql = ''
-
         if mytype >= 0:
             endsql += " and type=%d" % (mytype)
 
         if cate != _('All Categories'):
+            logfile.info("cate:", cate)
             cates = frame.category.cate_subs(mytype, cate)
+            logfile.info("cates:", cates)
+            cates = map(str, cates)
             endsql += ' and category in (%s)' % (','.join(cates))
         #endsql += " order by year,month,day"
 
         #sql = "select num,year,month from capital where type=%d and year>=%s and year<=%s" % (mytype, fromyear, toyear)
         if qtype == 'category':
+            if cate != _('All Categories'):
+                return None, None, None
+
             if fromyear == toyear and frommonth == tomonth:
                 #sql = "select num,year,month,day,type,category from capital where year>=%d and year<=%d and month>=%d and month<=%d and day>=%d and day<=%d %s" % (fromyear, toyear, minmonth, maxmonth, fromday, today, endsql)
                 sql = "select num,year,month,day,type,category from capital where year=%d and month=%d and day>=%d and day<=%d %s order by year,month,day" % (fromyear, frommonth, fromday, today, endsql)
@@ -129,7 +135,6 @@ class StatPanel (wx.Panel):
 
                     sql = "select num,year,month,day,type,category from capital where year>=%d and year<=%d %s" % (fromyear, toyear, endsql)
                     sqls.append(sql)
-
                      
                 sql = "select num,year,month,day,type,category from capital where year=%d and month=%d and day<=%d %s" % (toyear, tomonth, today, endsql)
                 sqls.append(sql)
@@ -157,58 +162,73 @@ class StatPanel (wx.Panel):
         logfile.info('stat:', sql)
         rets = frame.db.query(sql)
         
-        print sql
-
-        return rets
+        return rets, (fromyear, frommonth), (toyear, tomonth)
 
     def OnCateStatClick(self, event):
-        frame = self.parent.parent
-        rets = self.query_input('category')
-        print 'rets:', rets
+        type  = self.type.GetValue()
+        
+        if type == _('Surplus'):
+            rets = []
+        else:
+            frame = self.parent.parent
+            rets, fromdate, todate = self.query_input('category')
 
-        if rets:
-            catevals = {}
-            for row in rets:
-                cate = row['category'] 
-                pcate = frame.category.parent_cate_name(row['type'], cate) 
-                if not pcate:
-                    pcate = frame.category.catemap(row['type'], cate)
+        catevals = {}
+        for row in rets:
+            cate = row['category'] 
+            pcate = frame.category.parent_cate_name(row['type'], cate) 
+            if not pcate:
+                pcate = frame.category.catemap(row['type'], cate)
 
-                if catevals.has_key(pcate):
-                    catevals[pcate] += row['num']
-                else:
-                    catevals[pcate] = row['num']
+            if catevals.has_key(pcate):
+                catevals[pcate] += row['num']
+            else:
+                catevals[pcate] = row['num']
 
-            data = []
-            for k in catevals:
-                data.append({'data':catevals[k], 'name':k})
+        data = []
+        for k in catevals:
+            data.append({'data':catevals[k], 'name':k})
             
-            print 'content data:', data
-            self.content.draw_pie(data)
+        self.content.draw_pie(data)
 
     def OnMonthStatClick(self, event):
+        type  = self.type.GetValue()
         frame = self.parent.parent
-        rets = self.query_input('month')
-        print 'rets:', rets
+        rets, fromdate, todate = self.query_input('month')
 
-        if rets:
-            vals = {}
+        vals = {}
+        keys = []
+        for ye in range(fromdate[0], todate[0]+1):
+            if ye == fromdate[0]:
+                bm = fromdate[1]
+            else:
+                bm = 1
+            if ye == todate[0]:
+                em = todate[1]
+            else:
+                em = 12
+            for mo in range(bm, em+1):
+                k = '%d%02d' % (ye, mo)
+                keys.append(k)
+                vals[k] = 0
+        if type == _('Surplus'):
             for row in rets:
                 key = '%d%02d' % (row['year'], row['month'])
-                print key
-                if vals.has_key(key):
-                    vals[key] += row['num']
+                if row['type'] == 0:
+                    vals[key] -= row['num']
                 else:
-                    vals[key] = row['num']
-            keys = vals.keys()
-            keys.sort()
+                    vals[key] += row['num']
 
-            data = []
-            for k in keys:
-                data.append({'data':int(vals[k]), 'name':k[4:]+u'月'})
+        else:
+            for row in rets:
+                key = '%d%02d' % (row['year'], row['month'])
+                vals[key] += row['num']
+
+        data = []
+        for k in keys:
+            data.append({'data':int(vals[k]), 'name':k})
             
-            print 'content data:', data
-            self.content.draw_bar(data)
+        self.content.draw_bar(data)
 
     def OnChooseType(self, event):
         val = self.type.GetValue()
@@ -217,7 +237,7 @@ class StatPanel (wx.Panel):
 
         logfile.info('Choose type:', val)
 
-        if val == _('Payout and Income'):
+        if val == _('Surplus'):
             self.category.Append(_('All Categories'))
             self.category.SetValue(_('All Categories'))
         else:
