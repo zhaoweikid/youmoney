@@ -71,10 +71,11 @@ class IncomeDialog (sc.SizedDialog):
         wx.StaticText(panel, -1, _('Explain:'))
         self.explain = wx.TextCtrl(panel, -1, readydata['explain'], size=(220,100), style=wx.TE_MULTILINE)
 
+        wx.StaticText(panel, -1, '')
+        self.reuse = wx.CheckBox(panel, -1, _("Not close dialog, continue."))
+
         self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
-
         self.SetMinSize(wx.Size(300, 250))
-
 
         self.Fit()
 
@@ -90,10 +91,17 @@ class IncomeDialog (sc.SizedDialog):
                 'cate': self.cate.GetValue(),
                 'num': numstr,
                 'explain': self.explain.GetValue(),
+                'reuse': self.reuse.GetValue(),
                 'mode': self.data['mode']}
         if self.data.has_key('id'):
             data['id'] = self.data['id']
         return data
+
+    def ClearForReinput(self):
+        self.num.Clear()
+        self.explain.Clear()
+        self.date.SetFocus()
+
 
 
 class PayoutDialog (sc.SizedDialog):
@@ -129,10 +137,11 @@ class PayoutDialog (sc.SizedDialog):
         wx.StaticText(panel, -1, _('Explain:'))
         self.explain = wx.TextCtrl(panel, -1, readydata['explain'], size=(220,100), style=wx.TE_MULTILINE)
 
+        wx.StaticText(panel, -1, '')
+        self.reuse = wx.CheckBox(panel, -1, _("Not close dialog, continue."))
+ 
         self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
-
         self.SetMinSize(wx.Size(300, 250))
-
 
         self.Fit()
     
@@ -149,11 +158,19 @@ class PayoutDialog (sc.SizedDialog):
                 'pay': self.pay.GetValue(),
                 'num': numstr,
                 'explain': self.explain.GetValue(),
+                'reuse': self.reuse.GetValue(),
                 'mode': self.data['mode']}
         if self.data.has_key('id'):
             data['id'] = self.data['id']
  
         return data
+
+    def ClearForReinput(self):
+        self.num.Clear()
+        self.explain.Clear()
+        self.date.SetFocus()
+
+
 
 class CategoryDialog (sc.SizedDialog):
     def __init__(self, parent, readydata):

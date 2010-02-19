@@ -82,6 +82,15 @@ class MainFrame (wx.Frame):
         self.ID_FILE_OPEN = wx.NewId()
         self.ID_FILE_SAVEAS = wx.NewId()
         self.ID_FILE_EXIT = wx.NewId()
+
+        self.ID_EDIT_ADDCATE = wx.NewId()
+        self.ID_EDIT_ADDINCOME = wx.NewId()
+        self.ID_EDIT_ADDPAY = wx.NewId()
+        self.ID_EDIT_CATE = wx.NewId()
+        self.ID_EDIT_INCOME = wx.NewId()
+        self.ID_EDIT_PAY = wx.NewId()
+        self.ID_EDIT_STAT = wx.NewId()
+
         self.ID_VIEW_LANG = wx.NewId()
         self.ID_VIEW_LANG_EN = wx.NewId()
         self.ID_VIEW_LANG_CN = wx.NewId()
@@ -101,6 +110,16 @@ class MainFrame (wx.Frame):
         self.filemenu.Append(self.ID_FILE_EXIT, _('Exit'))
         menubar.Append(self.filemenu, _('File'))
 
+        self.editmenu = wx.Menu()
+        self.editmenu.Append(self.ID_EDIT_ADDCATE, _('Add Category')+"\tAlt+T")
+        self.editmenu.Append(self.ID_EDIT_ADDINCOME, _('Add Income')+"\tAlt+I")
+        self.editmenu.Append(self.ID_EDIT_ADDPAY, _('Add Income')+"\tAlt+P")
+        self.editmenu.AppendSeparator()
+        self.editmenu.Append(self.ID_EDIT_CATE, _('Category')+"\tAlt+1")
+        self.editmenu.Append(self.ID_EDIT_INCOME, _('Income List')+"\tAlt+2")
+        self.editmenu.Append(self.ID_EDIT_PAY, _('Payout List')+"\tAlt+3")
+        self.editmenu.Append(self.ID_EDIT_STAT, _('Statistic')+"\tAlt+4")
+        menubar.Append(self.editmenu, _('Edit'))         
        
         self.langmenu = wx.Menu()
         self.langmenu.AppendRadioItem(self.ID_VIEW_LANG_CN, _('Simple Chinese'))
@@ -121,6 +140,16 @@ class MainFrame (wx.Frame):
         self.Bind(wx.EVT_MENU, self.OnFileNew, id=self.ID_FILE_NEW)
         self.Bind(wx.EVT_MENU, self.OnFileOpen, id=self.ID_FILE_OPEN)
         self.Bind(wx.EVT_MENU, self.OnFileSaveAs, id=self.ID_FILE_SAVEAS)
+        
+        self.Bind(wx.EVT_MENU, self.OnCateEdit, id=self.ID_EDIT_ADDCATE)
+        self.Bind(wx.EVT_MENU, self.OnIncome, id=self.ID_EDIT_ADDINCOME)
+        self.Bind(wx.EVT_MENU, self.OnPayout, id=self.ID_EDIT_ADDPAY)
+
+        self.Bind(wx.EVT_MENU, self.OnEditTabCate, id=self.ID_EDIT_CATE)
+        self.Bind(wx.EVT_MENU, self.OnEditTabIncome, id=self.ID_EDIT_INCOME)
+        self.Bind(wx.EVT_MENU, self.OnEditTabPayout, id=self.ID_EDIT_PAY)
+        self.Bind(wx.EVT_MENU, self.OnEditTabStat, id=self.ID_EDIT_STAT)
+
         self.Bind(wx.EVT_MENU, self.OnCloseWindow, id=self.ID_FILE_EXIT)
         self.Bind(wx.EVT_MENU, self.OnLanguage, id=self.ID_VIEW_LANG_CN)
         self.Bind(wx.EVT_MENU, self.OnLanguage, id=self.ID_VIEW_LANG_EN)
@@ -141,9 +170,9 @@ class MainFrame (wx.Frame):
         
         self.toolbar = wx.ToolBar(self, -1, wx.DefaultPosition, wx.Size(48,48), wx.TB_HORIZONTAL|wx.TB_FLAT|wx.TB_TEXT)
         self.toolbar.SetToolBitmapSize(wx.Size (48, 48))
-        self.toolbar.AddLabelTool(self.ID_TB_CATEEDIT, _('Add Category'), load_bitmap('images/categories.png'), shortHelp=_('Add Category'), longHelp=_('Add Category')) 
-        self.toolbar.AddLabelTool(self.ID_TB_INCOME, _('Add Income'), load_bitmap('images/cashin.png'), shortHelp=_('Add Income'), longHelp=_('Add Income')) 
-        self.toolbar.AddLabelTool(self.ID_TB_PAYOUT, _("Add Payout"), load_bitmap('images/cashout.png'), shortHelp=_("Add Payout"), longHelp=_("Add Payout")) 
+        self.toolbar.AddLabelTool(self.ID_TB_CATEEDIT, _('Add Category')+'(&T)', load_bitmap('images/categories.png'), shortHelp=_('Add Category'), longHelp=_('Add Category')) 
+        self.toolbar.AddLabelTool(self.ID_TB_INCOME, _('Add Income')+'(&I)', load_bitmap('images/cashin.png'), shortHelp=_('Add Income'), longHelp=_('Add Income')) 
+        self.toolbar.AddLabelTool(self.ID_TB_PAYOUT, _("Add Payout")+'(&P)', load_bitmap('images/cashout.png'), shortHelp=_("Add Payout"), longHelp=_("Add Payout")) 
 
         self.toolbar.Realize ()
         self.SetToolBar(self.toolbar)
@@ -337,6 +366,8 @@ class MainFrame (wx.Frame):
                     logfile.info('insert income error:', traceback.format_exc())
                 else:
                     self.reload()
+                    dlg.ClearForReinput()
+
             elif data['mode'] == 'update':
                 #sql = "update capital set category=%d,num=%d,year=%d,month=%d,day=%d,explain='%s' where id=%d"
                 sql = "update capital set category=?,num=?,year=?,month=?,day=?,explain=? where id=?"
@@ -375,7 +406,7 @@ class MainFrame (wx.Frame):
     def payout_dialog(self, ready):
         dlg = dialogs.PayoutDialog(self, ready)
         dlg.CenterOnScreen()
-        if dlg.ShowModal() == wx.ID_OK:
+        while dlg.ShowModal() == wx.ID_OK:
             data = dlg.values()
             logfile.info('payout dialog:', data)
             
@@ -400,6 +431,8 @@ class MainFrame (wx.Frame):
                     logfile.info('insert payout error:', traceback.format_exc())
                 else:
                     self.reload()
+                    dlg.ClearForReinput()
+
             elif data['mode'] == 'update':
                 #sql = "update capital set category=%d,num=%d,year=%d,month=%d,day=%d,payway=%d,explain='%s' where id=%d"
                 sql = "update capital set category=?,num=?,year=?,month=?,day=?,payway=?,explain=? where id=?"
@@ -419,7 +452,8 @@ class MainFrame (wx.Frame):
                     logfile.info('update error:', traceback.format_exc())
                 else:
                     self.reload()
-
+            if not data['reuse']:
+                break
 
 
     def OnLanguage(self, event):
@@ -466,4 +500,20 @@ class MainFrame (wx.Frame):
         dlg.ShowModal()
         dlg.Destroy()
 
+            
+    def OnEditTabCate(self, event):
+        self.book.ChangeSelection(0)
+    
+    def OnEditTabIncome(self, event):
+        self.book.ChangeSelection(1)
+        
+    def OnEditTabPayout(self, event):
+        self.book.ChangeSelection(2)
+        
+    def OnEditTabStat(self, event):
+        self.book.ChangeSelection(3)
+
+
+
+ 
 

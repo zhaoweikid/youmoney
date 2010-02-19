@@ -13,6 +13,9 @@ def merge(samplefile, fromfile, tofile):
             line2 = oldf.readline()
             vastr = line2[6:].strip()
             olddict[idstr] = vastr
+        elif line.startswith('"Last-Translator'):
+            olddict['"Last-Translator'] = line
+            
     oldf.close()
 
     f = open(tofile, 'w')
@@ -31,6 +34,8 @@ def merge(samplefile, fromfile, tofile):
                 f.write('msgstr ""\n')
 
             newf.readline()
+        elif line.startswith('"Last-Translator'):
+            f.write(olddict['"Last-Translator'])
         elif line.startswith('"'):
             line = line.replace('CHARSET', 'utf-8')
             line = line.replace('ENCODING', '8bit')
