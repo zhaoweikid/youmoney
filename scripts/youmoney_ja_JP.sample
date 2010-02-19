@@ -73,7 +73,7 @@ msgstr "内訳:"
 #: D:\projects\youmoney\ui\dialogs.py:75
 #: D:\projects\youmoney\ui\dialogs.py:141
 msgid "Not close dialog, continue."
-msgstr ""
+msgstr "ダイアログ ボックスを閉じないで続けて入力してください"
 
 #: D:\projects\youmoney\ui\dialogs.py:109
 msgid "Add payout item"
@@ -114,11 +114,11 @@ msgstr "更新"
 
 #: D:\projects\youmoney\ui\dialogs.py:235
 msgid "Found new version:"
-msgstr ""
+msgstr "新しいバージョンを見つけた"
 
 #: D:\projects\youmoney\ui\dialogs.py:236
 msgid "Open download page"
-msgstr ""
+msgstr "ダウンロードページを開けて"
 
 #: D:\projects\youmoney\ui\drawstat.py:345
 msgid "Time"
