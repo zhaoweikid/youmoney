@@ -5,6 +5,7 @@
 # 感谢 Jacky MA <jackyma1981@gmail.com> 制作的日文支持
 
 import os, sys
+import threading
 import wx
 sys.path.insert(0, os.path.join(os.getcwd(), "ui"))
 import i18n, config
@@ -16,7 +17,7 @@ except:
     config.cf['lang'] = 'en_US'
     config.cf.dump()
 
-import window, logfile, version
+import window, logfile, version, update
 
 
 class YouMoney (wx.App):
@@ -54,6 +55,8 @@ def main():
     f.close()
 
     app = YouMoney()
+    th = threading.Thread(target=update.check, args=(app.frame,))
+    th.start()
     app.MainLoop()
 
 

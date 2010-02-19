@@ -3,6 +3,7 @@ import os, sys, copy, time
 import wx
 from wx.lib.wordwrap import wordwrap
 import panels, dialogs, config, storage
+import event
 from loader import load_bitmap
 import sqlite3, datetime, shutil
 from category import Category
@@ -46,7 +47,7 @@ class MainFrame (wx.Frame):
         self.SetAutoLayout(True)
 
         self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
-        
+        self.Bind(event.EVT_UPDATE_NOTIFY, self.OnUpdateNotify) 
         wx.CallLater(100, self.notify)
 
     def notify(self):
@@ -459,7 +460,10 @@ class MainFrame (wx.Frame):
         wx.AboutBox(info)
 
 
-
-
+    def OnUpdateNotify(self, event):
+        dlg = dialogs.UpdateDialog(self, event.version)
+        dlg.CenterOnScreen()
+        dlg.ShowModal()
+        dlg.Destroy()
 
 

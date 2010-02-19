@@ -2,6 +2,7 @@
 import os, sys, string, re
 import wx
 import wx.lib.sized_controls as sc
+import wx.lib.hyperlink as hl
 import logfile
 
 class DigitValidator(wx.PyValidator):
@@ -203,6 +204,24 @@ class CategoryDialog (sc.SizedDialog):
             data['id'] = self.data['id']
  
         return data
+
+
+class UpdateDialog (sc.SizedDialog):
+    def __init__(self, parent, version):
+        sc.SizedDialog.__init__(self, None, -1, _('Update'), 
+                                style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
+        self.parent = parent
+
+        panel = self.GetContentsPane()
+        panel.SetSizerType("vertical")
+
+        wx.StaticText(panel, -1, _('Found new version:') + ' YouMoney-%s' % (version))
+        hl.HyperLinkCtrl(panel, wx.ID_ANY, _("Open download page"),URL="http://code.google.com/p/youmoney/downloads/list")
+                
+        self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
+        self.SetMinSize(wx.Size(300, 170))
+
+        self.Fit()
 
 
 
