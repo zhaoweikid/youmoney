@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Fri Feb 19 18:19:46 2010\n"
+"POT-Creation-Date: Sat Feb 20 15:07:39 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -120,11 +120,15 @@ msgstr "发现新版本:"
 msgid "Open download page"
 msgstr "打开下载页面。更新只需覆盖安装。"
 
-#: D:\projects\youmoney\ui\drawstat.py:345
+#: D:\projects\youmoney\ui\drawstat.py:280
+msgid "Sum: "
+msgstr "总计: "
+
+#: D:\projects\youmoney\ui\drawstat.py:349
 msgid "Time"
 msgstr "时间"
 
-#: D:\projects\youmoney\ui\drawstat.py:347
+#: D:\projects\youmoney\ui\drawstat.py:351
 #: D:\projects\youmoney\ui\panels.py:211
 msgid "Money"
 msgstr "金额"

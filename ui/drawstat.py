@@ -236,30 +236,17 @@ class CharDrawer (wx.Panel, ScaledBufferMixin):
             frompos = [int(self.x + math.cos(jiao) * self.r), int(self.y+math.sin(jiao) * self.r)]
             textpos = [int(self.x + math.cos(jiao) * rr), int(self.y+math.sin(jiao) * rr)]
             
-            '''
-            if textpos[0] < self.x:
-                textpos[0] -= 60
-            else:
-                textpos[0] += 20
-
-            if textpos[1] < self.y:
-                textpos[1] -= 20
-            else:
-                textpos[1] += 20
-            '''
-
-                
             color   = wx.Colour(r, g, b, wx.ALPHA_OPAQUE)
             dc.SetPen(wx.Pen(color))
             dc.DrawLine(frompos[0], frompos[1], textpos[0], textpos[1])
             
             if textpos[0] > self.x and textpos[1] < self.y:
-                textpos[1] += 2
+                textpos[0] += 2
                 textpos[1] -= 9
             elif textpos[0] < self.x and textpos[1] < self.y:
                 textpos[0] -= 35
                 textpos[1] -= 12
-            elif textpos[0] < self.x and textpos[1] > self.y:
+            elif textpos[0] < self.x and textpos[1] >= self.y:
                 textpos[0] -= 35
                 textpos[1] += 2
 
@@ -276,6 +263,10 @@ class CharDrawer (wx.Panel, ScaledBufferMixin):
         color   = wx.Colour(255, 255, 255, wx.ALPHA_OPAQUE)
         dc.SetPen(wx.Pen(color))
         
+        total = sum([ k['data'] for k in mydata ])
+        dc.DrawText(_('Sum: ') + str(total) ,xstart, ystart)
+        ystart += 20
+
         for i in range(0, len(mydata)):
             ypos = ystart + i*20
             if ypos + 20 >= rect.height:

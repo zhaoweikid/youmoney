@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Fri Feb 19 18:19:46 2010\n"
+"POT-Creation-Date: Sat Feb 20 15:07:39 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jacky MA <jackyma1981@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -120,11 +120,15 @@ msgstr "新しいバージョンを見つけた"
 msgid "Open download page"
 msgstr "ダウンロードページを開けて"
 
-#: D:\projects\youmoney\ui\drawstat.py:345
+#: D:\projects\youmoney\ui\drawstat.py:280
+msgid "Sum: "
+msgstr "総計: "
+
+#: D:\projects\youmoney\ui\drawstat.py:349
 msgid "Time"
 msgstr "時間"
 
-#: D:\projects\youmoney\ui\drawstat.py:347
+#: D:\projects\youmoney\ui\drawstat.py:351
 #: D:\projects\youmoney\ui\panels.py:211
 msgid "Money"
 msgstr "金額"
