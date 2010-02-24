@@ -47,6 +47,10 @@ class MainFrame (wx.Frame):
         self.SetAutoLayout(True)
 
         self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
+
+
+        self.check_password()
+
         self.Bind(event.EVT_UPDATE_NOTIFY, self.OnUpdateNotify) 
         wx.CallLater(100, self.notify)
 
@@ -55,6 +59,26 @@ class MainFrame (wx.Frame):
         if sys.platform.startswith('win32') and lastdb.startswith(os.environ['SystemDrive']) and self.conf.lastdb_is_default():
             wx.MessageBox(_('You db file is in default path, strongly advise save it to other path.'), _('Note:'), wx.OK|wx.ICON_INFORMATION)
         
+
+    def check_password(self):
+        sql = "select * from user" 
+        ret = self.db.query(sql)
+        if ret:
+            row = ret[0]
+            if row['password']:
+                dlg = dialogs.UserCheckDialog(self)
+                dlg.CenterOnScreen()
+                while True:
+                    chi = dlg.ShowModal()
+                    if chi != wx.ID_OK:
+                        sys.exit()
+
+                    passwd = dlg.values()['password'] 
+                    if passwd != row['password']:
+                        dlg.set_warn(_('Password error.'))
+                        continue
+                    break
+                dlg.Destroy()
 
     def initdb(self, path=None):
         if not path:
@@ -81,6 +105,7 @@ class MainFrame (wx.Frame):
         self.ID_FILE_NEW  = wx.NewId()
         self.ID_FILE_OPEN = wx.NewId()
         self.ID_FILE_SAVEAS = wx.NewId()
+        self.ID_FILE_PASSWORD = wx.NewId()
         self.ID_FILE_EXIT = wx.NewId()
 
         self.ID_EDIT_ADDCATE = wx.NewId()
@@ -106,6 +131,8 @@ class MainFrame (wx.Frame):
         self.filemenu.Append(self.ID_FILE_NEW, _('New database file'))
         self.filemenu.Append(self.ID_FILE_OPEN, _('Open database file'))
         self.filemenu.Append(self.ID_FILE_SAVEAS, _('Database file save as'))
+        self.filemenu.AppendSeparator()
+        self.filemenu.Append(self.ID_FILE_PASSWORD, _('Set Password'))
         self.filemenu.AppendSeparator()
         self.filemenu.Append(self.ID_FILE_EXIT, _('Exit'))
         menubar.Append(self.filemenu, _('File'))
@@ -140,6 +167,8 @@ class MainFrame (wx.Frame):
         self.Bind(wx.EVT_MENU, self.OnFileNew, id=self.ID_FILE_NEW)
         self.Bind(wx.EVT_MENU, self.OnFileOpen, id=self.ID_FILE_OPEN)
         self.Bind(wx.EVT_MENU, self.OnFileSaveAs, id=self.ID_FILE_SAVEAS)
+        self.Bind(wx.EVT_MENU, self.OnFilePassword, id=self.ID_FILE_PASSWORD)
+        self.Bind(wx.EVT_MENU, self.OnCloseWindow, id=self.ID_FILE_EXIT)
         
         self.Bind(wx.EVT_MENU, self.OnCateEdit, id=self.ID_EDIT_ADDCATE)
         self.Bind(wx.EVT_MENU, self.OnIncome, id=self.ID_EDIT_ADDINCOME)
@@ -150,7 +179,6 @@ class MainFrame (wx.Frame):
         self.Bind(wx.EVT_MENU, self.OnEditTabPayout, id=self.ID_EDIT_PAY)
         self.Bind(wx.EVT_MENU, self.OnEditTabStat, id=self.ID_EDIT_STAT)
 
-        self.Bind(wx.EVT_MENU, self.OnCloseWindow, id=self.ID_FILE_EXIT)
         self.Bind(wx.EVT_MENU, self.OnLanguage, id=self.ID_VIEW_LANG_CN)
         self.Bind(wx.EVT_MENU, self.OnLanguage, id=self.ID_VIEW_LANG_EN)
         self.Bind(wx.EVT_MENU, self.OnLanguage, id=self.ID_VIEW_LANG_JP)
@@ -498,6 +526,29 @@ class MainFrame (wx.Frame):
         dlg = dialogs.UpdateDialog(self, event.version)
         dlg.CenterOnScreen()
         dlg.ShowModal()
+        dlg.Destroy()
+
+    def OnFilePassword(self, event):
+        dlg = dialogs.PasswordDialog(self)
+        dlg.CenterOnScreen()
+        while dlg.ShowModal() == wx.ID_OK:
+            data = dlg.values()
+            pass1 = data['password1']
+            pass2 = data['password2']
+            
+            if not pass1 or not pass2:
+                dlg.set_warn(_('Password must not null.'))
+                continue
+
+            if pass1 != pass2:
+                dlg.set_warn(_('Different password.'))
+                continue
+            
+            sql = "update user set password=?,mtime=?"
+            self.db.execute_param(sql, (pass1, int(time.time()),))
+
+            break
+
         dlg.Destroy()
 
             

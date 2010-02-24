@@ -1,11 +1,12 @@
 # coding: utf-8
 import os, sys
 import sqlite3
-import types
+import types, time
 
 # type: 0 支出 1 收入
 createtable = ['create table if not exists category (id integer primary key autoincrement, name varchar(64) not null, parent integer default 0, type integer default 0)',
-               'create table if not exists capital (id integer primary key autoincrement, category integer, num float, ctime integer, year integer, month integer, day integer, payway integer, explain text, type integer default 0)']
+               'create table if not exists capital (id integer primary key autoincrement, category integer, num float, ctime integer, year integer, month integer, day integer, payway integer, explain text, type integer default 0)',
+               'create table if not exists user(password varchar(128), mtime integer default 0)']
 
 class DBStorage:
     def __init__(self, path):
@@ -18,6 +19,12 @@ class DBStorage:
     def init(self):
         for s in createtable:
             self.execute(s)
+
+        sql = "select * from user"
+        ret = self.query(sql, False)
+        if not ret:
+            sql = "insert into user values ('',%d)" % (int(time.time()))
+            self.execute(sql)
 
     def close(self):
         self.db.close()

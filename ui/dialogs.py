@@ -240,5 +240,63 @@ class UpdateDialog (sc.SizedDialog):
 
         self.Fit()
 
+class PasswordDialog (sc.SizedDialog):
+    def __init__(self, parent):
+        sc.SizedDialog.__init__(self, None, -1, _('Set Password'), 
+                                style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
+        self.parent = parent
+
+        panel = self.GetContentsPane()
+        panel.SetSizerType("form")
+        
+        wx.StaticText(panel, -1, "")
+        self.warn = wx.StaticText(panel, -1, size=(150, -1))
+
+        wx.StaticText(panel, -1, _("Password:"))
+        self.pass1 = wx.TextCtrl(panel, -1, style=wx.TE_PASSWORD, size=(150, -1))
+
+        wx.StaticText(panel, -1, _("Password Again:"))
+        self.pass2 = wx.TextCtrl(panel, -1, style=wx.TE_PASSWORD, size=(150, -1))
+
+
+        self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
+        self.SetMinSize(wx.Size(300, 170))
+
+        self.Fit()
+
+    def values(self):
+        pass1 = self.pass1.GetValue()
+        pass2 = self.pass2.GetValue()
+
+        return {'password1':pass1, 'password2':pass2}
+
+    def set_warn(self, msg):
+        self.warn.SetLabel(msg)       
+
+class UserCheckDialog (sc.SizedDialog):
+    def __init__(self, parent):
+        sc.SizedDialog.__init__(self, None, -1, _('User Password'), 
+                                style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
+        self.parent = parent
+
+        panel = self.GetContentsPane()
+        panel.SetSizerType("form")
+        
+        wx.StaticText(panel, -1, "")
+        self.warn = wx.StaticText(panel, -1, style=wx.ST_NO_AUTORESIZE , size=(150, -1))
+
+        wx.StaticText(panel, -1, _("Password:"))
+        self.password = wx.TextCtrl(panel, -1, style=wx.TE_PASSWORD, size=(150, -1))
+
+        self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
+        self.SetMinSize(wx.Size(300, 150))
+
+        self.Fit()
+
+    def values(self):
+        return {'password': self.password.GetValue()} 
+
+    def set_warn(self, msg):
+        self.warn.SetLabel(msg)       
 
 
