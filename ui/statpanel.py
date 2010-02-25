@@ -55,8 +55,9 @@ class StatPanel (wx.Panel):
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(box, 0, wx.EXPAND|wx.ALL, border=2)
         #self.content = html.HtmlWindow(self, -1, style=wx.NO_FULL_REPAINT_ON_RESIZE)
-        self.content = wx.Panel(self)
-        sizer.Add(self.content, 1, wx.EXPAND|wx.ALL)
+        self.panel = wx.Panel(self)
+        self.panel.SetBackgroundColour(wx.WHITE)
+        sizer.Add(self.panel, 1, wx.EXPAND|wx.ALL)
 
         self.SetSizer(sizer)
         self.SetAutoLayout(True)
@@ -157,8 +158,13 @@ class StatPanel (wx.Panel):
                 data.append({'data':catevals[k], 'name':k})
             
             print 'content data:', data
-            self.content = drawstat.ChartPie(self, data)
-            self.Refresh()
+            #self.panel.Clear()
+
+            self.content = drawstat.ChartPie(self.panel, data)
+            box = wx.BoxSizer(wx.HORIZONTAL)
+            box.Add(self.content, 0, wx.EXPAND)
+            self.panel.SetSizer(box)
+
             
 
 
