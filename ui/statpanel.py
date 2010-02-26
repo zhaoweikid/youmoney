@@ -19,7 +19,7 @@ class StatPanel (wx.Panel):
         tday = datetime.date.today()
         items = [ str(x) for x in range(2009, 2020) ]
         tm = wx.DateTime()
-        tm.Set(tday.day, tday.month, tday.year)
+        tm.Set(tday.day, tday.month-1, tday.year)
         self.fromdate = wx.DatePickerCtrl(self, dt=tm, size=(90, -1), 
                             style=wx.DP_DROPDOWN|wx.DP_SHOWCENTURY)
 
@@ -55,9 +55,9 @@ class StatPanel (wx.Panel):
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(box, 0, wx.EXPAND|wx.ALL, border=2)
         #self.content = html.HtmlWindow(self, -1, style=wx.NO_FULL_REPAINT_ON_RESIZE)
-        self.panel = wx.Panel(self)
-        self.panel.SetBackgroundColour(wx.WHITE)
-        sizer.Add(self.panel, 1, wx.EXPAND|wx.ALL)
+        self.content = drawstat.CharDrawer(self)
+        self.content.SetBackgroundColour(wx.WHITE)
+        sizer.Add(self.content, 1, wx.EXPAND|wx.ALL)
 
         self.SetSizer(sizer)
         self.SetAutoLayout(True)
@@ -67,50 +67,15 @@ class StatPanel (wx.Panel):
         self.Bind(wx.EVT_COMBOBOX, self.OnChooseType, self.type) 
 
 
-    def OnClick(self, event):
-        fromyear  = self.fromyear.GetValue()
-        toyear    = self.toyear.GetValue()
-        type      = self.type.GetValue()
-        cate      = self.category.GetValue()
-
-        frame = self.parent.parent
-        
-        if type == _('Payout'):
-            mytype = 0
-        elif type == _('Income'):
-            mytype = 1
-        else:
-            mytype = -1
-
-        #sql = "select num,year,month from capital where type=%d and year>=%s and year<=%s" % (mytype, fromyear, toyear)
-        sql = "select num,year,month,type from capital where year>=%s and year<=%s" % (fromyear, toyear)
-        if mytype >= 0:
-            sql += " and type=%d" % (mytype)
-
-        if cate != _('All Categories'):
-            cates = frame.category.cate_subs(mytype, cate)
-            sql += ' and category in (%s)' % (','.join(cates))
-        sql += " order by year,month"
-        logfile.info('stat:', sql)
-        rets = frame.db.query(sql)
-        
-        if rets:
-            if mytype == -1:
-                self.content.SetPage(self.create_html_both(fromyear, toyear, rets))
-            else:
-                self.content.SetPage(self.create_html_one(fromyear, toyear, rets))
-        else:
-            self.content.SetPage(_('No data'))
-
-    def OnCateStatClick(self, event):
+    def query_input(self, qtype='category'):
         fromdate  = self.fromdate.GetValue()
         fromyear  = fromdate.GetYear()
-        frommonth = fromdate.GetMonth()
+        frommonth = fromdate.GetMonth() + 1
         fromday   = fromdate.GetDay()
         
         todate  = self.todate.GetValue()
         toyear  = todate.GetYear()
-        tomonth = todate.GetMonth()
+        tomonth = todate.GetMonth() + 1
         today   = todate.GetDay()
 
         type      = self.type.GetValue()
@@ -124,19 +89,81 @@ class StatPanel (wx.Panel):
             mytype = 1
         else:
             mytype = -1
+        
+        if frommonth > tomonth:
+            maxmonth = frommonth
+            minmonth = tomonth
+        else:
+            maxmonth = tomonth
+            minmonth = frommonth
+        
+        endsql = ''
 
-        #sql = "select num,year,month from capital where type=%d and year>=%s and year<=%s" % (mytype, fromyear, toyear)
-        sql = "select num,year,month,day,type,category from capital where year>=%d and year<=%d and month>=%d and month<=%d and day>=%d and day<=%d" % (fromyear, toyear, frommonth, tomonth, fromday, today)
         if mytype >= 0:
-            sql += " and type=%d" % (mytype)
+            endsql += " and type=%d" % (mytype)
 
         if cate != _('All Categories'):
             cates = frame.category.cate_subs(mytype, cate)
-            sql += ' and category in (%s)' % (','.join(cates))
-        sql += " order by year,month,day"
+            endsql += ' and category in (%s)' % (','.join(cates))
+        #endsql += " order by year,month,day"
+
+        #sql = "select num,year,month from capital where type=%d and year>=%s and year<=%s" % (mytype, fromyear, toyear)
+        if qtype == 'category':
+            if fromyear == toyear and frommonth == tomonth:
+                #sql = "select num,year,month,day,type,category from capital where year>=%d and year<=%d and month>=%d and month<=%d and day>=%d and day<=%d %s" % (fromyear, toyear, minmonth, maxmonth, fromday, today, endsql)
+                sql = "select num,year,month,day,type,category from capital where year=%d and month=%d and day>=%d and day<=%d %s order by year,month,day" % (fromyear, frommonth, fromday, today, endsql)
+            else:
+                years = range(fromyear, toyear+1)
+                sqls = []
+                sql = "select num,year,month,day,type,category from capital where year=%d and month=%d and day>=%d %s" % (fromyear, frommonth, fromday, endsql)
+                sqls.append(sql)
+                
+                if len(years) <= 1:
+                    sql = "select num,year,month,day,type,category from capital where year>=%d and year<=%d and month>%d and month<%d %s" % (fromyear, toyear, minmonth, maxmonth, endsql)
+                    sqls.append(sql)
+                else:
+                    sql = "select num,year,month,day,type,category from capital where year=%d and month>%d  %s" % (fromyear, frommonth, endsql)
+                    sqls.append(sql)
+                    sql = "select num,year,month,day,type,category from capital where year=%d and month<%d  %s" % (toyear, tomonth, endsql)
+                    sqls.append(sql)
+
+                    sql = "select num,year,month,day,type,category from capital where year>=%d and year<=%d %s" % (fromyear, toyear, endsql)
+                    sqls.append(sql)
+
+                     
+                sql = "select num,year,month,day,type,category from capital where year=%d and month=%d and day<=%d %s" % (toyear, tomonth, today, endsql)
+                sqls.append(sql)
+
+                sql = ' union '.join(sqls) + ' order by year,month,day'
+ 
+        elif qtype == 'month':
+            years = range(fromyear, toyear+1)
+            if len(years) <= 1:
+                sql = "select num,year,month,day,type,category from capital where year>=%d and year<=%d and month>=%d and month<=%d %s" % (fromyear, toyear, minmonth, maxmonth, endsql)
+            else:
+                sqls = []
+                sql = "select num,year,month,day,type,category from capital where year=%d and month>=%d %s" % (fromyear, frommonth, endsql)
+                sqls.append(sql)
+                for ye in years[1:-1]:
+                    sql = "select num,year,month,day,type,category from capital where year>%d and year<%d %s" % (fromyear, toyear, endsql)
+                    sqls.append(sql)
+
+                sql = "select num,year,month,day,type,category from capital where year=%d and month<=%d %s" % (toyear, tomonth, endsql)
+                sqls.append(sql)
+
+                sql = ' union '.join(sqls) + ' order by year,month,day'
+
+
         logfile.info('stat:', sql)
         rets = frame.db.query(sql)
-       
+        
+        print sql
+
+        return rets
+
+    def OnCateStatClick(self, event):
+        frame = self.parent.parent
+        rets = self.query_input('category')
         print 'rets:', rets
 
         if rets:
@@ -152,31 +179,41 @@ class StatPanel (wx.Panel):
                 else:
                     catevals[pcate] = row['num']
 
-            
             data = []
             for k in catevals:
                 data.append({'data':catevals[k], 'name':k})
             
             print 'content data:', data
-            #self.panel.Clear()
-
-            self.content = drawstat.ChartPie(self.panel, data)
-            box = wx.BoxSizer(wx.HORIZONTAL)
-            box.Add(self.content, 0, wx.EXPAND)
-            self.panel.SetSizer(box)
-
-            
-
+            self.content.draw_pie(data)
 
     def OnMonthStatClick(self, event):
-        pass
+        frame = self.parent.parent
+        rets = self.query_input('month')
+        print 'rets:', rets
 
+        if rets:
+            vals = {}
+            for row in rets:
+                key = '%d%02d' % (row['year'], row['month'])
+                print key
+                if vals.has_key(key):
+                    vals[key] += row['num']
+                else:
+                    vals[key] = row['num']
+            keys = vals.keys()
+            keys.sort()
+
+            data = []
+            for k in keys:
+                data.append({'data':int(vals[k]), 'name':k[4:]+u'月'})
+            
+            print 'content data:', data
+            self.content.draw_bar(data)
 
     def OnChooseType(self, event):
         val = self.type.GetValue()
         self.default_type = val
         self.category.Clear()
-        
 
         logfile.info('Choose type:', val)
 

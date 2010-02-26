@@ -126,6 +126,9 @@ class ChartBar (wx.Panel, ScaledBufferMixin):
         wx.Panel.__init__(self, parent, -1)
         ScaledBufferMixin.__init__(self)
         
+        self.init(data)
+
+    def init(self, data):
         self.bgcolor    = '#ffffff'
         self.linecolor  = '#eeeeee'
         self.barcolor   = '#358e35'
@@ -230,7 +233,10 @@ class ChartPie (wx.Panel, ScaledBufferMixin):
         '''
         wx.Panel.__init__(self, parent, -1)
         ScaledBufferMixin.__init__(self)
-        
+
+        self.init(data)
+       
+    def init(self, data):
         self.bgcolor    = '#ffffff'
         self.data = data
         self.spacing = 60
@@ -262,10 +268,8 @@ class ChartPie (wx.Panel, ScaledBufferMixin):
         self.x = x
         self.y = y
         self.r = r
- 
 
         clientsize = (rect.width, rect.height)
-        
         size = len(self.data)
        
         n = 0
@@ -363,8 +367,248 @@ class ChartPie (wx.Panel, ScaledBufferMixin):
         rect = self.GetClientRect()
         _ScaleBlit(self.buffer, dc, rect)
 
+class CharDrawer (wx.Panel, ScaledBufferMixin):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent, -1)
+        ScaledBufferMixin.__init__(self)
 
-   
+        self.fontsize = 9
+        self.leftspacing = 20
+
+    def draw(self, dc, size):
+        dc.SetBackground(wx.Brush("#ffffff"))
+        dc.Clear()
+
+    def draw_pie(self, data):
+        self.bgcolor    = '#ffffff'
+        self.data = data
+        self.spacing = 60
+
+        self.colormap = []
+        for x in  range(2, 20):
+            self.colormap.append([x**3-x, x])
+        
+        self.draw = self._drawpie
+        self.redraw()
+
+    def _drawpie(self, dc, size):
+        dc.SetBackground(wx.Brush(self.bgcolor))
+        dc.Clear()
+ 
+        f = wx.Font(self.fontsize, wx.FONTFAMILY_SWISS , wx.NORMAL, wx.NORMAL)
+        #f.SetWeight(wx.FONTWEIGHT_BOLD)
+        dc.SetFont(f)
+
+        rect = self.GetClientRect()
+        minval = min(rect.width, rect.height)
+        
+        r = (minval - self.spacing*2) * 0.4
+        x = self.spacing + r
+        y = (rect.height/2)
+
+        self.x = x
+        self.y = y
+        self.r = r
+
+        clientsize = (rect.width, rect.height)
+        size = len(self.data)
+       
+        n = 0
+        for x in self.colormap:
+            if x[0] > size:
+                n = x[1]
+                break
+
+        colors = []
+        colorange = []
+        nsize = int(255.0 / n)
+        for xi in xrange(0, n):
+            colorange.append(nsize * xi)
+        #print 'colorange:', colorange
+        c1 = copy.copy(colorange)
+        c2 = copy.copy(colorange)
+        c3 = copy.copy(colorange)
+
+        for xr in c1:
+            for xg in c2:
+                for xb in c2:
+                    if xr == xg == xb:
+                        continue
+                    colors.append((xr, xg, xb))
+        #print 'colors:', colors
+
+        sumval = 0
+        for item in self.data:
+            sumval += item['data']
+ 
+        color   = wx.Colour(255, 255, 255, wx.ALPHA_OPAQUE)
+        dc.SetPen(wx.Pen(color))
+    
+        rate = 0
+        lastpos = (self.x+self.r, self.y)
+        for i in xrange(0, len(self.data)):
+            rgb = colors[i]
+            r, g, b = rgb
+            #color   = wx.Colour(r, g, b, wx.ALPHA_OPAQUE)
+            #color   = wx.Colour(255, 255, 255, wx.ALPHA_OPAQUE)
+            #dc.SetPen(wx.Pen(color))
+            colorstr = '#'
+            for ci in rgb:
+                cs1 = hex(ci)[2:]
+                if len(cs1) == 1:
+                    cs1 = '0' + cs1
+                colorstr += cs1
+            #print 'colorstr:', colorstr
+            #brush = wx.Brush(colorstr)
+            #brush.SetCoulor(color)
+            dc.SetBrush(wx.Brush(colorstr))
+
+            item = self.data[i]
+            item['color'] = colorstr
+            ratenow = float(item['data']) / sumval
+            item['rate'] = ratenow
+            rate = rate + ratenow
+
+            jiao = 2*3.14159*rate
+            newpos = (int(self.x + math.cos(jiao) * self.r), int(self.y+math.sin(jiao) * self.r))
+
+            #print 'last:', lastpos, 'new:', newpos, 'rate:', rate
+            #dc.DrawArc(lastpos[0], lastpos[1], newpos[0], newpos[1], self.x, self.y)
+            dc.DrawArc(newpos[0], newpos[1], lastpos[0], lastpos[1], self.x, self.y)
+            
+            jiao = 2*3.14159*(rate - ratenow/2)
+            textpos = [int(self.x + math.cos(jiao) * self.r), int(self.y+math.sin(jiao) * self.r)]
+
+            if textpos[0] < self.x:
+                textpos[0] = textpos[0] - 60
+
+            if textpos[1] < self.y:
+                textpos[1] -= 20
+
+            dc.DrawText(str(round(ratenow*100, 2))+'%', textpos[0], textpos[1])    
+            lastpos = newpos
+            
+        # display name 
+        mydata = copy.copy(self.data)
+        mydata.sort(key=lambda x:x['data'], reverse=True)
+        
+        xstart = self.spacing*2 + self.r*2
+        ystart = 20
+        
+        for i in range(0, len(mydata)):
+            ypos = ystart + i*20
+            if ypos + 20 >= rect.height:
+                continue
+            item = mydata[i]
+            dc.SetBrush(wx.Brush(item['color']))
+            dc.DrawRectangle(xstart, ypos, 30, 15)
+            dc.DrawText('%.2f%% %s %d' % (round(item['rate']*100, 2), item['name'], item['data']), xstart+35, ystart+i*20)
+
+    def draw_bar(self, data):
+        self.bgcolor    = '#ffffff'
+        self.linecolor  = '#eeeeee'
+        self.barcolor   = '#358e35'
+        self.spacing    = 65
+        
+        self.data = data
+        self.draw = self._drawbar
+        self.redraw()
+
+    def _drawbar(self, dc, size):
+        dc.SetBackground(wx.Brush(self.bgcolor))
+        dc.Clear()
+ 
+        rect = self.GetClientRect()
+        clientsize = (rect.width, rect.height)
+
+        if not self.data:
+            return
+        
+        maxval = 0
+        vals = []
+        for item in self.data:
+            val = item['data']
+            vals.append(val)
+            if val > maxval:
+                maxval = val
+
+        maxy = (maxval / 10 + 1) * 10
+           
+        f = wx.Font(self.fontsize, wx.FONTFAMILY_SWISS , wx.NORMAL, wx.NORMAL)
+        #f.SetWeight(wx.FONTWEIGHT_BOLD)
+        dc.SetFont(f)
+
+        self.draw_coordinate(dc, self.data, 12, maxy, clientsize, self.spacing)
+
+
+    def draw_coordinate(self, dc, values, maxx, maxy, clientsize, spacing=30):
+        cellspacing = 10
+        width  = clientsize[0]
+        height = clientsize[1]
+
+        xcount = len(values)
+        ycount = 10
+        xbsize = (width - 2 * spacing) / xcount
+        ybsize = (height - 2 * spacing) / ycount
+        xbval  = maxx / xcount
+        ybval  = maxy / ycount
+        
+        dc.SetBrush(wx.Brush(self.linecolor))
+
+        if xbsize < 30:
+            cellspacing = int(xbsize * 0.2)
+
+        #print 'xbsize:', xbsize, 'ybsize:', ybsize 
+        dc.DrawLine(spacing, height - spacing, spacing, height - spacing - ybsize * ycount)
+        dc.DrawLine(spacing, height - spacing, spacing + xbsize * xcount, height-spacing)
+        
+        dc.DrawText(u'时间', width/2 - 30, height - 20)
+        ypos = height/2 - 30
+        dc.DrawText(u'金', 5, ypos)
+        dc.DrawText(u'额', 5, ypos + 20)
+
+        dc.DrawText('0', spacing, height-spacing + 5)
+        
+        #print 'xcount:', xcount, 'ycount:', ycount
+        for i in range(1, ycount+1):
+            y = (height-spacing) - i*ybsize 
+            dc.DrawLine(spacing, y, spacing-5, y)
+            dc.DrawText(str(i*ybval), spacing-45, y-3)
+
+        for i in range(1, xcount+1):
+            x = spacing + i*xbsize 
+            text = values[i-1]['name']
+            dc.DrawLine(x, height-spacing, x, height-spacing+5)
+            #dc.DrawText(str(i), x-5, height-spacing + 5)
+            dc.DrawText(text, x-10, height-spacing + 5)
+         
+        # draw data
+        penclr   = wx.Colour(int(self.barcolor[1:3], 16), int(self.barcolor[3:5], 16), 
+                             int(self.barcolor[5:7], 16), wx.ALPHA_OPAQUE)
+        dc.SetPen(wx.Pen(penclr))
+        dc.SetBrush(wx.Brush(self.barcolor))
+        for i in range(0, len(values)):
+            val = values[i]['data']
+            x = spacing + i*xbsize + cellspacing
+            y = height - spacing - (float(val)/maxy) * (ybsize*ycount)
+            w = xbsize-cellspacing+1
+            h = height-spacing-y+1
+            #dc.DrawRectangle(x, y, xbsize-cellspacing+1, height-spacing-y+1)
+            if w > 80:
+                cha = w - 80
+                x = x + cha
+                w = 80
+            dc.DrawRectangle(x, y, w, h)
+            dc.DrawText(str(val), x, y - 20)
+
+
+
+    def OnPaint(self, event):
+        dc = wx.PaintDC(self)
+        rect = self.GetClientRect()
+        _ScaleBlit(self.buffer, dc, rect)
+
+
 
 def test(parent):
     data = [109900, 2378, 5231, 1771, 3499, 1000, 2342, 9982, 8283, 12314, 46786, 7863, 
