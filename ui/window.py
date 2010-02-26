@@ -2,15 +2,16 @@
 import os, sys, copy, time
 import wx
 from wx.lib.wordwrap import wordwrap
-import panels, dialogs, config, storage
+import panels, dialogs, config, storage, export
 import event
 from loader import load_bitmap
 import sqlite3, datetime, shutil
 from category import Category
 import pprint, traceback, logfile, version
+from storage import catetypes, payways
 
-catetypes = {0:_('Payout'), 1:_('Income'), _('Payout'):0, _('Income'):1}
-payways   = {1:_('Cash'), 2:_('Credit Card'), _('Cash'):1, _('Credit Card'):2}
+#catetypes = {0:_('Payout'), 1:_('Income'), _('Payout'):0, _('Income'):1}
+#payways   = {1:_('Cash'), 2:_('Credit Card'), _('Cash'):1, _('Credit Card'):2}
 
 class MainFrame (wx.Frame):
     def __init__(self, parent, id, title):
@@ -106,6 +107,12 @@ class MainFrame (wx.Frame):
         self.ID_FILE_OPEN = wx.NewId()
         self.ID_FILE_SAVEAS = wx.NewId()
         self.ID_FILE_PASSWORD = wx.NewId()
+        self.ID_FILE_IMPORT = wx.NewId()
+        self.ID_FILE_IMPORT_CATE = wx.NewId()
+        self.ID_FILE_IMPORT_DATA = wx.NewId()
+        self.ID_FILE_EXPORT = wx.NewId()
+        self.ID_FILE_EXPORT_CATE = wx.NewId()
+        self.ID_FILE_EXPORT_DATA = wx.NewId()
         self.ID_FILE_EXIT = wx.NewId()
 
         self.ID_EDIT_ADDCATE = wx.NewId()
@@ -127,12 +134,25 @@ class MainFrame (wx.Frame):
         self.lang2id['ja_JP'] = self.ID_VIEW_LANG_JP
         
         menubar = wx.MenuBar()
+        
+        self.importmenu = wx.Menu()
+        self.importmenu.Append(self.ID_FILE_IMPORT_CATE, _('Import Category'))
+        self.importmenu.Append(self.ID_FILE_IMPORT_DATA, _('Import Data'))
+        
+        self.exportmenu = wx.Menu()
+        self.exportmenu.Append(self.ID_FILE_EXPORT_CATE, _('Export Category'))
+        self.exportmenu.Append(self.ID_FILE_EXPORT_DATA, _('Export Data'))
+
+
         self.filemenu = wx.Menu()
         self.filemenu.Append(self.ID_FILE_NEW, _('New database file'))
         self.filemenu.Append(self.ID_FILE_OPEN, _('Open database file'))
         self.filemenu.Append(self.ID_FILE_SAVEAS, _('Database file save as'))
         self.filemenu.AppendSeparator()
         self.filemenu.Append(self.ID_FILE_PASSWORD, _('Set Password'))
+        self.filemenu.AppendSeparator()
+        self.filemenu.AppendMenu(self.ID_FILE_IMPORT, _('Import'), self.importmenu)
+        self.filemenu.AppendMenu(self.ID_FILE_EXPORT, _('Export'), self.exportmenu)
         self.filemenu.AppendSeparator()
         self.filemenu.Append(self.ID_FILE_EXIT, _('Exit'))
         menubar.Append(self.filemenu, _('File'))
@@ -168,6 +188,10 @@ class MainFrame (wx.Frame):
         self.Bind(wx.EVT_MENU, self.OnFileOpen, id=self.ID_FILE_OPEN)
         self.Bind(wx.EVT_MENU, self.OnFileSaveAs, id=self.ID_FILE_SAVEAS)
         self.Bind(wx.EVT_MENU, self.OnFilePassword, id=self.ID_FILE_PASSWORD)
+        self.Bind(wx.EVT_MENU, self.OnFileImportCate, id=self.ID_FILE_IMPORT_CATE)
+        self.Bind(wx.EVT_MENU, self.OnFileImportData, id=self.ID_FILE_IMPORT_DATA)
+        self.Bind(wx.EVT_MENU, self.OnFileExportCate, id=self.ID_FILE_EXPORT_CATE)
+        self.Bind(wx.EVT_MENU, self.OnFileExportData, id=self.ID_FILE_EXPORT_DATA)
         self.Bind(wx.EVT_MENU, self.OnCloseWindow, id=self.ID_FILE_EXIT)
         
         self.Bind(wx.EVT_MENU, self.OnCateEdit, id=self.ID_EDIT_ADDCATE)
@@ -563,6 +587,41 @@ class MainFrame (wx.Frame):
         
     def OnEditTabStat(self, event):
         self.book.ChangeSelection(3)
+
+
+    def OnFileImportCate(self, event):
+        pass
+
+    def OnFileImportData(self, event):
+        pass
+
+    def OnFileExportCate(self, event):
+        dlg = wx.FileDialog(
+            self, message=_("Export Category"), defaultDir=os.getcwd(), 
+            defaultFile="", wildcard=_("csv file (*.csv)|*.csv"), style=wx.SAVE)
+        dlg.SetFilterIndex(2)
+        if dlg.ShowModal() == wx.ID_OK:
+            path = dlg.GetPath()
+            print path
+            exp = export.DataExport(self.db, 'gbk')
+            exp.category(path)
+        
+        dlg.Destroy()
+
+
+
+    def OnFileExportData(self, event):
+        dlg = wx.FileDialog(
+            self, message=_("Export Data"), defaultDir=os.getcwd(), 
+            defaultFile="", wildcard=_("csv file (*.csv)|*.csv"), style=wx.SAVE)
+        dlg.SetFilterIndex(2)
+        if dlg.ShowModal() == wx.ID_OK:
+            path = dlg.GetPath()
+            print path
+            exp = export.DataExport(self.db, 'gbk')
+            exp.itemdata(path)
+        
+        dlg.Destroy()
 
 
 

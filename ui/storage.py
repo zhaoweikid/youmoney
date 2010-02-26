@@ -8,6 +8,10 @@ createtable = ['create table if not exists category (id integer primary key auto
                'create table if not exists capital (id integer primary key autoincrement, category integer, num float, ctime integer, year integer, month integer, day integer, payway integer, explain text, type integer default 0)',
                'create table if not exists user(password varchar(128), mtime integer default 0)']
 
+catetypes = {0:_('Payout'), 1:_('Income'), _('Payout'):0, _('Income'):1}
+payways   = {1:_('Cash'), 2:_('Credit Card'), _('Cash'):1, _('Credit Card'):2}
+
+
 class DBStorage:
     def __init__(self, path):
         self.path = path
