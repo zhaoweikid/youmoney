@@ -146,12 +146,16 @@ class Update:
     def version_diff(self, newver):
         if version.VERSION == newver:
             return 0
-        usever = version.VERSION.split('.')
-        nowver = newver.split('.')
+        #usever = version.VERSION.split('.')
+        #nowver = newver.split('.')
         
-        for i in range(0, len(nowver)):
-            if nowver[i] > usever[i]:
-                return 1
+        #for i in range(0, len(nowver)):
+        #    print nowver[i], usever[i]
+        #    if int(nowver[i]) > int(usever[i]):
+        #        return 1
+
+        if int(newver.replace('.','')) > int(version.VERSION.replace('.','')):
+            return 1
         
         return 0
 

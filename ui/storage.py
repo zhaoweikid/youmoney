@@ -72,6 +72,28 @@ class DBStorage:
         cur.close()
         return ret 
 
+    def query_one(self, sql):
+        if type(sql) == types.UnicodeType:
+            sql = sql.encode(self.charset, 'ignore')
+ 
+        cur = self.db.cursor()
+        cur.execute(sql)
+        one = cur.fetchone()
+        cur.close()
+        
+        if one:
+            return one[0]
+        return None
+
+    def last_insert_id(self):
+        sql = "select last_insert_rowid()"
+        cur = self.db.cursor()
+        cur.execute(sql)
+        one = cur.fetchone()
+        cur.close()
+
+        return one[0]
+
 
 def test():
     db = DBStorage('test.db')

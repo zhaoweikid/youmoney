@@ -130,7 +130,6 @@ class PayoutDialog (sc.SizedDialog):
         items = [_('Cash'), _('Credit Card')]
         self.pay = wx.ComboBox(panel, -1, readydata['pay'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
 
-
         wx.StaticText(panel, -1, _('Money:'))
         self.num = wx.TextCtrl(panel, -1, str(readydata['num']), size=(125, -1))
 
@@ -142,7 +141,6 @@ class PayoutDialog (sc.SizedDialog):
  
         self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
         self.SetMinSize(wx.Size(300, 250))
-
         self.Fit()
     
     def values(self):
@@ -171,7 +169,6 @@ class PayoutDialog (sc.SizedDialog):
         self.date.SetFocus()
 
 
-
 class CategoryDialog (sc.SizedDialog):
     def __init__(self, parent, readydata):
         self.data = readydata
@@ -179,7 +176,6 @@ class CategoryDialog (sc.SizedDialog):
         sc.SizedDialog.__init__(self, None, -1, _('Add Category'), 
                                 style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         self.parent = parent
-
         panel = self.GetContentsPane()
         panel.SetSizerType("form")
        
@@ -195,10 +191,8 @@ class CategoryDialog (sc.SizedDialog):
         items = readydata['cates'][readydata['catetype']]
         self.upcate = wx.ComboBox(panel, -1, readydata['upcate'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
 
-
         self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
         self.SetMinSize(wx.Size(300, 170))
-
         self.Fit()
 
         self.Bind(wx.EVT_COMBOBOX, self.OnChoose, self.catetype)
@@ -210,7 +204,6 @@ class CategoryDialog (sc.SizedDialog):
             self.upcate.Append(x)
         self.upcate.SetValue(self.data['cates'][value][0])
         #self.upcate.SetValue(self.data['cates'][value])
-
     
     def values(self):
         data = {'catetype': self.catetype.GetValue(), 
@@ -228,7 +221,6 @@ class UpdateDialog (sc.SizedDialog):
         sc.SizedDialog.__init__(self, None, -1, _('Update'), 
                                 style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         self.parent = parent
-
         panel = self.GetContentsPane()
         panel.SetSizerType("vertical")
 
@@ -237,7 +229,6 @@ class UpdateDialog (sc.SizedDialog):
                 
         self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
         self.SetMinSize(wx.Size(300, 170))
-
         self.Fit()
 
 class PasswordDialog (sc.SizedDialog):
@@ -245,7 +236,6 @@ class PasswordDialog (sc.SizedDialog):
         sc.SizedDialog.__init__(self, None, -1, _('Set Password'), 
                                 style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         self.parent = parent
-
         panel = self.GetContentsPane()
         panel.SetSizerType("form")
         
@@ -258,16 +248,13 @@ class PasswordDialog (sc.SizedDialog):
         wx.StaticText(panel, -1, _("Password Again:"))
         self.pass2 = wx.TextCtrl(panel, -1, style=wx.TE_PASSWORD, size=(150, -1))
 
-
         self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
         self.SetMinSize(wx.Size(300, 170))
-
         self.Fit()
 
     def values(self):
         pass1 = self.pass1.GetValue()
         pass2 = self.pass2.GetValue()
-
         return {'password1':pass1, 'password2':pass2}
 
     def set_warn(self, msg):
@@ -278,7 +265,6 @@ class UserCheckDialog (sc.SizedDialog):
         sc.SizedDialog.__init__(self, None, -1, _('User Password'), 
                                 style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         self.parent = parent
-
         panel = self.GetContentsPane()
         panel.SetSizerType("form")
         
@@ -290,7 +276,6 @@ class UserCheckDialog (sc.SizedDialog):
 
         self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
         self.SetMinSize(wx.Size(300, 150))
-
         self.Fit()
 
     def values(self):
@@ -298,5 +283,73 @@ class UserCheckDialog (sc.SizedDialog):
 
     def set_warn(self, msg):
         self.warn.SetLabel(msg)       
+
+
+class ImportCateDialog (sc.SizedDialog):
+    def __init__(self, parent):
+        sc.SizedDialog.__init__(self, None, -1, _('Import Category'), 
+                                style=wx.DEFAULT_DIALOG_STYLE)
+        self.parent = parent
+        panel = self.GetContentsPane()
+        panel.SetSizerType("vertical")
+
+        wx.StaticText(panel, -1, _('Import category format:\nIt use csv format.The first row is fields description, not data.\nThis have three fields: main category, sub category, type.\n\nExample:\n\nMain Category,Sub Category,Type\nRecreation,KTV,Payout\nRecreation,Basketball,Payout\nPublic Traffic,,Payout\nWeges,,Income\n'))
+        
+        wx.StaticText(panel, -1, _('Open csv file:'))
+        self.filepath = wx.TextCtrl(panel, -1, size=(300, -1))
+        self.chfile = wx.Button(panel, -1, _('Browse csv file'))
+            
+        self.Bind(wx.EVT_BUTTON, self.OnButton, self.chfile)
+
+        self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
+        self.SetMinSize(wx.Size(300, 170))
+        self.Fit()
+
+    def GetPath(self):
+        return self.filepath.GetValue()
+
+    def OnButton(self, event):
+        dlg = wx.FileDialog(
+            self, message=_("Choose csv file:"), defaultDir=os.getcwd(), 
+            defaultFile="", wildcard=_("csv file (*.csv)|*.csv"), style=wx.SAVE)
+        dlg.SetFilterIndex(2)
+        if dlg.ShowModal() == wx.ID_OK:
+            path = dlg.GetPath()
+            self.filepath.SetValue(path)
+        dlg.Destroy()
+
+
+class ImportDataDialog (sc.SizedDialog):
+    def __init__(self, parent):
+        sc.SizedDialog.__init__(self, None, -1, _('Import Data'), 
+                                style=wx.DEFAULT_DIALOG_STYLE)
+        self.parent = parent
+        panel = self.GetContentsPane()
+        panel.SetSizerType("vertical")
+
+        wx.StaticText(panel, -1, _('Import data format:\nIt use csv format.The first row is fields description, not data.\nThis have ten fields: Main Category,Sub Category,Money,Payway,Type,Time,Year,Month,Day,Explain.\nIf category is not exists, create.\nMoney is payout number.\nPayway is Cash or Credit Card.\nType is Payout or Income.\nTime is record create time.\nYear, Month, Day is pay time.\n\nExample:\n\nMain Category,Sub Category,Money,Payway,Type,Time,Year,Month,Day,Explain\nRecreation,KTV,220,Cash,Payout,2010-02-10 18:12:01,2010,2,9,go ktv\nPublic Traffic,,6,Cash,Payout,2010-02-11 10:09:01,2010,2,11,go home by bus\n'))
+        
+        wx.StaticText(panel, -1, _('Open csv file:'))
+        self.filepath = wx.TextCtrl(panel, -1, size=(300, -1))
+        self.chfile = wx.Button(panel, -1, _('Browse csv file'))
+            
+        self.Bind(wx.EVT_BUTTON, self.OnButton, self.chfile)
+
+        self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
+        self.SetMinSize(wx.Size(300, 170))
+        self.Fit()
+
+    def GetPath(self):
+        return self.filepath.GetValue()
+
+    def OnButton(self, event):
+        dlg = wx.FileDialog(
+            self, message=_("Choose csv file:"), defaultDir=os.getcwd(), 
+            defaultFile="", wildcard=_("csv file (*.csv)|*.csv"), style=wx.SAVE)
+        dlg.SetFilterIndex(2)
+        if dlg.ShowModal() == wx.ID_OK:
+            path = dlg.GetPath()
+            self.filepath.SetValue(path)
+        dlg.Destroy()
 
 

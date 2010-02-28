@@ -10,9 +10,6 @@ from category import Category
 import pprint, traceback, logfile, version
 from storage import catetypes, payways
 
-#catetypes = {0:_('Payout'), 1:_('Income'), _('Payout'):0, _('Income'):1}
-#payways   = {1:_('Cash'), 2:_('Credit Card'), _('Cash'):1, _('Credit Card'):2}
-
 class MainFrame (wx.Frame):
     def __init__(self, parent, id, title):
         wx.Frame.__init__(self, parent, id, title, wx.DefaultPosition, wx.Size(800,600),
@@ -48,8 +45,6 @@ class MainFrame (wx.Frame):
         self.SetAutoLayout(True)
 
         self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
-
-
         self.check_password()
 
         self.Bind(event.EVT_UPDATE_NOTIFY, self.OnUpdateNotify) 
@@ -590,10 +585,39 @@ class MainFrame (wx.Frame):
 
 
     def OnFileImportCate(self, event):
-        pass
+        dlg = dialogs.ImportCateDialog(self)
+        if dlg.ShowModal() == wx.ID_OK:
+            path = dlg.GetPath()
+            exp = export.DataImport(self.db, 'gbk')
+            try:
+                exp.category(path)
+            except Exception, e:
+                logfile.info(traceback.format_exc())
+                wx.MessageBox(str(e), _('Import Error:'), wx.OK|wx.ICON_INFORMATION)
+            else:
+                wx.MessageBox(_('Import complete!'), _('Information'), wx.OK|wx.ICON_INFORMATION)
+            self.reload()
+        dlg.Destroy()
 
     def OnFileImportData(self, event):
-        pass
+        dlg = dialogs.ImportDataDialog(self)
+        if dlg.ShowModal() == wx.ID_OK:
+            path = dlg.GetPath()
+            exp = export.DataImport(self.db, 'gbk')
+            try:
+                idlg = wx.ProgressDialog(_('Importing...'), _('Waiting for importing.'), 
+                                        maximum=100, parent=self,
+                                        style=wx.PD_APP_MODAL|wx.PD_ELAPSED_TIME|wx.PD_REMAINING_TIME)
+                exp.itemdata(path, idlg)
+                idlg.Destroy()
+            except Exception, e:
+                logfile.info(traceback.format_exc())
+                wx.MessageBox(str(e), _('Import Error:'), wx.OK|wx.ICON_INFORMATION)
+            else:
+                wx.MessageBox(_('Import complete!'), _('Information'), wx.OK|wx.ICON_INFORMATION)
+            self.reload()
+ 
+        dlg.Destroy()
 
     def OnFileExportCate(self, event):
         dlg = wx.FileDialog(
@@ -602,13 +626,13 @@ class MainFrame (wx.Frame):
         dlg.SetFilterIndex(2)
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
-            print path
             exp = export.DataExport(self.db, 'gbk')
-            exp.category(path)
-        
+            try:
+                exp.category(path)
+            except Exception, e:
+                logfile.info(traceback.format_exc())
+                wx.MessageBox(str(e), _('Export Error:'), wx.OK|wx.ICON_INFORMATION)
         dlg.Destroy()
-
-
 
     def OnFileExportData(self, event):
         dlg = wx.FileDialog(
@@ -617,10 +641,13 @@ class MainFrame (wx.Frame):
         dlg.SetFilterIndex(2)
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
-            print path
             exp = export.DataExport(self.db, 'gbk')
-            exp.itemdata(path)
-        
+            try:
+                exp.itemdata(path)
+            except Exception, e:
+                logfile.info(traceback.format_exc())
+                wx.MessageBox(str(e), _('Export Error:'), wx.OK|wx.ICON_INFORMATION)
+ 
         dlg.Destroy()
 
 
