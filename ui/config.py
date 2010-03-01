@@ -11,6 +11,7 @@ class Configure:
         if not os.path.isdir(dirname):
             os.mkdir(dirname)
         self.conffile = os.path.join(self.rundir, "data", "youmoney.conf") 
+        self.iscreate = False
         self.data = {}
         self.load()
 
@@ -18,6 +19,7 @@ class Configure:
         try:
             f = open(self.conffile, 'r')
         except:
+            self.iscreate = True
             self.data['lastdb'] = os.path.join(os.path.dirname(self.conffile), "youmoney.db")
             self.data['lang'] = locale.getdefaultlocale()[0] 
             self.dump()

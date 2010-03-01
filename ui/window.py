@@ -50,6 +50,19 @@ class MainFrame (wx.Frame):
         self.Bind(event.EVT_UPDATE_NOTIFY, self.OnUpdateNotify) 
         wx.CallLater(100, self.notify)
 
+    def initcate(self):
+        sql = "select count(*) from category"
+        count = self.db.query_one(sql)
+        if count == 0 and config.cf.iscreate and config.cf['lang'] == 'zh_CN':
+            path = os.path.join(self.rundir, 'data', 'category.csv')
+            if not os.path.isfile(path):
+                return
+            exp = export.DataImport(self.db, 'gbk')
+            try:
+                exp.category(path)
+            except:
+                logfile.info(traceback.format_exc())
+
     def notify(self):
         lastdb = self.conf['lastdb']
         if sys.platform.startswith('win32') and lastdb.startswith(os.environ['SystemDrive']) and self.conf.lastdb_is_default():
