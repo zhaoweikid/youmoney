@@ -1,5 +1,5 @@
 # coding: utf-8
-import os, sys, shutil
+import os, sys, shutil, zipfile
 import version
 
 def main():
@@ -40,7 +40,14 @@ def main():
     if os.path.isdir(newname):
         shutil.rmtree(newname)
     shutil.move('dist', newname)
-
+    
+    #filename = newname + '.zip'
+    #z = zipfile.ZipFile(filename, 'w')
+    #for root,dirs,files in os.walk(newname):
+    #    for fname in files:
+    #        fpath = os.path.join(root, fname)
+    #        z.write(fpath)
+    #z.close() 
 
 if __name__ == '__main__':
     main()
