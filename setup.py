@@ -29,6 +29,7 @@ setup(
                   ('lang/en_US/LC_MESSAGES', glob.glob('lang/en_US/LC_MESSAGES/*')),
                   ('lang/ja_JP/LC_MESSAGES', glob.glob('lang/ja_JP/LC_MESSAGES/*')),
                   ('ui', glob.glob('ui/*.py')),
+                  ('data', glob.glob('data/*.csv')),
                   ('.', [os.path.join(os.environ['SystemRoot'], 'system32', 'msvcp71.dll')]),
                   ],
     options = options,

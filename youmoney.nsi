@@ -1,7 +1,7 @@
 !include "MUI2.nsh"
 
 Name "YouMoney"
-OutFile "YouMoney-0.6.3.exe"
+OutFile "YouMoney-0.6.4.exe"
 
 InstallDir "$PROGRAMFILES\YouMoney"
 
