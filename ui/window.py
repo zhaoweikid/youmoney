@@ -50,9 +50,12 @@ class MainFrame (wx.Frame):
         self.Bind(event.EVT_UPDATE_NOTIFY, self.OnUpdateNotify) 
         wx.CallLater(100, self.notify)
 
+        self.initcate()
+
     def initcate(self):
         sql = "select count(*) from category"
         count = self.db.query_one(sql)
+        print 'count:', count, config.cf.iscreate, config.cf['lang']
         if count == 0 and config.cf.iscreate and config.cf['lang'] == 'zh_CN':
             path = os.path.join(self.rundir, 'data', 'category.csv')
             if not os.path.isfile(path):
@@ -62,6 +65,7 @@ class MainFrame (wx.Frame):
                 exp.category(path)
             except:
                 logfile.info(traceback.format_exc())
+            self.reload()
 
     def notify(self):
         lastdb = self.conf['lastdb']

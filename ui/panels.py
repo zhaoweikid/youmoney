@@ -32,7 +32,19 @@ class CategoryPanel (wx.Panel):
 
         self.tree.SetMainColumn(0)
         self.tree.SetColumnWidth(0, 200)
-        
+       
+    def get_all_children(self, parent):
+        ret = []
+        child,cookie = self.tree.GetFirstChild(parent)
+        if not child:
+            return ret
+        ret.append(child)
+        while True:
+            other, cookie = self.tree.GetNextChild(parent, cookie)
+            if not other:
+                return ret
+            ret.append(other)
+    
     def load(self, cate):
         self.tree.DeleteAllItems()
         self.root = self.tree.AddRoot("Root")
@@ -53,7 +65,10 @@ class CategoryPanel (wx.Panel):
                     self.tree.SetItemText(c2, str(ch2.num), 1)
                     self.tree.SetPyData(c2, {'id':ch2.id})
  
-        self.tree.ExpandAll(self.root)
+        #self.tree.ExpandAll(self.root)
+        self.tree.Expand(self.root)
+        for x in self.get_all_children(self.root):
+            self.tree.Expand(x)
 
     def OnPopupMenu(self, event):
         pt = event.GetPosition();
