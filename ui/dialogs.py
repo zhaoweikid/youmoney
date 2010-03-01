@@ -262,7 +262,7 @@ class PasswordDialog (sc.SizedDialog):
 
 class UserCheckDialog (sc.SizedDialog):
     def __init__(self, parent):
-        sc.SizedDialog.__init__(self, None, -1, _('User Password'), 
+        sc.SizedDialog.__init__(self, None, -1, 'YouMoney ' + _('User Password'), 
                                 style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         self.parent = parent
         panel = self.GetContentsPane()
@@ -271,12 +271,13 @@ class UserCheckDialog (sc.SizedDialog):
         wx.StaticText(panel, -1, "")
         self.warn = wx.StaticText(panel, -1, style=wx.ST_NO_AUTORESIZE , size=(150, -1))
 
-        wx.StaticText(panel, -1, _("Password:"))
-        self.password = wx.TextCtrl(panel, -1, style=wx.TE_PASSWORD, size=(150, -1))
+        wx.StaticText(panel, -1, _("Password: "))
+        self.password = wx.TextCtrl(panel, -1, style=wx.TE_PASSWORD, size=(180, -1))
 
         self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
         self.SetMinSize(wx.Size(300, 150))
         self.Fit()
+        self.password.SetFocus()
 
     def values(self):
         return {'password': self.password.GetValue()} 
@@ -292,8 +293,21 @@ class ImportCateDialog (sc.SizedDialog):
         self.parent = parent
         panel = self.GetContentsPane()
         panel.SetSizerType("vertical")
+        
+        msg = [_('Import category format:'),
+               _('It use csv format.The first row is fields description, not data.'),
+               _('This have three fields: main category, sub category, type.'),
+               '\n',
+               _('Example:'),
+               _('Main Category,Sub Category,Type'),
+               _('Recreation,KTV,Payout'),
+               _('Recreation,Basketball,Payout'),
+               _('Public Traffic,,Payout'),
+               _('Weges,,Income'),
+               '\n'
+               ]
 
-        wx.StaticText(panel, -1, _('Import category format:\nIt use csv format.The first row is fields description, not data.\nThis have three fields: main category, sub category, type.\n\nExample:\n\nMain Category,Sub Category,Type\nRecreation,KTV,Payout\nRecreation,Basketball,Payout\nPublic Traffic,,Payout\nWeges,,Income\n'))
+        wx.StaticText(panel, -1, '\n'.join(msg))
         
         wx.StaticText(panel, -1, _('Open csv file:'))
         self.filepath = wx.TextCtrl(panel, -1, size=(300, -1))
@@ -327,7 +341,24 @@ class ImportDataDialog (sc.SizedDialog):
         panel = self.GetContentsPane()
         panel.SetSizerType("vertical")
 
-        wx.StaticText(panel, -1, _('Import data format:\nIt use csv format.The first row is fields description, not data.\nThis have ten fields: Main Category,Sub Category,Money,Payway,Type,Time,Year,Month,Day,Explain.\nIf category is not exists, create.\nMoney is payout number.\nPayway is Cash or Credit Card.\nType is Payout or Income.\nTime is record create time.\nYear, Month, Day is pay time.\n\nExample:\n\nMain Category,Sub Category,Money,Payway,Type,Time,Year,Month,Day,Explain\nRecreation,KTV,220,Cash,Payout,2010-02-10 18:12:01,2010,2,9,go ktv\nPublic Traffic,,6,Cash,Payout,2010-02-11 10:09:01,2010,2,11,go home by bus\n'))
+        msg = [_('Import data format:'),
+               _('It use csv format.The first row is fields description, not data.'),
+               _('This have ten fields: Main Category,Sub Category,Money,Payway,Type,Time,Year,Month,Day,Explain.'),
+               _('If category is not exists, create.'),
+               _('Money is payout number.'),
+               _('Payway is Cash or Credit Card.'),
+               _('Type is Payout or Income.'),
+               _('Time is record create time.'),
+               _('Year, Month, Day is pay time.'),
+               '\n',
+               _('Example:'),
+               _('Main Category,Sub Category,Money,Payway,Type,Time,Year,Month,Day,Explain'),
+               _('Recreation,KTV,220,Cash,Payout,2010-02-10 18:12:01,2010,2,9,go ktv'),
+               _('Public Traffic,,6,Cash,Payout,2010-02-11 10:09:01,2010,2,11,go home by bus'),
+               '\n'
+               ]
+
+        wx.StaticText(panel, -1, '\n'.join(msg))
         
         wx.StaticText(panel, -1, _('Open csv file:'))
         self.filepath = wx.TextCtrl(panel, -1, size=(300, -1))

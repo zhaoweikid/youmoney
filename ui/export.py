@@ -10,18 +10,31 @@ class DataExport:
         self.charset = charset
 
     def category(self, filename):
-        sql = "select * from category"
+        sql = "select * from category order by parent"
         rets = self.db.query(sql)
         
         if not rets:
-            raise ValueError, _('No category.')
+            raise ValueError, 'No category.'
 
         cate1 = {}
+        subs  = {}
+
         for row in rets:
             if row['parent'] == 0:
                 cate1[row['id']] = row['name']
-        
+            else:
+                if row['parent'] in subs:
+                    subs[row['parent']] += 1
+                else:
+                    subs[row['parent']] = 1
+
         rec = [[_('Main Category'), _('Sub Category'), _('Type')]]
+        one = rec[0]
+        for i in range(0, len(one)):
+            item = one[i]
+            if type(item) == types.UnicodeType:
+                one[i] = item.encode(self.charset)
+
         typecn = {}
         for row in rets:
             if row['parent'] != 0:
@@ -29,7 +42,8 @@ class DataExport:
                             row['name'].encode(self.charset), 
                             catetypes[row['type']].encode(self.charset)]) 
             else:
-                rec.append([row['name'].encode(self.charset), 
+                if row['id'] not in subs:
+                    rec.append([row['name'].encode(self.charset), 
                             '', 
                             catetypes[row['type']].encode(self.charset)]) 
  
@@ -43,7 +57,7 @@ class DataExport:
         sql = "select * from category"
         rets = self.db.query(sql)
         if not rets:
-            raise ValueError, _('No category.')
+            raise ValueError, 'No category.'
         
         cates = {}
         for row in rets:
@@ -56,7 +70,7 @@ class DataExport:
         sql = "select * from capital order by year,month,day"
         rets = self.db.query(sql)
         if not rets:
-            raise ValueError, _('No record.')
+            raise ValueError, 'No record.'
         
         rec = [[_('Main Category'), _('Sub Category'), _('Money'), _('Payway'), _('Type'), _('Time'), _('Year'), _('Month'), _('Day'), _('Explain')]]
         one = rec[0]

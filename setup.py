@@ -8,7 +8,7 @@ includes = ['encodings', 'encodings.*', 'gettext', 'glob',
             'wx.lib.sized_controls', 'wx.gizmos', 'wx.html',
             'wx.lib.wordwrap', 'wx.lib.hyperlink', 'wx.lib.newevent',
             'sqlite3', 'shutil', 'pprint', 'md5', 'urllib',
-            'urllib2', 'httplib']
+            'urllib2', 'httplib', 'csv']
 options  = {'py2exe': {
                 'compressed': 0,
                 'optimize': 2,

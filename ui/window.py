@@ -588,6 +588,9 @@ class MainFrame (wx.Frame):
         dlg = dialogs.ImportCateDialog(self)
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
+            if not path:
+                dlg.Destroy()
+                return
             exp = export.DataImport(self.db, 'gbk')
             try:
                 exp.category(path)
@@ -603,6 +606,10 @@ class MainFrame (wx.Frame):
         dlg = dialogs.ImportDataDialog(self)
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
+            if not path:
+                dlg.Destroy()
+                return
+ 
             exp = export.DataImport(self.db, 'gbk')
             try:
                 idlg = wx.ProgressDialog(_('Importing...'), _('Waiting for importing.'), 
