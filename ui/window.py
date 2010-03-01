@@ -55,7 +55,7 @@ class MainFrame (wx.Frame):
     def initcate(self):
         sql = "select count(*) from category"
         count = self.db.query_one(sql)
-        print 'count:', count, config.cf.iscreate, config.cf['lang']
+        #print 'count:', count, config.cf.iscreate, config.cf['lang']
         if count == 0 and config.cf.iscreate and config.cf['lang'] == 'zh_CN':
             path = os.path.join(self.rundir, 'data', 'category.csv')
             if not os.path.isfile(path):
