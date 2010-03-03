@@ -172,7 +172,7 @@ class MainFrame (wx.Frame):
         self.editmenu = wx.Menu()
         self.editmenu.Append(self.ID_EDIT_ADDCATE, _('Add Category')+"\tAlt+T")
         self.editmenu.Append(self.ID_EDIT_ADDINCOME, _('Add Income')+"\tAlt+I")
-        self.editmenu.Append(self.ID_EDIT_ADDPAY, _('Add Income')+"\tAlt+P")
+        self.editmenu.Append(self.ID_EDIT_ADDPAY, _('Add Payout')+"\tAlt+P")
         self.editmenu.AppendSeparator()
         self.editmenu.Append(self.ID_EDIT_CATE, _('Category')+"\tAlt+1")
         self.editmenu.Append(self.ID_EDIT_INCOME, _('Income List')+"\tAlt+2")
