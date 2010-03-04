@@ -225,7 +225,7 @@ class UpdateDialog (sc.SizedDialog):
         panel.SetSizerType("vertical")
 
         wx.StaticText(panel, -1, _('Found new version:') + ' YouMoney-%s' % (version))
-        hl.HyperLinkCtrl(panel, wx.ID_ANY, _("Open download page"),URL="http://code.google.com/p/youmoney/downloads/list")
+        hl.HyperLinkCtrl(panel, wx.ID_ANY, _("Open download page"),URL="http://code.google.com/p/youmoney/")
                 
         self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
         self.SetMinSize(wx.Size(300, 170))
