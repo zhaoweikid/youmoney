@@ -1,6 +1,6 @@
 # coding: utf-8
 import os, sys
-import sqlite3
+import sqlite3, locale
 import types, time
 
 # type: 0 支出 1 收入
@@ -14,9 +14,12 @@ payways   = {1:_('Cash'), 2:_('Credit Card'), _('Cash'):1, _('Credit Card'):2}
 
 class DBStorage:
     def __init__(self, path):
-        self.path = path
-        self.db = sqlite3.connect(path)
+        self.localcharset = locale.getdefaultlocale()[1]
         self.charset = 'utf-8'
+        self.path = path
+        if type(path) == types.UnicodeType:
+            self.path = path.encode(self.charset)
+        self.db = sqlite3.connect(self.path)
         
         self.init()
 

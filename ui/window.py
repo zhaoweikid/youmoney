@@ -404,7 +404,7 @@ class MainFrame (wx.Frame):
     def income_dialog(self, ready):
         dlg = dialogs.IncomeDialog(self, ready)
         dlg.CenterOnScreen()
-        if dlg.ShowModal() == wx.ID_OK:
+        while dlg.ShowModal() == wx.ID_OK:
             data = dlg.values()
             logfile.info('income dialog:', data)
             #sql = "insert into capital (category,num,ctime,year,month,day,payway,explain,type) values (%d,%f,%d,%d,%d,%d,%d,'%s',1)"
@@ -450,6 +450,9 @@ class MainFrame (wx.Frame):
                     logfile.info('update error:', traceback.format_exc())
                 else:
                     self.reload()
+
+            if not data['reuse']:
+                break
 
 
 
