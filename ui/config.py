@@ -8,13 +8,21 @@ cf = None
 class Configure:
     def __init__(self, charset='utf-8'):
         self.rundir = os.path.dirname(os.path.abspath(sys.argv[0]))
+        print 'rundir:', self.rundir
         self.charset = charset
         self.locallang = locale.getdefaultlocale()[0] 
         self.localcharset = locale.getdefaultlocale()[1] 
         dirname = os.path.join(self.rundir, 'data')
         if not os.path.isdir(dirname):
             os.mkdir(dirname)
-        self.conffile = os.path.join(self.rundir, "data", "youmoney.conf") 
+        if sys.platform.startswith('win32'):
+            self.confdir = os.path.join(self.rundir, "data")
+        else:
+            self.confdir = os.path.join(os.environ['HOME'], '.youmoney')
+            if not os.path.isdir(self.confdir):
+                os.mkdir(self.confdir)
+
+        self.conffile = os.path.join(self.confdir, "youmoney.conf") 
         self.conffile = unicode(self.conffile, self.localcharset)
         self.iscreate = False
         self.data = {}
