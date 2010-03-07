@@ -151,7 +151,8 @@ class DataImport:
             else:
                 x0 = x[0].encode('utf-8')
                 sql = "insert into category (name,parent,type) values (?,0,?)"
-                self.db.execute_param(sql, (x[0].encode('utf-8'), tid,))
+                #self.db.execute_param(sql, (x[0].encode('utf-8'), tid,))
+                self.db.execute_param(sql, (x[0], tid,))
                 sql = "select id from category where name='%s' and type=%d" % (x0, tid)
                 pid = self.db.query_one(sql)
                 kn = x[0] + '_' + str(tid)
@@ -161,7 +162,8 @@ class DataImport:
             if not x[1] or sk in subs:
                 continue
             sql = "insert into category (name,parent,type) values (?,?,?)"
-            self.db.execute_param(sql, (name, pid, tid,))
+            #self.db.execute_param(sql, (name, pid, tid,))
+            self.db.execute_param(sql, (x[1], pid, tid,))
             # value is not important
             subs[sk] = 0
 

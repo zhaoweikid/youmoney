@@ -3,7 +3,6 @@ import os, sys
 import sqlite3, locale
 import types, time
 
-# type: 0 支出 1 收入
 createtable = ['create table if not exists category (id integer primary key autoincrement, name varchar(64) not null, parent integer default 0, type integer default 0)',
                'create table if not exists capital (id integer primary key autoincrement, category integer, num float, ctime integer, year integer, month integer, day integer, payway integer, explain text, type integer default 0)',
                'create table if not exists user(password varchar(128), mtime integer default 0)']
