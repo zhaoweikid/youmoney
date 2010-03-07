@@ -11,7 +11,15 @@ class Configure:
         #print 'rundir:', self.rundir
         self.charset = charset
         self.locallang = locale.getdefaultlocale()[0] 
-        self.localcharset = locale.getdefaultlocale()[1] 
+        if sys.platform == 'darwin':
+            if not self.locallang:
+                self.localcharset = 'utf-8'
+                self.locallang = 'zh_CN'
+            else:
+                self.localcharset = locale.getdefaultlocale()[1] 
+        else:
+            self.localcharset = locale.getdefaultlocale()[1] 
+        
         dirname = os.path.join(self.rundir, 'data')
         if not os.path.isdir(dirname):
             os.mkdir(dirname)

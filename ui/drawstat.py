@@ -43,7 +43,6 @@ def _ScaleBlit(bmp, dc, dst_rect):
 
 
 class DoubleBufferedMixin(object):
-
     def __init__(self):
         self.bind_events()
         self.buffer_size = wx.Size(-1, -1)
@@ -55,6 +54,8 @@ class DoubleBufferedMixin(object):
 
     def init_buffer(self):
         size = self._calc_size()
+        if size.width == 0 or size.height == 0:
+            return False
         #if ((self.buffer_size.width < size.width) or (self.buffer_size.height < size.height)):
         if ((self.buffer_size.width != size.width) or (self.buffer_size.height != size.height)):
             self.buffer = wx.EmptyBitmap(size.width, size.height)
