@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # coding: utf-8
 # YouMoney is a opensource personal finance software
 # License: GPL
@@ -7,13 +8,16 @@
 import os, sys
 import threading
 import wx
-sys.path.insert(0, os.path.join(os.getcwd(), "ui"))
+home = os.path.dirname(os.path.abspath(sys.argv[0]))
+sys.path.insert(0, os.path.join(home, "ui"))
+#os.chdir(home)
 import i18n, config
 config.cf = config.Configure()
+langdir = os.path.join(home, "lang")
 try:
-    i18n.install("lang", [config.cf['lang']])
+    i18n.install(langdir, [config.cf['lang']])
 except:
-    i18n.install("lang", ['en_US'])
+    i18n.install(langdir, ['en_US'])
     config.cf['lang'] = 'en_US'
     config.cf.dump()
 
@@ -42,15 +46,20 @@ class YouMoney (wx.App):
 
 
 def main():
-    home = os.path.dirname(os.path.abspath(sys.argv[0]))
+    #home = os.path.dirname(os.path.abspath(sys.argv[0]))
     #datadir = os.path.join(home, 'data')
     #if not os.path.isdir(datadir):
     #    os.mkdir(datadir)
-    filename = os.path.join(home, "youmoney.log")
+    if sys.platform.startswith('win32'):
+        filename = os.path.join(home, "youmoney.log")
+        vername  = os.path.join(home, "version.dat")
+    else:
+        filename = os.path.join(os.environ['HOME'], ".youmoney", "youmoney.log")
+        vername  = os.path.join(os.environ['HOME'], ".youmoney", "verion.dat")
     logfile.install(filename)
         
     versionfile = os.path.join(home, '')
-    f = open('version.dat', 'w')
+    f = open(vername, 'w')
     f.write(version.VERSION)
     f.close()
 

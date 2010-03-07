@@ -8,7 +8,7 @@ cf = None
 class Configure:
     def __init__(self, charset='utf-8'):
         self.rundir = os.path.dirname(os.path.abspath(sys.argv[0]))
-        print 'rundir:', self.rundir
+        #print 'rundir:', self.rundir
         self.charset = charset
         self.locallang = locale.getdefaultlocale()[0] 
         self.localcharset = locale.getdefaultlocale()[1] 

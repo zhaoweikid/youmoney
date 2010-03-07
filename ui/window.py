@@ -234,9 +234,9 @@ class MainFrame (wx.Frame):
         
         self.toolbar = wx.ToolBar(self, -1, wx.DefaultPosition, wx.Size(48,48), wx.TB_HORIZONTAL|wx.TB_FLAT|wx.TB_TEXT)
         self.toolbar.SetToolBitmapSize(wx.Size (48, 48))
-        self.toolbar.AddLabelTool(self.ID_TB_CATEEDIT, _('Add Category')+'(&T)', load_bitmap('images/categories.png'), shortHelp=_('Add Category'), longHelp=_('Add Category')) 
-        self.toolbar.AddLabelTool(self.ID_TB_INCOME, _('Add Income')+'(&I)', load_bitmap('images/cashin.png'), shortHelp=_('Add Income'), longHelp=_('Add Income')) 
-        self.toolbar.AddLabelTool(self.ID_TB_PAYOUT, _("Add Payout")+'(&P)', load_bitmap('images/cashout.png'), shortHelp=_("Add Payout"), longHelp=_("Add Payout")) 
+        self.toolbar.AddLabelTool(self.ID_TB_CATEEDIT, _('Add Category')+'(&T)', load_bitmap(os.path.join(self.bmpdir, 'categories.png')), shortHelp=_('Add Category'), longHelp=_('Add Category')) 
+        self.toolbar.AddLabelTool(self.ID_TB_INCOME, _('Add Income')+'(&I)', load_bitmap(os.path.join(self.bmpdir, 'cashin.png')), shortHelp=_('Add Income'), longHelp=_('Add Income')) 
+        self.toolbar.AddLabelTool(self.ID_TB_PAYOUT, _("Add Payout")+'(&P)', load_bitmap(os.path.join(self.bmpdir, 'cashout.png')), shortHelp=_("Add Payout"), longHelp=_("Add Payout")) 
 
         self.toolbar.Realize ()
         self.SetToolBar(self.toolbar)

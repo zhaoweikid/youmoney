@@ -95,7 +95,10 @@ class Update:
     def __init__(self):
         self.updatefile = 'http://youmoney.googlecode.com/files/update.txt'
         self.home  = os.path.dirname(os.path.abspath(sys.argv[0]))
-        self.tmpdir = os.path.join(self.home, 'tmp')
+        if sys.platform.startswith('win32'):
+            self.tmpdir = os.path.join(self.home, 'tmp')
+        else:
+            self.tmpdir = os.path.join(os.environ['HOME'], '.youmoney', 'tmp')
 
         if not os.path.isdir(self.tmpdir):
             os.mkdir(self.tmpdir)
