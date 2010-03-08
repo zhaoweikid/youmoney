@@ -8,20 +8,21 @@
 import os, sys
 import threading
 import wx
+import ui
+
 home = os.path.dirname(os.path.abspath(sys.argv[0]))
-sys.path.insert(0, os.path.join(home, "ui"))
-#os.chdir(home)
-import i18n, config
-config.cf = config.Configure()
+
+cf = ui.config.Configure()
 langdir = os.path.join(home, "lang")
 try:
-    i18n.install(langdir, [config.cf['lang']])
+    ui.i18n.install(langdir, [cf['lang']])
 except:
-    i18n.install(langdir, ['en_US'])
-    config.cf['lang'] = 'en_US'
-    config.cf.dump()
+    ui.i18n.install(langdir, ['en_US'])
+    cf['lang'] = 'en_US'
+    cf.dump()
 
-import window, logfile, version, update
+import version
+from ui import window, logfile, update
 
 
 class YouMoney (wx.App):
@@ -29,7 +30,8 @@ class YouMoney (wx.App):
         wx.App.__init__(self, 0)
 
     def OnInit(self):
-        self.frame = window.MainFrame(None, 101, 'YouMoney ' + version.VERSION)
+        global cf
+        self.frame = window.MainFrame(None, 101, 'YouMoney ' + version.VERSION, cf)
         self.frame.Show(True)
         self.frame.CenterOnScreen()
         self.SetTopWindow(self.frame)

@@ -2,7 +2,7 @@
 import os, sys, shutil, zipfile
 import version
 
-def main():
+def win32_main():
     f = open("youmoney.nsi", 'r')
     lines = f.readlines()
     f.close()
@@ -42,14 +42,43 @@ def main():
     shutil.move('dist', newname)
     
     #filename = newname + '.zip'
-    #z = zipfile.ZipFile(filename, 'w')
+    #z = zipfile.ZipFile(filename, 'w', zipfile.ZIP_DEFLATED)
     #for root,dirs,files in os.walk(newname):
     #    for fname in files:
     #        fpath = os.path.join(root, fname)
     #        z.write(fpath)
     #z.close() 
+    
+def mac_main():
+    if os.path.isdir('dist'):
+        shutil.rmtree('dist')
+    if os.path.isdir('build'):
+        shutil.rmtree('build')
+
+    cmd = "/usr/local/bin/python setup.py py2app"
+    if os.system(cmd) != 0:
+        print 'setup.py py2app error!'
+        return
+ 
+    os.chdir('dist')
+    
+    volname = 'YouMoney-macosx10.5-%s' % (version.VERSION)
+    newname = 'YouMoney-macosx10.5-%s.dmg' % (version.VERSION)
+    cmd = 'hdiutil create -megabytes 50 -volname "%s" -format UDIF -srcfolder "youmoney.app" "%s"' % (volname, newname)
+    if os.system(cmd) != 0:
+        print 'create dmg error!'
+        return
+ 
+    filename = 'YouMoney-macosx10.5-%s.dmg.zip' % (version.VERSION)
+    z = zipfile.ZipFile(filename, 'w', zipfile.ZIP_DEFLATED)
+    z.write(newname)
+    z.close() 
+ 
 
 if __name__ == '__main__':
-    main()
+    if sys.platform == 'darwin':
+        mac_main()
+    elif sys.platform.startswith('win32'):
+        win32_main()
 
 

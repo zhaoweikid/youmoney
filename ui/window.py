@@ -11,10 +11,10 @@ import pprint, traceback, logfile, version
 from storage import catetypes, payways
 
 class MainFrame (wx.Frame):
-    def __init__(self, parent, id, title):
+    def __init__(self, parent, id, title, cf):
         wx.Frame.__init__(self, parent, id, title, wx.DefaultPosition, wx.Size(800,600),
                 name=u'YouMoney', style=wx.DEFAULT_FRAME_STYLE)
-
+        config.cf = cf
         self.rundir = os.path.dirname(os.path.abspath(sys.argv[0]))
         self.bmpdir = os.path.join(self.rundir, 'images')
         icon = wx.EmptyIcon()
