@@ -61,15 +61,27 @@ def mac_main():
         return
  
     os.chdir('dist')
+    os.rename('youmoney.app', 'YouMoney.app')
+    os.chdir('../')
+    shutil.copy('README.rtf', 'dist')
     
     volname = 'YouMoney-macosx10.5-%s' % (version.VERSION)
+    if os.path.isdir(volname):
+        shutil.rmtree(volname)
+
+    os.rename('dist', volname)
+
     newname = 'YouMoney-macosx10.5-%s.dmg' % (version.VERSION)
-    cmd = 'hdiutil create -megabytes 50 -volname "%s" -format UDIF -srcfolder "youmoney.app" "%s"' % (volname, newname)
+    if os.path.isfile(newname):
+        os.remove(newname)
+    cmd = 'hdiutil create -megabytes 50 -volname "%s" -format UDIF -srcfolder "%s" "%s"' % (volname, volname, newname)
     if os.system(cmd) != 0:
         print 'create dmg error!'
         return
  
     filename = 'YouMoney-macosx10.5-%s.dmg.zip' % (version.VERSION)
+    if os.path.isfile(filename):
+        os.remove(filename)
     z = zipfile.ZipFile(filename, 'w', zipfile.ZIP_DEFLATED)
     z.write(newname)
     z.close() 
