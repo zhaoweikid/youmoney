@@ -93,7 +93,7 @@ class Downloader:
 
 class Update:
     def __init__(self):
-        self.updatefile = 'http://youmoney.googlecode.com/files/update.txt'
+        self.updatefile = ['http://www.pythonid.com/youmoney/update.php', 'http://youmoney.googlecode.com/files/update.txt']
         self.home  = os.path.dirname(os.path.abspath(sys.argv[0]))
         if sys.platform.startswith('win32'):
             self.tmpdir = os.path.join(self.home, 'tmp')
@@ -102,8 +102,18 @@ class Update:
 
         if not os.path.isdir(self.tmpdir):
             os.mkdir(self.tmpdir)
- 
+
     def update(self):
+        for u in self.updatefile:
+            try:
+                loginfo('try update file:', u)
+                u = u + '?sys=%s' % (sys.platform)
+                self.updateone(u)
+            except:
+                continue
+            break
+
+    def updateone(self, fileurl):
         socket.setdefaulttimeout = 30
         fs = urllib2.urlopen(self.updatefile)
         lines = fs.readlines()

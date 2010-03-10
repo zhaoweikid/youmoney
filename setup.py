@@ -49,6 +49,7 @@ elif sys.platform.startswith('win32'):
                   ('ui', glob.glob('ui/*.py')),
                   ('data', glob.glob('data/*.csv')),
                   ('.', [os.path.join(os.environ['SystemRoot'], 'system32', 'msvcp71.dll')]),
+                  ('.', 'YouMoney.exe.mainifest'),
                   ],
         options = options,
         zipfile = None,
