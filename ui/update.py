@@ -1,8 +1,9 @@
 # coding: utf-8
 import os, sys
 import socket, md5
+import platform
 import urllib, urllib2, httplib
-import urlparse
+import urlparse, traceback, subprocess
 import version
 import logfile, event
 import wx
@@ -106,16 +107,28 @@ class Update:
     def update(self):
         for u in self.updatefile:
             try:
-                loginfo('try update file:', u)
-                u = u + '?sys=%s' % (sys.platform)
+                logfile.info('try update file:', u)
+                info = ''
+                try:
+                    if sys.platform == 'darwin':
+                        x = platform.mac_ver()
+                        info = '%s (Mac OS X %s)' % (platform.platform(), x[0])
+                    else:
+                        info = platform.platform()
+                except:
+                    logfile.info(traceback.format_exc())
+                
+                info = urllib.quote(info).strip()
+                u = u + '?sys=%s&ver=%s&info=%s' % (sys.platform, version.VERSION, info)
                 self.updateone(u)
             except:
+                logfile.info(traceback.format_exc())
                 continue
             break
 
     def updateone(self, fileurl):
         socket.setdefaulttimeout = 30
-        fs = urllib2.urlopen(self.updatefile)
+        fs = urllib2.urlopen(fileurl)
         lines = fs.readlines()
         fs.close() 
 
