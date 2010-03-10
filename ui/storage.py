@@ -44,7 +44,7 @@ class DBStorage:
             self.execute(sql)
         else:
             row = ret[0]
-            name = row['name']
+            name = row[0]
 
     def close(self):
         self.db.close()
