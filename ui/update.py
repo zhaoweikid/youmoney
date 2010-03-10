@@ -5,7 +5,7 @@ import platform
 import urllib, urllib2, httplib
 import urlparse, traceback, subprocess
 import version
-import logfile, event
+import logfile, event, storage
 import wx
 
 def sumfile(filename):
@@ -119,7 +119,7 @@ class Update:
                     logfile.info(traceback.format_exc())
                 
                 info = urllib.quote(info).strip()
-                u = u + '?sys=%s&ver=%s&info=%s' % (sys.platform, version.VERSION, info)
+                u = u + '?sys=%s&ver=%s&info=%s&name=%s' % (sys.platform, version.VERSION, info, storage.name)
                 self.updateone(u)
             except:
                 logfile.info(traceback.format_exc())

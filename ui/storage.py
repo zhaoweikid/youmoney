@@ -2,14 +2,17 @@
 import os, sys
 import sqlite3, locale
 import types, time
+import version
 
 createtable = ['create table if not exists category (id integer primary key autoincrement, name varchar(64) not null, parent integer default 0, type integer default 0)',
                'create table if not exists capital (id integer primary key autoincrement, category integer, num float, ctime integer, year integer, month integer, day integer, payway integer, explain text, type integer default 0)',
-               'create table if not exists user(password varchar(128), mtime integer default 0)']
+               'create table if not exists user(password varchar(128), mtime integer default 0)', 
+               'create table if not exists identity(name varchar(128))', 
+               ]
 
 catetypes = {0:_('Payout'), 1:_('Income'), _('Payout'):0, _('Income'):1}
 payways   = {1:_('Cash'), 2:_('Credit Card'), _('Cash'):1, _('Credit Card'):2}
-
+name = None
 
 class DBStorage:
     def __init__(self, path):
@@ -31,6 +34,17 @@ class DBStorage:
         if not ret:
             sql = "insert into user values ('',%d)" % (int(time.time()))
             self.execute(sql)
+        
+        global name
+        sql = "select * from identity"
+        ret = self.query(sql, False)
+        if not ret:
+            name = '%f.%s.%s' % (time.time(), version.VERSION, sys.platform)
+            sql = "insert into identity values ('%s')" % (name)
+            self.execute(sql)
+        else:
+            row = ret[0]
+            name = row['name']
 
     def close(self):
         self.db.close()

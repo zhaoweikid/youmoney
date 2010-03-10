@@ -1,6 +1,6 @@
 # coding: utf-8
 import os, sys
-import locale
+import locale, time, version
 import types, pprint
 
 cf = None
@@ -43,6 +43,7 @@ class Configure:
             self.iscreate = True
             self.data['lastdb'] = os.path.join(os.path.dirname(self.conffile), "youmoney.db")
             self.data['lang'] = self.locallang
+            #self.data['name'] = str(time.time()) + version.VERSION + sys.platform
             self.dump()
             return
         lines = f.readlines()
@@ -60,7 +61,10 @@ class Configure:
             self.data['lang'] = self.locallang
         if not self.data.has_key('lastdb'):
             self.data['lastdb'] = os.path.join(os.path.dirname(self.conffile), "youmoney.db")
-
+        #if not self.data.has_key('name'):
+        #    self.data['name'] = str(time.time()) + version.VERSION + sys.platform
+        
+        self.dump()
 
     def dump(self):
         f = open(self.conffile, 'w')
