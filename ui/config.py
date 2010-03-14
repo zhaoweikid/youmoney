@@ -79,6 +79,9 @@ class Configure:
     def have(self):
         return os.path.isfile(self.conffile)
 
+    def default_db_path(self):
+        return os.path.join(os.path.dirname(self.conffile), "youmoney.db")
+
     def lastdb_is_default(self):
         if self.data['lastdb'] == os.path.join(self.rundir, 'data', 'youmoney.db'):
             return True

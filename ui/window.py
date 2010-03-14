@@ -96,7 +96,13 @@ class MainFrame (wx.Frame):
     def initdb(self, path=None):
         if not path:
             path = self.conf['lastdb']
-        self.db = storage.DBStorage(path)
+        try:
+            self.db = storage.DBStorage(path)
+        except:
+            wx.MessageBox(_('Error'), _('Account file is not exist! You may create one or open exist.'), wx.OK|wx.ICON_INFORMATION) 
+            path = self.conf.default_db_path()
+            self.conf['lastdb'] = path
+            self.db = storage.DBStorage(path)
         self.SetStatusText(_('Database file: ') + path, 0)
         
     def load(self):
@@ -157,9 +163,9 @@ class MainFrame (wx.Frame):
 
 
         self.filemenu = wx.Menu()
-        self.filemenu.Append(self.ID_FILE_NEW, _('New database file'))
-        self.filemenu.Append(self.ID_FILE_OPEN, _('Open database file'))
-        self.filemenu.Append(self.ID_FILE_SAVEAS, _('Database file save as'))
+        self.filemenu.Append(self.ID_FILE_NEW, _('New Account'))
+        self.filemenu.Append(self.ID_FILE_OPEN, _('Open Account'))
+        self.filemenu.Append(self.ID_FILE_SAVEAS, _('Account Backup'))
         self.filemenu.AppendSeparator()
         self.filemenu.Append(self.ID_FILE_PASSWORD, _('Set Password'))
         self.filemenu.AppendSeparator()
@@ -260,7 +266,7 @@ class MainFrame (wx.Frame):
 
     def OnFileOpen(self, event):
         dlg = wx.FileDialog(
-            self, message=_("Choose database file:"),
+            self, message=_("Choose account file:"),
             defaultDir=os.getcwd(), 
             defaultFile="",
             wildcard=_("YouMoney Database (*.db)|*.db"),
@@ -282,7 +288,7 @@ class MainFrame (wx.Frame):
 
     def OnFileNew(self, event):
         dlg = wx.FileDialog(
-            self, message="New database file save...", defaultDir=os.getcwd(), 
+            self, message="New account file save...", defaultDir=os.getcwd(), 
             defaultFile="", wildcard=_("YouMoney Database (*.db)|*.db"), style=wx.SAVE)
         dlg.SetFilterIndex(2)
         if dlg.ShowModal() == wx.ID_OK:
@@ -292,7 +298,7 @@ class MainFrame (wx.Frame):
                 path += ".db"
  
             if os.path.isfile(path):
-                wx.MessageBox(_('File exist'), _('Can not save database file'), wx.OK|wx.ICON_INFORMATION) 
+                wx.MessageBox(_('File exist'), _('Can not save account file'), wx.OK|wx.ICON_INFORMATION) 
                 return
  
             self.db.close()
@@ -307,7 +313,7 @@ class MainFrame (wx.Frame):
 
     def OnFileSaveAs(self, event):
         dlg = wx.FileDialog(
-            self, message="Database file save as...", defaultDir=os.getcwd(), 
+            self, message="Account save as...", defaultDir=os.getcwd(), 
             defaultFile="", wildcard=_("YouMoney Database (*.db)|*.db"), style=wx.SAVE)
         dlg.SetFilterIndex(2)
         if dlg.ShowModal() == wx.ID_OK:
@@ -319,12 +325,12 @@ class MainFrame (wx.Frame):
             self.conf.dump()
             oldfile = self.conf['lastdb']
             if os.path.isfile(path):
-                wx.MessageBox(_('File exist'), _('Can not save database file'), wx.OK|wx.ICON_INFORMATION) 
+                wx.MessageBox(_('File exist'), _('Can not save account file'), wx.OK|wx.ICON_INFORMATION) 
                 return
             try:
                 shutil.copyfile(self.conf['lastdb'], path)
             except Exception, e:
-                wx.MessageBox(_('Save databse file failture:') + str(e), _('Can not save database file'), wx.OK|wx.ICON_INFORMATION)
+                wx.MessageBox(_('Save account failture:') + str(e), _('Can not save account file'), wx.OK|wx.ICON_INFORMATION)
                 return
             self.db.close()
             if os.path.isfile(oldfile):
