@@ -288,7 +288,7 @@ class MainFrame (wx.Frame):
 
     def OnFileNew(self, event):
         dlg = wx.FileDialog(
-            self, message="New account file save...", defaultDir=os.getcwd(), 
+            self, message=_("New account file save..."), defaultDir=os.getcwd(), 
             defaultFile="", wildcard=_("YouMoney Database (*.db)|*.db"), style=wx.SAVE)
         dlg.SetFilterIndex(2)
         if dlg.ShowModal() == wx.ID_OK:
@@ -313,7 +313,7 @@ class MainFrame (wx.Frame):
 
     def OnFileSaveAs(self, event):
         dlg = wx.FileDialog(
-            self, message="Account save as...", defaultDir=os.getcwd(), 
+            self, message=_("Account save as..."), defaultDir=os.getcwd(), 
             defaultFile="", wildcard=_("YouMoney Database (*.db)|*.db"), style=wx.SAVE)
         dlg.SetFilterIndex(2)
         if dlg.ShowModal() == wx.ID_OK:
