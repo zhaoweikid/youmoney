@@ -54,6 +54,7 @@ class MainFrame (wx.Frame):
     def initcate(self):
         sql = "select count(*) from category"
         count = self.db.query_one(sql)
+        #print 'count:', count, 'iscreate:', config.cf.iscreate, 'lang:', config.cf['lang']
         if count == 0 and config.cf.iscreate and config.cf['lang'] == 'zh_CN':
             path = os.path.join(self.rundir, 'data', 'category.csv')
             if not os.path.isfile(path):
@@ -101,7 +102,7 @@ class MainFrame (wx.Frame):
             path = self.conf.default_db_path()
             self.conf['lastdb'] = path
             self.db = storage.DBStorage(path)
-        self.SetStatusText(_('Database file: ') + path, 0)
+        #self.SetStatusText(_('Database file: ') + path, 0)
         
     def load(self):
         tday = datetime.date.today()
@@ -111,6 +112,7 @@ class MainFrame (wx.Frame):
         recs  = self.db.query(sql)
    
         self.category = Category(cates, recs)
+        self.SetStatusText(_('Database file: ') + self.conf['lastdb'], 0)
 
     
     def reload(self):
@@ -284,7 +286,7 @@ class MainFrame (wx.Frame):
             self.reload()
             self.conf['lastdb'] = path
             self.conf.dump()
-        
+            
         dlg.Destroy()
 
     def OnFileNew(self, event):
@@ -304,10 +306,14 @@ class MainFrame (wx.Frame):
  
             self.db.close()
             self.initdb(path)
-            #self.db = storage.DBStorage(path)
             self.reload()
             self.conf['lastdb'] = path
             self.conf.dump()
+
+            self.conf.iscreate = True
+            self.initcate()
+ 
+            self.SetStatusText(_('Database file: ') + self.conf['lastdb'], 0)
  
         dlg.Destroy()
 
@@ -323,8 +329,6 @@ class MainFrame (wx.Frame):
             if not path.endswith('.db'):
                 path += ".db"
             
-            #self.conf.dump()
-            #oldfile = self.conf['lastdb']
             if os.path.isfile(path):
                 wx.MessageBox(_('File exist'), _('Can not save account file'), wx.OK|wx.ICON_INFORMATION) 
                 return
@@ -333,14 +337,6 @@ class MainFrame (wx.Frame):
             except Exception, e:
                 wx.MessageBox(_('Save account failture:') + str(e), _('Can not save account file'), wx.OK|wx.ICON_INFORMATION)
                 return
-            #self.db.close()
-            #if os.path.isfile(oldfile):
-            #    os.remove(oldfile)
-            #self.initdb(path)
-            #self.db = storage.DBStorage(path)
-            #self.reload()
-            #self.conf['lastdb'] = path
-            #self.conf.dump()
         
         dlg.Destroy()
 
@@ -373,9 +369,10 @@ class MainFrame (wx.Frame):
             self.reload()
             self.conf['lastdb'] = path
             self.conf.dump()
+            
+            self.SetStatusText(_('Database file: ') + self.conf['lastdb'], 0)
         
         dlg.Destroy()
-
 
 
     def OnCateEdit(self, event):
