@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Mon Mar 15 12:41:18 2010\n"
+"POT-Creation-Date: Tue Mar 16 11:16:37 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jacky MA <jackyma1981@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,8 +30,8 @@ msgstr "収入"
 #: D:\projects\youmoney\ui\statpanel.py:38
 #: D:\projects\youmoney\ui\statpanel.py:46
 #: D:\projects\youmoney\ui\statpanel.py:87
-#: D:\projects\youmoney\ui\storage.py:13 D:\projects\youmoney\ui\window.py:348
-#: D:\projects\youmoney\ui\window.py:355 D:\projects\youmoney\ui\window.py:371
+#: D:\projects\youmoney\ui\storage.py:13 D:\projects\youmoney\ui\window.py:382
+#: D:\projects\youmoney\ui\window.py:389 D:\projects\youmoney\ui\window.py:405
 msgid "Payout"
 msgstr "支出"
 
@@ -41,8 +41,8 @@ msgstr "支出"
 #: D:\projects\youmoney\ui\panels.py:103
 #: D:\projects\youmoney\ui\statpanel.py:38
 #: D:\projects\youmoney\ui\statpanel.py:89
-#: D:\projects\youmoney\ui\storage.py:13 D:\projects\youmoney\ui\window.py:354
-#: D:\projects\youmoney\ui\window.py:368
+#: D:\projects\youmoney\ui\storage.py:13 D:\projects\youmoney\ui\window.py:388
+#: D:\projects\youmoney\ui\window.py:402
 msgid "Income"
 msgstr "収入"
 
@@ -87,7 +87,7 @@ msgstr "支払方法:"
 
 #: D:\projects\youmoney\ui\dialogs.py:130
 #: D:\projects\youmoney\ui\panels.py:261 D:\projects\youmoney\ui\panels.py:292
-#: D:\projects\youmoney\ui\storage.py:14 D:\projects\youmoney\ui\window.py:475
+#: D:\projects\youmoney\ui\storage.py:14 D:\projects\youmoney\ui\window.py:509
 msgid "Cash"
 msgstr "現金"
 
@@ -98,7 +98,7 @@ msgid "Credit Card"
 msgstr "クレジットカード"
 
 #: D:\projects\youmoney\ui\dialogs.py:176
-#: D:\projects\youmoney\ui\window.py:179 D:\projects\youmoney\ui\window.py:243
+#: D:\projects\youmoney\ui\window.py:179 D:\projects\youmoney\ui\window.py:244
 msgid "Add Category"
 msgstr "カテゴリを追加"
 
@@ -144,7 +144,7 @@ msgid "Password: "
 msgstr ""
 
 #: D:\projects\youmoney\ui\dialogs.py:291
-#: D:\projects\youmoney\ui\window.py:157
+#: D:\projects\youmoney\ui\window.py:156
 msgid "Import Category"
 msgstr ""
 
@@ -203,12 +203,12 @@ msgstr ""
 
 #: D:\projects\youmoney\ui\dialogs.py:328
 #: D:\projects\youmoney\ui\dialogs.py:379
-#: D:\projects\youmoney\ui\window.py:658 D:\projects\youmoney\ui\window.py:673
+#: D:\projects\youmoney\ui\window.py:692 D:\projects\youmoney\ui\window.py:707
 msgid "csv file (*.csv)|*.csv"
 msgstr ""
 
 #: D:\projects\youmoney\ui\dialogs.py:338
-#: D:\projects\youmoney\ui\window.py:158
+#: D:\projects\youmoney\ui\window.py:157
 msgid "Import Data"
 msgstr ""
 
@@ -324,10 +324,10 @@ msgstr "今月総計"
 msgid "Delete"
 msgstr "削除"
 
-#: D:\projects\youmoney\ui\panels.py:99 D:\projects\youmoney\ui\window.py:348
-#: D:\projects\youmoney\ui\window.py:354 D:\projects\youmoney\ui\window.py:355
-#: D:\projects\youmoney\ui\window.py:359 D:\projects\youmoney\ui\window.py:369
-#: D:\projects\youmoney\ui\window.py:372
+#: D:\projects\youmoney\ui\panels.py:99 D:\projects\youmoney\ui\window.py:382
+#: D:\projects\youmoney\ui\window.py:388 D:\projects\youmoney\ui\window.py:389
+#: D:\projects\youmoney\ui\window.py:393 D:\projects\youmoney\ui\window.py:403
+#: D:\projects\youmoney\ui\window.py:406
 msgid "No Higher Category"
 msgstr "上級のカテゴリがなし"
 
@@ -431,48 +431,52 @@ msgstr "分類"
 msgid "Month Stat"
 msgstr "月額"
 
-#: D:\projects\youmoney\ui\window.py:73
-msgid "You db file is in default path, strongly advise save it to other path."
-msgstr "現在のデータベースファイルがインストールディレクトリに保存されていますので、ソフトをアンインストールしたり、システムを再インストールしたりよりデータをなくなる恐れがあるため、他の場所へ保存するのはお勧めです。"
+#: D:\projects\youmoney\ui\window.py:71
+msgid "You db file is in default path, strongly advise save it to other path. Choose menu File->Change Account Path to change path."
+msgstr ""
 
-#: D:\projects\youmoney\ui\window.py:73 D:\projects\youmoney\ui\window.py:554
+#: D:\projects\youmoney\ui\window.py:71 D:\projects\youmoney\ui\window.py:588
 msgid "Note:"
 msgstr "注意:"
 
-#: D:\projects\youmoney\ui\window.py:91
+#: D:\projects\youmoney\ui\window.py:89
 msgid "Password error."
 msgstr ""
 
-#: D:\projects\youmoney\ui\window.py:102
+#: D:\projects\youmoney\ui\window.py:100
 msgid "Account file is not exist! You may create one or open exist."
 msgstr ""
 
-#: D:\projects\youmoney\ui\window.py:102
+#: D:\projects\youmoney\ui\window.py:100
 msgid "Error"
 msgstr ""
 
-#: D:\projects\youmoney\ui\window.py:106
+#: D:\projects\youmoney\ui\window.py:104
 msgid "Database file: "
 msgstr "データベースファイル: "
 
-#: D:\projects\youmoney\ui\window.py:161 D:\projects\youmoney\ui\window.py:657
+#: D:\projects\youmoney\ui\window.py:160 D:\projects\youmoney\ui\window.py:691
 msgid "Export Category"
 msgstr ""
 
-#: D:\projects\youmoney\ui\window.py:162 D:\projects\youmoney\ui\window.py:672
+#: D:\projects\youmoney\ui\window.py:161 D:\projects\youmoney\ui\window.py:706
 msgid "Export Data"
 msgstr ""
 
-#: D:\projects\youmoney\ui\window.py:166
+#: D:\projects\youmoney\ui\window.py:165
 msgid "New Account"
 msgstr ""
 
-#: D:\projects\youmoney\ui\window.py:167
+#: D:\projects\youmoney\ui\window.py:166
 msgid "Open Account"
 msgstr ""
 
-#: D:\projects\youmoney\ui\window.py:168
+#: D:\projects\youmoney\ui\window.py:167
 msgid "Account Backup"
+msgstr ""
+
+#: D:\projects\youmoney\ui\window.py:168
+msgid "Change Account Path"
 msgstr ""
 
 #: D:\projects\youmoney\ui\window.py:172
@@ -491,11 +495,11 @@ msgstr "終了"
 msgid "File"
 msgstr "ファイル"
 
-#: D:\projects\youmoney\ui\window.py:180 D:\projects\youmoney\ui\window.py:244
+#: D:\projects\youmoney\ui\window.py:180 D:\projects\youmoney\ui\window.py:245
 msgid "Add Income"
 msgstr "収入を追加"
 
-#: D:\projects\youmoney\ui\window.py:181 D:\projects\youmoney\ui\window.py:245
+#: D:\projects\youmoney\ui\window.py:181 D:\projects\youmoney\ui\window.py:246
 msgid "Add Payout"
 msgstr "支出を追加"
 
@@ -531,129 +535,139 @@ msgstr "YouMoneyのバージョン情報"
 msgid "About"
 msgstr "ヘルプ"
 
-#: D:\projects\youmoney\ui\window.py:269
+#: D:\projects\youmoney\ui\window.py:270
 msgid "Choose account file:"
 msgstr ""
 
-#: D:\projects\youmoney\ui\window.py:272 D:\projects\youmoney\ui\window.py:292
-#: D:\projects\youmoney\ui\window.py:317
+#: D:\projects\youmoney\ui\window.py:273 D:\projects\youmoney\ui\window.py:293
+#: D:\projects\youmoney\ui\window.py:318 D:\projects\youmoney\ui\window.py:350
 msgid "YouMoney Database (*.db)|*.db"
 msgstr "YouMoney データベースファイル (*.db)|*.db"
 
-#: D:\projects\youmoney\ui\window.py:291
+#: D:\projects\youmoney\ui\window.py:292
 msgid "New account file save..."
 msgstr ""
 
-#: D:\projects\youmoney\ui\window.py:301 D:\projects\youmoney\ui\window.py:328
-msgid "File exist"
-msgstr "ファイルを既に存在する"
-
-#: D:\projects\youmoney\ui\window.py:301 D:\projects\youmoney\ui\window.py:328
-#: D:\projects\youmoney\ui\window.py:333
+#: D:\projects\youmoney\ui\window.py:302 D:\projects\youmoney\ui\window.py:329
+#: D:\projects\youmoney\ui\window.py:334 D:\projects\youmoney\ui\window.py:361
+#: D:\projects\youmoney\ui\window.py:366
 msgid "Can not save account file"
 msgstr ""
 
-#: D:\projects\youmoney\ui\window.py:316
+#: D:\projects\youmoney\ui\window.py:302 D:\projects\youmoney\ui\window.py:329
+#: D:\projects\youmoney\ui\window.py:361
+msgid "File exist"
+msgstr "ファイルを既に存在する"
+
+#: D:\projects\youmoney\ui\window.py:317
 msgid "Account save as..."
 msgstr ""
 
-#: D:\projects\youmoney\ui\window.py:333
+#: D:\projects\youmoney\ui\window.py:334
 msgid "Save account failture:"
 msgstr ""
 
-#: D:\projects\youmoney\ui\window.py:383
+#: D:\projects\youmoney\ui\window.py:349
+msgid "Change account path..."
+msgstr ""
+
+#: D:\projects\youmoney\ui\window.py:366
+msgid "Change account path failture:"
+msgstr ""
+
+#: D:\projects\youmoney\ui\window.py:417
 msgid "Add category failture:"
 msgstr "カテゴリを追加失敗:"
 
-#: D:\projects\youmoney\ui\window.py:383
+#: D:\projects\youmoney\ui\window.py:417
 msgid "Add category information"
 msgstr "カテゴリインフォメーションを追加"
 
-#: D:\projects\youmoney\ui\window.py:393
+#: D:\projects\youmoney\ui\window.py:427
 msgid "Change category failture:"
 msgstr "カテゴリを変更失敗:"
 
-#: D:\projects\youmoney\ui\window.py:393
+#: D:\projects\youmoney\ui\window.py:427
 msgid "Change category information"
 msgstr "カテゴリインフォメーションを変更失敗"
 
-#: D:\projects\youmoney\ui\window.py:402
+#: D:\projects\youmoney\ui\window.py:436
 msgid "Can not add income item"
 msgstr "収入を追加できない"
 
-#: D:\projects\youmoney\ui\window.py:402 D:\projects\youmoney\ui\window.py:470
+#: D:\projects\youmoney\ui\window.py:436 D:\projects\youmoney\ui\window.py:504
 msgid "Add category first!"
 msgstr "カテゴリが無いため、カテゴリを追加してください!"
 
-#: D:\projects\youmoney\ui\window.py:435
+#: D:\projects\youmoney\ui\window.py:469
 msgid "Add payout failture:"
 msgstr "支出を追加できない:"
 
-#: D:\projects\youmoney\ui\window.py:435
+#: D:\projects\youmoney\ui\window.py:469
 msgid "Add payout information"
 msgstr "支出明細を追加"
 
-#: D:\projects\youmoney\ui\window.py:455 D:\projects\youmoney\ui\window.py:524
+#: D:\projects\youmoney\ui\window.py:489 D:\projects\youmoney\ui\window.py:558
 msgid "Change income failture:"
 msgstr "収入を変更失敗:"
 
-#: D:\projects\youmoney\ui\window.py:455 D:\projects\youmoney\ui\window.py:524
+#: D:\projects\youmoney\ui\window.py:489 D:\projects\youmoney\ui\window.py:558
 msgid "Change income information"
 msgstr "収入明細を変更"
 
-#: D:\projects\youmoney\ui\window.py:470
+#: D:\projects\youmoney\ui\window.py:504
 msgid "Can not add payout item"
 msgstr "支出を追加できない"
 
-#: D:\projects\youmoney\ui\window.py:503
+#: D:\projects\youmoney\ui\window.py:537
 msgid "Add income failture:"
 msgstr "収入を追加失敗:"
 
-#: D:\projects\youmoney\ui\window.py:503
+#: D:\projects\youmoney\ui\window.py:537
 msgid "Add income information"
 msgstr "収入明細を追加"
 
-#: D:\projects\youmoney\ui\window.py:554
+#: D:\projects\youmoney\ui\window.py:588
 msgid "Language changed! You must restart youmoney !"
 msgstr "言語を変更しました！再起動から生効！"
 
-#: D:\projects\youmoney\ui\window.py:561
+#: D:\projects\youmoney\ui\window.py:595
 msgid "YouMoney is a opensource personal finance software write by Python language."
 msgstr "YouMoneyはpythonの言語を使用して作られたオペンソースソフトです。"
 
-#: D:\projects\youmoney\ui\window.py:563
+#: D:\projects\youmoney\ui\window.py:597
 msgid "YouMoney home page"
 msgstr "YouMoneyのホームペッジ"
 
-#: D:\projects\youmoney\ui\window.py:585
+#: D:\projects\youmoney\ui\window.py:619
 msgid "Password must not null."
 msgstr ""
 
-#: D:\projects\youmoney\ui\window.py:589
+#: D:\projects\youmoney\ui\window.py:623
 msgid "Different password."
 msgstr ""
 
-#: D:\projects\youmoney\ui\window.py:625 D:\projects\youmoney\ui\window.py:648
+#: D:\projects\youmoney\ui\window.py:659 D:\projects\youmoney\ui\window.py:682
 msgid "Import Error:"
 msgstr ""
 
-#: D:\projects\youmoney\ui\window.py:627 D:\projects\youmoney\ui\window.py:650
+#: D:\projects\youmoney\ui\window.py:661 D:\projects\youmoney\ui\window.py:684
 msgid "Import complete!"
 msgstr ""
 
-#: D:\projects\youmoney\ui\window.py:627 D:\projects\youmoney\ui\window.py:650
+#: D:\projects\youmoney\ui\window.py:661 D:\projects\youmoney\ui\window.py:684
 msgid "Information"
 msgstr ""
 
-#: D:\projects\youmoney\ui\window.py:641
+#: D:\projects\youmoney\ui\window.py:675
 msgid "Importing..."
 msgstr ""
 
-#: D:\projects\youmoney\ui\window.py:641
+#: D:\projects\youmoney\ui\window.py:675
 msgid "Waiting for importing."
 msgstr ""
 
-#: D:\projects\youmoney\ui\window.py:667 D:\projects\youmoney\ui\window.py:682
+#: D:\projects\youmoney\ui\window.py:701 D:\projects\youmoney\ui\window.py:716
 msgid "Export Error:"
 msgstr ""
 

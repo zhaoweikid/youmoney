@@ -61,6 +61,9 @@ class Configure:
             self.data['lang'] = self.locallang
         if not self.data.has_key('lastdb'):
             self.data['lastdb'] = os.path.join(os.path.dirname(self.conffile), "youmoney.db")
+
+        if not os.path.isfile(self.data['lastdb']):
+            self.iscreate = True
         #if not self.data.has_key('name'):
         #    self.data['name'] = str(time.time()) + version.VERSION + sys.platform
         

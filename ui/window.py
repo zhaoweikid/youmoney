@@ -22,7 +22,6 @@ class MainFrame (wx.Frame):
         icon.CopyFromBitmap(wx.BitmapFromImage(wx.Image(iconpath, wx.BITMAP_TYPE_PNG)))
         self.SetIcon(icon)
 
-        #self.conf = config.Configure()
         if config.cf:
             self.conf = config.cf
         else:
@@ -55,7 +54,6 @@ class MainFrame (wx.Frame):
     def initcate(self):
         sql = "select count(*) from category"
         count = self.db.query_one(sql)
-        #print 'count:', count, config.cf.iscreate, config.cf['lang']
         if count == 0 and config.cf.iscreate and config.cf['lang'] == 'zh_CN':
             path = os.path.join(self.rundir, 'data', 'category.csv')
             if not os.path.isfile(path):
@@ -70,7 +68,7 @@ class MainFrame (wx.Frame):
     def notify(self):
         lastdb = self.conf['lastdb']
         if sys.platform.startswith('win32') and lastdb.startswith(os.environ['SystemDrive']) and self.conf.lastdb_is_default():
-            wx.MessageBox(_('You db file is in default path, strongly advise save it to other path.'), _('Note:'), wx.OK|wx.ICON_INFORMATION)
+            wx.MessageBox(_('You db file is in default path, strongly advise save it to other path. Choose menu File->Change Account Path to change path.'), _('Note:'), wx.OK|wx.ICON_INFORMATION)
         
 
     def check_password(self):
@@ -124,6 +122,7 @@ class MainFrame (wx.Frame):
         self.ID_FILE_NEW  = wx.NewId()
         self.ID_FILE_OPEN = wx.NewId()
         self.ID_FILE_SAVEAS = wx.NewId()
+        self.ID_FILE_CHANGE = wx.NewId()
         self.ID_FILE_PASSWORD = wx.NewId()
         self.ID_FILE_IMPORT = wx.NewId()
         self.ID_FILE_IMPORT_CATE = wx.NewId()
@@ -166,6 +165,7 @@ class MainFrame (wx.Frame):
         self.filemenu.Append(self.ID_FILE_NEW, _('New Account'))
         self.filemenu.Append(self.ID_FILE_OPEN, _('Open Account'))
         self.filemenu.Append(self.ID_FILE_SAVEAS, _('Account Backup'))
+        self.filemenu.Append(self.ID_FILE_CHANGE, _('Change Account Path'))
         self.filemenu.AppendSeparator()
         self.filemenu.Append(self.ID_FILE_PASSWORD, _('Set Password'))
         self.filemenu.AppendSeparator()
@@ -205,6 +205,7 @@ class MainFrame (wx.Frame):
         self.Bind(wx.EVT_MENU, self.OnFileNew, id=self.ID_FILE_NEW)
         self.Bind(wx.EVT_MENU, self.OnFileOpen, id=self.ID_FILE_OPEN)
         self.Bind(wx.EVT_MENU, self.OnFileSaveAs, id=self.ID_FILE_SAVEAS)
+        self.Bind(wx.EVT_MENU, self.OnFileChange, id=self.ID_FILE_CHANGE)
         self.Bind(wx.EVT_MENU, self.OnFilePassword, id=self.ID_FILE_PASSWORD)
         self.Bind(wx.EVT_MENU, self.OnFileImportCate, id=self.ID_FILE_IMPORT_CATE)
         self.Bind(wx.EVT_MENU, self.OnFileImportData, id=self.ID_FILE_IMPORT_DATA)
@@ -322,6 +323,38 @@ class MainFrame (wx.Frame):
             if not path.endswith('.db'):
                 path += ".db"
             
+            #self.conf.dump()
+            #oldfile = self.conf['lastdb']
+            if os.path.isfile(path):
+                wx.MessageBox(_('File exist'), _('Can not save account file'), wx.OK|wx.ICON_INFORMATION) 
+                return
+            try:
+                shutil.copyfile(self.conf['lastdb'], path)
+            except Exception, e:
+                wx.MessageBox(_('Save account failture:') + str(e), _('Can not save account file'), wx.OK|wx.ICON_INFORMATION)
+                return
+            #self.db.close()
+            #if os.path.isfile(oldfile):
+            #    os.remove(oldfile)
+            #self.initdb(path)
+            #self.db = storage.DBStorage(path)
+            #self.reload()
+            #self.conf['lastdb'] = path
+            #self.conf.dump()
+        
+        dlg.Destroy()
+
+    def OnFileChange(self, event):
+        dlg = wx.FileDialog(
+            self, message=_("Change account path..."), defaultDir=os.getcwd(), 
+            defaultFile="", wildcard=_("YouMoney Database (*.db)|*.db"), style=wx.SAVE)
+        dlg.SetFilterIndex(2)
+        if dlg.ShowModal() == wx.ID_OK:
+            path = dlg.GetPath()
+            logfile.info("save file:", path) 
+            if not path.endswith('.db'):
+                path += ".db"
+            
             self.conf.dump()
             oldfile = self.conf['lastdb']
             if os.path.isfile(path):
@@ -330,7 +363,7 @@ class MainFrame (wx.Frame):
             try:
                 shutil.copyfile(self.conf['lastdb'], path)
             except Exception, e:
-                wx.MessageBox(_('Save account failture:') + str(e), _('Can not save account file'), wx.OK|wx.ICON_INFORMATION)
+                wx.MessageBox(_('Change account path failture:') + str(e), _('Can not save account file'), wx.OK|wx.ICON_INFORMATION)
                 return
             self.db.close()
             if os.path.isfile(oldfile):
@@ -342,6 +375,7 @@ class MainFrame (wx.Frame):
             self.conf.dump()
         
         dlg.Destroy()
+
 
 
     def OnCateEdit(self, event):
