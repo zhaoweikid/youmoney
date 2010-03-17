@@ -1,0 +1,13 @@
+Source: youmoney
+Section: Office
+Priority: extra
+Maintainer: zhaowei <zhaoweikid@gmail.com>
+Build-Depends: debhelper (>= 7)
+Standards-Version: 3.8.1
+Homepage: http://code.google.com/p/youmoney/
+
+Package: youmoney
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
