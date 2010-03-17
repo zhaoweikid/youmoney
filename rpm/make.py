@@ -1,11 +1,31 @@
 #!/usr/bin/python
 import os, sys
 
+def change_version(filename, ver):
+    fr = open(filename, 'r')
+    fw = open(filename + '.new', 'w')
+        
+    for line in fr:
+        if line.startswith('Version:'):
+            fw.write('Version: %s\n' % (ver))
+        else:
+            fw.write(line)
+
+    fr.close()
+    fw.close()
+
 def main():
     spechome = os.path.dirname(os.path.abspath(__file__))
     home = os.path.dirname(spechome)
     sys.path.insert(0, home)
     import version
+    
+    change_version("youmoney.spec", version.VERSION)
+    if os.path.isfile('youmoney.spec.old'):
+        os.remove('youmoney.spec.old')
+    os.rename('youmoney.spec', 'youmoney.spec.old')
+    os.rename('youmoney.spec.new', 'youmoney.spec')
+
     dir = os.path.dirname(home)
     #print dir
     os.chdir(dir)
