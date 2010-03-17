@@ -125,7 +125,7 @@ msgstr "ダウンロードページを開けて"
 #: D:\projects\youmoney\ui\dialogs.py:236
 #: D:\projects\youmoney\ui\window.py:170
 msgid "Set Password"
-msgstr ""
+msgstr "パスワード"
 
 #: D:\projects\youmoney\ui\dialogs.py:245
 msgid "Password:"
@@ -133,24 +133,24 @@ msgstr "暗号:"
 
 #: D:\projects\youmoney\ui\dialogs.py:248
 msgid "Password Again:"
-msgstr ""
+msgstr "暗号の再入力:"
 
 #: D:\projects\youmoney\ui\dialogs.py:265
 msgid "User Password"
-msgstr ""
+msgstr "暗号"
 
 #: D:\projects\youmoney\ui\dialogs.py:274
 msgid "Password: "
-msgstr ""
+msgstr "暗号: "
 
 #: D:\projects\youmoney\ui\dialogs.py:291
 #: D:\projects\youmoney\ui\window.py:156
 msgid "Import Category"
-msgstr ""
+msgstr "インポート分類"
 
 #: D:\projects\youmoney\ui\dialogs.py:297
 msgid "Import category format:"
-msgstr ""
+msgstr "分類フォーマット:"
 
 #: D:\projects\youmoney\ui\dialogs.py:298
 #: D:\projects\youmoney\ui\dialogs.py:345
@@ -189,17 +189,17 @@ msgstr ""
 #: D:\projects\youmoney\ui\dialogs.py:312
 #: D:\projects\youmoney\ui\dialogs.py:363
 msgid "Open csv file:"
-msgstr ""
+msgstr "csvファイルを開く:"
 
 #: D:\projects\youmoney\ui\dialogs.py:314
 #: D:\projects\youmoney\ui\dialogs.py:365
 msgid "Browse csv file"
-msgstr ""
+msgstr "閲覧csvファイル"
 
 #: D:\projects\youmoney\ui\dialogs.py:327
 #: D:\projects\youmoney\ui\dialogs.py:378
 msgid "Choose csv file:"
-msgstr ""
+msgstr "選択してcsvファイル:"
 
 #: D:\projects\youmoney\ui\dialogs.py:328
 #: D:\projects\youmoney\ui\dialogs.py:379
@@ -210,11 +210,11 @@ msgstr ""
 #: D:\projects\youmoney\ui\dialogs.py:338
 #: D:\projects\youmoney\ui\window.py:157
 msgid "Import Data"
-msgstr ""
+msgstr "データのインポート"
 
 #: D:\projects\youmoney\ui\dialogs.py:344
 msgid "Import data format:"
-msgstr ""
+msgstr "データフォーマット"
 
 #: D:\projects\youmoney\ui\dialogs.py:346
 msgid "This have ten fields: Main Category,Sub Category,Money,Payway,Type,Time,Year,Month,Day,Explain."
@@ -272,31 +272,31 @@ msgstr "金額"
 
 #: D:\projects\youmoney\ui\export.py:31 D:\projects\youmoney\ui\export.py:75
 msgid "Main Category"
-msgstr ""
+msgstr "主なカテゴリ"
 
 #: D:\projects\youmoney\ui\export.py:31 D:\projects\youmoney\ui\export.py:75
 msgid "Sub Category"
-msgstr ""
+msgstr "サブクラス"
 
 #: D:\projects\youmoney\ui\export.py:31 D:\projects\youmoney\ui\export.py:75
 msgid "Type"
-msgstr ""
+msgstr "種類"
 
 #: D:\projects\youmoney\ui\export.py:75
 msgid "Day"
-msgstr ""
+msgstr "日"
 
 #: D:\projects\youmoney\ui\export.py:75
 msgid "Month"
-msgstr ""
+msgstr "月"
 
 #: D:\projects\youmoney\ui\export.py:75
 msgid "Payway"
-msgstr ""
+msgstr "お支払い方法"
 
 #: D:\projects\youmoney\ui\export.py:75
 msgid "Year"
-msgstr ""
+msgstr "年"
 
 #: D:\projects\youmoney\ui\export.py:75 D:\projects\youmoney\ui\panels.py:229
 #: D:\projects\youmoney\ui\panels.py:232
@@ -433,7 +433,7 @@ msgstr "月額"
 
 #: D:\projects\youmoney\ui\window.py:71
 msgid "You db file is in default path, strongly advise save it to other path. Choose menu File->Change Account Path to change path."
-msgstr ""
+msgstr "デフォルトのディレクトリであなたのアカウント,他の場所には強く推奨されている.メニューバーで、このパスを変更することができます:ファイル->アカウントを変更パス"
 
 #: D:\projects\youmoney\ui\window.py:71 D:\projects\youmoney\ui\window.py:588
 msgid "Note:"
@@ -441,15 +441,15 @@ msgstr "注意:"
 
 #: D:\projects\youmoney\ui\window.py:89
 msgid "Password error."
-msgstr ""
+msgstr "パスワードエラーが発生."
 
 #: D:\projects\youmoney\ui\window.py:100
 msgid "Account file is not exist! You may create one or open exist."
-msgstr ""
+msgstr "アカウントファイルを作成またはオープンする必要が存在しない."
 
 #: D:\projects\youmoney\ui\window.py:100
 msgid "Error"
-msgstr ""
+msgstr "ミス"
 
 #: D:\projects\youmoney\ui\window.py:104
 msgid "Database file: "
@@ -457,35 +457,35 @@ msgstr "データベースファイル: "
 
 #: D:\projects\youmoney\ui\window.py:160 D:\projects\youmoney\ui\window.py:691
 msgid "Export Category"
-msgstr ""
+msgstr "エクスポート分類"
 
 #: D:\projects\youmoney\ui\window.py:161 D:\projects\youmoney\ui\window.py:706
 msgid "Export Data"
-msgstr ""
+msgstr "データのエクスポート"
 
 #: D:\projects\youmoney\ui\window.py:165
 msgid "New Account"
-msgstr ""
+msgstr "新しいアカウント"
 
 #: D:\projects\youmoney\ui\window.py:166
 msgid "Open Account"
-msgstr ""
+msgstr "アカウントを開く"
 
 #: D:\projects\youmoney\ui\window.py:167
 msgid "Account Backup"
-msgstr ""
+msgstr "バックアップアカウント"
 
 #: D:\projects\youmoney\ui\window.py:168
 msgid "Change Account Path"
-msgstr ""
+msgstr "アカウントを変更パス"
 
 #: D:\projects\youmoney\ui\window.py:172
 msgid "Import"
-msgstr ""
+msgstr "インポート"
 
 #: D:\projects\youmoney\ui\window.py:173
 msgid "Export"
-msgstr ""
+msgstr "エクスポート"
 
 #: D:\projects\youmoney\ui\window.py:175
 msgid "Exit"
@@ -537,7 +537,7 @@ msgstr "ヘルプ"
 
 #: D:\projects\youmoney\ui\window.py:270
 msgid "Choose account file:"
-msgstr ""
+msgstr "アカウントの選択ファイル:"
 
 #: D:\projects\youmoney\ui\window.py:273 D:\projects\youmoney\ui\window.py:293
 #: D:\projects\youmoney\ui\window.py:318 D:\projects\youmoney\ui\window.py:350
@@ -546,13 +546,13 @@ msgstr "YouMoney データベースファイル (*.db)|*.db"
 
 #: D:\projects\youmoney\ui\window.py:292
 msgid "New account file save..."
-msgstr ""
+msgstr "新しいアカウントを作成文書の保存"
 
 #: D:\projects\youmoney\ui\window.py:302 D:\projects\youmoney\ui\window.py:329
 #: D:\projects\youmoney\ui\window.py:334 D:\projects\youmoney\ui\window.py:361
 #: D:\projects\youmoney\ui\window.py:366
 msgid "Can not save account file"
-msgstr ""
+msgstr "アカウントをファイルに保存できません"
 
 #: D:\projects\youmoney\ui\window.py:302 D:\projects\youmoney\ui\window.py:329
 #: D:\projects\youmoney\ui\window.py:361
@@ -561,19 +561,19 @@ msgstr "ファイルを既に存在する"
 
 #: D:\projects\youmoney\ui\window.py:317
 msgid "Account save as..."
-msgstr ""
+msgstr "アカウントに保存する"
 
 #: D:\projects\youmoney\ui\window.py:334
 msgid "Save account failture:"
-msgstr ""
+msgstr "アカウントの保存に失敗しました:"
 
 #: D:\projects\youmoney\ui\window.py:349
 msgid "Change account path..."
-msgstr ""
+msgstr "アカウントを変更パス..."
 
 #: D:\projects\youmoney\ui\window.py:366
 msgid "Change account path failture:"
-msgstr ""
+msgstr "アカウントを変更、パスの障害:"
 
 #: D:\projects\youmoney\ui\window.py:417
 msgid "Add category failture:"
@@ -641,33 +641,33 @@ msgstr "YouMoneyのホームペッジ"
 
 #: D:\projects\youmoney\ui\window.py:619
 msgid "Password must not null."
-msgstr ""
+msgstr "パスワードを空にすることはできません"
 
 #: D:\projects\youmoney\ui\window.py:623
 msgid "Different password."
-msgstr ""
+msgstr "パスワードを一貫性のない"
 
 #: D:\projects\youmoney\ui\window.py:659 D:\projects\youmoney\ui\window.py:682
 msgid "Import Error:"
-msgstr ""
+msgstr "インポートエラー"
 
 #: D:\projects\youmoney\ui\window.py:661 D:\projects\youmoney\ui\window.py:684
 msgid "Import complete!"
-msgstr ""
+msgstr "インポートが完了"
 
 #: D:\projects\youmoney\ui\window.py:661 D:\projects\youmoney\ui\window.py:684
 msgid "Information"
-msgstr ""
+msgstr "情報"
 
 #: D:\projects\youmoney\ui\window.py:675
 msgid "Importing..."
-msgstr ""
+msgstr "への継続的な"
 
 #: D:\projects\youmoney\ui\window.py:675
 msgid "Waiting for importing."
-msgstr ""
+msgstr "してくださいインポートの完了を待つ"
 
 #: D:\projects\youmoney\ui\window.py:701 D:\projects\youmoney\ui\window.py:716
 msgid "Export Error:"
-msgstr ""
+msgstr "エクスポートに失敗しました"
 
