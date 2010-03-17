@@ -38,7 +38,7 @@ elif sys.platform.startswith('win32'):
     setup(
         version = version.VERSION,
         description = 'youmoney',
-        name = u'有钱记账YouMoney',
+        name = 'YouMoney',
         author = 'zhaoweikid',
         author_email = 'zhaoweikid@gmail.com',
         url = 'http://code.google.com/p/youomoney/',

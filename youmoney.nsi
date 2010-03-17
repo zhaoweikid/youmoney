@@ -42,7 +42,7 @@ Section "YouMoney主程序" SecYouMoney
     !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
     CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
     CreateShortCut "$SMPROGRAMS\$StartMenuFolder\YouMoney.lnk" "$INSTDIR\YouMoney.exe"
-    CreateShortCut "$DESKTOP\YouMoney.lnk" "$INSTDIR\YouMoney.exe"
+    CreateShortCut "$DESKTOP\有钱记账YouMoney.lnk" "$INSTDIR\YouMoney.exe"
     CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
     !insertmacro MUI_STARTMENU_WRITE_END
 
@@ -66,7 +66,7 @@ Section "Uninstall"
 
     DeleteRegKey /ifempty HKCU "Software\YouMoney"
 
-    Delete "$DESKTOP\YouMoney.lnk"
+    Delete "$DESKTOP\有钱记账YouMoney.lnk"
 
     RMDir /r  "$SMPROGRAMS\$StartMenuFolder"
 SectionEnd

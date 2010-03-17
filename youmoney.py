@@ -32,8 +32,8 @@ class YouMoney (wx.App):
     def OnInit(self):
         global cf
         self.frame = window.MainFrame(None, 101, 'YouMoney ' + version.VERSION, cf)
-        self.frame.Show(True)
         self.frame.CenterOnScreen()
+        self.frame.Show(True)
         self.SetTopWindow(self.frame)
 
         self.Bind(wx.EVT_ACTIVATE_APP, self.OnActivate)
