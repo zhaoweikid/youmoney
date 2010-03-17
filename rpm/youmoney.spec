@@ -47,6 +47,8 @@ rm -rf $RPM_BUILD_ROOT
 chmod 755 $RPM_BUILD_ROOT%{_prefix}/bin/youmoney
 
 %preun
+rm -rf /usr/share/YouMoney
+rm -rf /usr/share/applications/YouMoney.desktop
 
 %files
 %defattr(-,root,root)
