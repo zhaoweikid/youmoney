@@ -9,7 +9,7 @@ createtable = ['create table if not exists category (id integer primary key auto
                'create table if not exists user(password varchar(128), mtime integer default 0)', 
                'create table if not exists identity(name varchar(128))', 
                'create table if not exists verinfo(version varchar(32), sys varchar(32))',
-               'create table if not exists recycle(id integer primary key autoincrement, category integer, num float, ctime integer, payway integer, type integer default 0, addtime integer, explain text)',
+               'create table if not exists recycle(id integer primary key autoincrement, category integer, num float, ctime integer, payway integer, type integer default 0, addtime integer, explain text, lasttime integer default 0)',
                ]
 
 catetypes = {0:_('Payout'), 1:_('Income'), _('Payout'):0, _('Income'):1}
@@ -26,7 +26,7 @@ class DBStorage:
         if type(path) == types.UnicodeType:
             self.path = path.encode(self.charset)
         self.db = sqlite3.connect(self.path)
-        
+        self.version = '' 
         self.init()
 
     def init(self):
@@ -50,8 +50,26 @@ class DBStorage:
             row = ret[0]
             name = row[0]
 
-        sql = "select * from capital limit 1"
+        sql = "pragma table_info(capital)"
+        ret = self.query(sql, False)
+        if ret:
+            fields = set()
+            for row in ret: 
+                fields.add(row[1])
+            if 'cycle' not in fields:
+                isql = "alter table capital add cycle integer default 0"
+                self.execute(isql)
+    
+        sql = "select * from verinfo"
         ret = self.query(sql, True)
+        if not ret:
+            isql = "insert into verinfo(version, sys) values (?,?)"
+            self.execute_param(isql, (version.VERSION, sys.platform,))
+            self.version = version.VERSION
+        else:
+            self.version = ret[0]['version']
+            isql = "update verinfo set version='%s'" % (version.VERSION)
+            self.execute(sql)
 
     def close(self):
         self.db.close()

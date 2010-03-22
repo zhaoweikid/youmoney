@@ -99,11 +99,17 @@ class MainFrame (wx.Frame):
         try:
             self.db = storage.DBStorage(path)
         except:
-            wx.MessageBox(_('Error'), _('Account file is not exist! You may create one or open exist.'), wx.OK|wx.ICON_INFORMATION) 
+            wx.MessageBox(_('Account file is not exist! You may create one or open exist.'), _('Error'), wx.OK|wx.ICON_INFORMATION) 
             path = self.conf.default_db_path()
             self.conf['lastdb'] = path
             self.db = storage.DBStorage(path)
         #self.SetStatusText(_('Database file: ') + path, 0)
+        dbver  = int(self.db.version.replace('.', '')) 
+        prgver = int(version.VERSION.replace('.', ''))
+        
+        if dbver > prgver:
+            wx.MessageBox(_('Database version is newer than program.'), _('Error'), wx.OK|wx.ICON_INFORMATION)
+            sys.exit()
         
     def load(self):
         tday = datetime.date.today()
