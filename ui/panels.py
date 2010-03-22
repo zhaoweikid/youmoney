@@ -4,7 +4,7 @@ import datetime, copy
 import wx
 import wx.lib.sized_controls as sc
 import wx.gizmos as gizmos
-import logfile, statpanel
+import logfile, statpanel, storage
 
 class CategoryPanel (wx.Panel):
     def __init__(self, parent):
@@ -327,6 +327,106 @@ class PayoutListPanel (ItemListPanel):
 class IncomeListPanel (ItemListPanel):
     type = "income"
 
+
+class CycleListPanel (wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent, -1, style=0)
+        self.parent = parent
+
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        self.list = wx.ListCtrl(self, -1, style=wx.LC_REPORT)
+        sizer.Add(self.list, 1, wx.EXPAND|wx.ALL)
+
+        self.SetSizer(sizer)
+        self.SetAutoLayout(True)
+        
+        self.currentItem = None
+        self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnItemActivated, self.list)
+        self.Bind(wx.EVT_LIST_ITEM_SELECTED, self.OnItemSelected, self.list)
+        self.Bind(wx.EVT_CONTEXT_MENU, self.OnPopupMenu) 
+        self.load()
+   
+    def OnPopupMenu(self, event):
+        if not hasattr(self, "ID_POPUP_DEL"):
+            self.ID_POPUP_DEL = wx.NewId()
+            
+            self.Bind(wx.EVT_MENU, self.OnDelete, id=self.ID_POPUP_DEL)
+        menu = wx.Menu()
+        menu.Append(self.ID_POPUP_DEL, _("Delete"))
+        self.PopupMenu(menu)
+        menu.Destroy()
+
+    def init(self):
+        self.list.InsertColumn(0, _("Type"))
+        self.list.InsertColumn(1, _("Category"))
+        self.list.InsertColumn(2, _("Money"))
+            
+        self.list.InsertColumn(3, _("Payment"))
+        self.list.InsertColumn(4, _("Cycle"))
+
+        self.list.InsertColumn(5, _("Explain"))
+        self.list.SetColumnWidth(5, 300)
+
+
+    def load(self):
+        self.list.ClearAll()
+        self.init()
+
+        sql = "select * from recycle order by id"
+        logfile.info(sql)
+        rets = self.parent.parent.db.query(sql)
+        if rets:
+            for row in rets:
+                cate = self.parent.parent.category.catemap(row['type'], row['category'])
+                item = self.list.InsertStringItem(0, storage.catetypes[row['type']])
+                #self.list.SetStringItem(item, 0, storage.catetypes[row['type']]) 
+                self.list.SetStringItem(item, 1, cate)
+                self.list.SetStringItem(item, 2, str(row['num']))
+                self.list.SetStringItem(item, 3, storage.payways[row['payway']])
+                self.list.SetStringItem(item, 4, storage.cycles[row['addtime']])
+                self.list.SetStringItem(item, 5, row['explain'])
+
+                self.list.SetItemData(item, row['id'])
+    
+    def OnItemActivated(self, event):
+        currentItem = event.m_itemIndex
+        id = self.list.GetItemData(currentItem)
+        category = self.parent.parent.category
+        sql = "select * from recycle where id=" + str(id)
+        ret = self.parent.parent.db.query(sql)
+        if ret:
+            row = ret[0]
+            if row['payway'] == 1:
+                payway = _('Cash')
+            else:
+                payway = _('Credit Card')
+
+            ready = {'cates':category.catelist(self.type), 
+                     'cate':category.catestr_by_id(self.type, row['category']), 'num': row['num'], 
+                     'explain':row['explain'],
+                     'addtime':row['addtime'],
+                     'pay':payway, 'mode':'update', 'id':row['id']}
+
+            logfile.info('ready:', ready)
+            #print 'update data:', ready
+            self.parent.parent.cycle_dialog(ready)
+
+
+    def OnDelete(self, event):
+        if self.currentItem is None:
+            return
+        id = self.list.GetItemData(self.currentItem)
+        sql = "delete from recycle where id=" + str(id)
+        logfile.info('del:', sql)
+        self.parent.parent.db.execute(sql)
+        self.parent.parent.reload()
+
+    def OnItemSelected(self, event):
+        self.currentItem = event.m_itemIndex
+        event.Skip()
+
+
+
 class ContentTab (wx.Notebook):
     def __init__(self, parent):
         wx.Notebook.__init__(self, parent, -1, size=(21,21), style=wx.BK_DEFAULT)
@@ -337,6 +437,9 @@ class ContentTab (wx.Notebook):
         self.AddPage(self.payoutlist, _('Payout List'))
         self.incomelist = IncomeListPanel(self)
         self.AddPage(self.incomelist, _('Income List'))
+        
+        self.cyclelist = CycleListPanel(self) 
+        self.AddPage(self.cyclelist, _('Cycle List'))
 
         cates = copy.deepcopy(self.parent.category.catelist_parent())
         self.stat = statpanel.StatPanel(self, cates)
@@ -350,5 +453,8 @@ class ContentTab (wx.Notebook):
         self.payoutlist.load()
         self.incomelist.load()
 
+    
+    def load_cycle(self):
+        self.cyclelist.load()
 
 

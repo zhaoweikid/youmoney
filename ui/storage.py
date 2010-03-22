@@ -13,7 +13,9 @@ createtable = ['create table if not exists category (id integer primary key auto
                ]
 
 catetypes = {0:_('Payout'), 1:_('Income'), _('Payout'):0, _('Income'):1}
-payways   = {1:_('Cash'), 2:_('Credit Card'), _('Cash'):1, _('Credit Card'):2}
+payways   = {1:_('Cash'), 2:_('Credit Card'), _('Cash'):1, _('Credit Card'):2, 0:''}
+cycles    = {1:_('Weekday'), 2:_('Weekend'), 3:_('Everyday'), 4:_('Weekly'), 5:_('Two Week'), 6:_('Monthly'),
+             _('Weekday'):1, _('Weekend'):2, _('Everyday'):3, _('Weekly'):4, _('Two Week'):5, _('Monthly'):6}
 name = None
 
 class DBStorage:

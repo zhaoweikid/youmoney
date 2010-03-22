@@ -5,41 +5,6 @@ import wx.lib.sized_controls as sc
 import wx.lib.hyperlink as hl
 import logfile
 
-class DigitValidator(wx.PyValidator):
-    def __init__(self, pyVar=None):
-        wx.PyValidator.__init__(self)
-        self.Bind(wx.EVT_CHAR, self.OnChar)
-
-    def Clone(self):
-        return DigitValidator()
-
-    def Validate(self, win):
-        tc = self.GetWindow()
-        val = tc.GetValue()
-
-        for x in val:
-            if x != '.' and x not in string.digits:
-                return False
-
-        return True
-
-    def OnChar(self, event):
-        key = event.GetKeyCode()
-        print 'key:', key
-        if key < wx.WXK_SPACE or key == wx.WXK_DELETE or key > 255:
-            event.Skip()
-            return
-
-        if key == '.' or chr(key) in string.digits:
-            event.Skip()
-            return
-
-        if not wx.Validator_IsSilent():
-            wx.Bell()
-
-        return
-
-
 class IncomeDialog (sc.SizedDialog):
     def __init__(self, parent, readydata):
         sc.SizedDialog.__init__(self, None, -1, _('Add income item'), 
@@ -167,6 +132,97 @@ class PayoutDialog (sc.SizedDialog):
         self.num.Clear()
         self.explain.Clear()
         self.date.SetFocus()
+
+class CycleDialog (sc.SizedDialog):
+    def __init__(self, parent, readydata):
+        sc.SizedDialog.__init__(self, None, -1, _('Add cycle item'), 
+                                style=wx.DEFAULT_DIALOG_STYLE)
+        self.parent = parent
+        self.data = readydata
+        
+        panel = self.GetContentsPane()
+        panel.SetSizerType("form")
+ 
+        wx.StaticText(panel, -1, _('Note:'))
+        self.noteinfo = wx.StaticText(panel, -1, _('Record cycle will automatic add payout or income by every time that you specify.'))
+
+        wx.StaticText(panel, -1, _('Type:'))
+        items = readydata['types']
+        self.catetype = wx.ComboBox(panel, -1, readydata['type'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
+        
+        wx.StaticText(panel, -1, _('Category:'))
+        items = readydata['payout_cates']
+        self.cate = wx.ComboBox(panel, -1, readydata['payout_cate'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
+
+        wx.StaticText(panel, -1, _('Payment:'))
+        items = [_('Cash'), _('Credit Card')]
+        self.pay = wx.ComboBox(panel, -1, readydata['pay'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
+
+        wx.StaticText(panel, -1, _('Money:'))
+        self.num = wx.TextCtrl(panel, -1, str(readydata['num']), size=(125, -1))
+
+        wx.StaticText(panel, -1, _('Cycle:'))
+        items = readydata['cycles']
+        self.addtime = wx.ComboBox(panel, -1, readydata['cycle'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
+
+        wx.StaticText(panel, -1, _('Explain:'))
+        self.explain = wx.TextCtrl(panel, -1, readydata['explain'], size=(220,100), style=wx.TE_MULTILINE)
+
+        wx.StaticText(panel, -1, '')
+        self.reuse = wx.CheckBox(panel, -1, _("Not close dialog, continue."))
+ 
+        self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
+        self.SetMinSize(wx.Size(300, 250))
+        self.Fit()
+
+        self.num.SetFocus()
+        self.Bind(wx.EVT_COMBOBOX, self.OnChoose, self.catetype)
+
+    def OnChoose(self, event):
+        value = self.catetype.GetValue()
+        self.cate.Clear()
+        self.pay.Clear()
+        if value == _('Payout'):
+            for x in self.data['payout_cates']:
+                self.cate.Append(x)
+            self.cate.SetValue(self.data['payout_cate'])
+
+            self.pay.Append(_('Cash'))
+            self.pay.Append(_('Credit Card'))
+            self.pay.SetValue(_('Cash'))
+        else:
+            for x in self.data['income_cates']:
+                self.cate.Append(x)
+            self.cate.SetValue(self.data['income_cate'])
+
+            self.pay.Append(_('Cash'))
+            self.pay.SetValue(_('Cash'))
+    
+    def values(self):
+        num = self.num.GetValue()
+        ret = re.search('^[0-9]+(\.[0-9]+)?', num)
+        if not ret:
+            numstr = '0'
+        else:
+            numstr = ret.group()
+
+        data = {'cate': self.cate.GetValue(),
+                'pay': self.pay.GetValue(),
+                'type': self.catetype.GetValue(),
+                'addtime': self.addtime.GetValue(),
+                'num': numstr,
+                'explain': self.explain.GetValue(),
+                'reuse': self.reuse.GetValue(),
+                'mode': self.data['mode']}
+        if self.data.has_key('id'):
+            data['id'] = self.data['id']
+ 
+        return data
+
+    def ClearForReinput(self):
+        self.num.Clear()
+        self.explain.Clear()
+        self.num.SetFocus()
 
 
 class CategoryDialog (sc.SizedDialog):

@@ -1,5 +1,6 @@
 # coding: utf-8
 import os, sys, copy, time
+import types
 import wx
 from wx.lib.wordwrap import wordwrap
 import panels, dialogs, config, storage, export
@@ -8,7 +9,7 @@ from loader import load_bitmap
 import sqlite3, datetime, shutil
 from category import Category
 import pprint, traceback, logfile, version
-from storage import catetypes, payways
+from storage import catetypes, payways, cycles
 
 class MainFrame (wx.Frame):
     def __init__(self, parent, id, title, cf):
@@ -119,6 +120,7 @@ class MainFrame (wx.Frame):
         self.load()
         self.book.load_category(self.category)
         self.book.load_list()
+        self.book.load_cycle()
     
     def make_menu(self):
         self.ID_FILE_NEW  = wx.NewId()
@@ -137,9 +139,11 @@ class MainFrame (wx.Frame):
         self.ID_EDIT_ADDCATE = wx.NewId()
         self.ID_EDIT_ADDINCOME = wx.NewId()
         self.ID_EDIT_ADDPAY = wx.NewId()
+        self.ID_EDIT_ADDCYCLE = wx.NewId()
         self.ID_EDIT_CATE = wx.NewId()
         self.ID_EDIT_INCOME = wx.NewId()
         self.ID_EDIT_PAY = wx.NewId()
+        self.ID_EDIT_CYCLE = wx.NewId()
         self.ID_EDIT_STAT = wx.NewId()
 
         self.ID_VIEW_LANG = wx.NewId()
@@ -181,11 +185,13 @@ class MainFrame (wx.Frame):
         self.editmenu.Append(self.ID_EDIT_ADDCATE, _('Add Category')+"\tAlt+T")
         self.editmenu.Append(self.ID_EDIT_ADDINCOME, _('Add Income')+"\tAlt+I")
         self.editmenu.Append(self.ID_EDIT_ADDPAY, _('Add Payout')+"\tAlt+P")
+        self.editmenu.Append(self.ID_EDIT_ADDCYCLE, _('Add Record Cycle')+"\tAlt+C")
         self.editmenu.AppendSeparator()
         self.editmenu.Append(self.ID_EDIT_CATE, _('Category')+"\tAlt+1")
         self.editmenu.Append(self.ID_EDIT_INCOME, _('Income List')+"\tAlt+2")
         self.editmenu.Append(self.ID_EDIT_PAY, _('Payout List')+"\tAlt+3")
-        self.editmenu.Append(self.ID_EDIT_STAT, _('Statistic')+"\tAlt+4")
+        self.editmenu.Append(self.ID_EDIT_CYCLE, _('Record Cycle')+"\tAlt+4")
+        self.editmenu.Append(self.ID_EDIT_STAT, _('Statistic')+"\tAlt+5")
         menubar.Append(self.editmenu, _('Edit'))         
        
         self.langmenu = wx.Menu()
@@ -200,7 +206,6 @@ class MainFrame (wx.Frame):
         self.aboutmenu = wx.Menu()
         self.aboutmenu.Append(self.ID_ABOUT_WEBSITE, _('About Information'))
         menubar.Append(self.aboutmenu, _('About'))
-
 
         self.SetMenuBar(menubar)
 
@@ -218,10 +223,12 @@ class MainFrame (wx.Frame):
         self.Bind(wx.EVT_MENU, self.OnCateEdit, id=self.ID_EDIT_ADDCATE)
         self.Bind(wx.EVT_MENU, self.OnIncome, id=self.ID_EDIT_ADDINCOME)
         self.Bind(wx.EVT_MENU, self.OnPayout, id=self.ID_EDIT_ADDPAY)
+        self.Bind(wx.EVT_MENU, self.OnCycle, id=self.ID_EDIT_ADDCYCLE)
 
         self.Bind(wx.EVT_MENU, self.OnEditTabCate, id=self.ID_EDIT_CATE)
         self.Bind(wx.EVT_MENU, self.OnEditTabIncome, id=self.ID_EDIT_INCOME)
         self.Bind(wx.EVT_MENU, self.OnEditTabPayout, id=self.ID_EDIT_PAY)
+        self.Bind(wx.EVT_MENU, self.OnEditTabCycle, id=self.ID_EDIT_CYCLE)
         self.Bind(wx.EVT_MENU, self.OnEditTabStat, id=self.ID_EDIT_STAT)
 
         self.Bind(wx.EVT_MENU, self.OnLanguage, id=self.ID_VIEW_LANG_CN)
@@ -240,12 +247,14 @@ class MainFrame (wx.Frame):
         self.ID_TB_CATEEDIT = wx.NewId()
         self.ID_TB_INCOME   = wx.NewId()
         self.ID_TB_PAYOUT   = wx.NewId()
+        self.ID_TB_CYCLE    = wx.NewId()
         
         self.toolbar = wx.ToolBar(self, -1, wx.DefaultPosition, wx.Size(48,48), wx.TB_HORIZONTAL|wx.TB_FLAT|wx.TB_TEXT)
         self.toolbar.SetToolBitmapSize(wx.Size (48, 48))
         self.toolbar.AddLabelTool(self.ID_TB_CATEEDIT, _('Add Category')+'(&T)', load_bitmap(os.path.join(self.bmpdir, 'categories.png')), shortHelp=_('Add Category'), longHelp=_('Add Category')) 
         self.toolbar.AddLabelTool(self.ID_TB_INCOME, _('Add Income')+'(&I)', load_bitmap(os.path.join(self.bmpdir, 'cashin.png')), shortHelp=_('Add Income'), longHelp=_('Add Income')) 
         self.toolbar.AddLabelTool(self.ID_TB_PAYOUT, _("Add Payout")+'(&P)', load_bitmap(os.path.join(self.bmpdir, 'cashout.png')), shortHelp=_("Add Payout"), longHelp=_("Add Payout")) 
+        self.toolbar.AddLabelTool(self.ID_TB_CYCLE, _("Add Record Cycle")+'(&C)', load_bitmap(os.path.join(self.bmpdir, 'cycle.png')), shortHelp=_("Record Cycle"), longHelp=_("Record Cycle")) 
 
         self.toolbar.Realize ()
         self.SetToolBar(self.toolbar)
@@ -253,6 +262,7 @@ class MainFrame (wx.Frame):
         self.Bind(wx.EVT_TOOL, self.OnCateEdit, id=self.ID_TB_CATEEDIT)
         self.Bind(wx.EVT_TOOL, self.OnIncome, id=self.ID_TB_INCOME)
         self.Bind(wx.EVT_TOOL, self.OnPayout, id=self.ID_TB_PAYOUT)
+        self.Bind(wx.EVT_TOOL, self.OnCycle, id=self.ID_TB_CYCLE)
 
 
 
@@ -463,7 +473,7 @@ class MainFrame (wx.Frame):
                     logfile.info('insert capital:', sql)
                     self.db.execute_param(sql, (cateid, num, tnow, year, month, day, payway, data['explain'],))
                 except Exception, e:
-                    wx.MessageBox(_('Add payout failture:') + str(e), _('Add payout information'), wx.OK|wx.ICON_INFORMATION)
+                    wx.MessageBox(_('Add income failture:') + str(e), _('Add income information'), wx.OK|wx.ICON_INFORMATION)
                     logfile.info('insert income error:', traceback.format_exc())
                 else:
                     self.reload()
@@ -531,7 +541,7 @@ class MainFrame (wx.Frame):
                     logfile.info('insert capital payout:', sql)
                     self.db.execute_param(sql, (cateid, num, tnow, year, month, day, payway, data['explain'],))
                 except Exception, e:
-                    wx.MessageBox(_('Add income failture:') + str(e), _('Add income information'), wx.OK|wx.ICON_INFORMATION)
+                    wx.MessageBox(_('Add payout failture:') + str(e), _('Add payout information'), wx.OK|wx.ICON_INFORMATION)
                     logfile.info('insert payout error:', traceback.format_exc())
                 else:
                     self.reload()
@@ -552,10 +562,86 @@ class MainFrame (wx.Frame):
                     logfile.info('update capital:', sql)
                     self.db.execute_param(sql, (cateid, num, year, month, day, payway, data['explain'], data['id'],))
                 except Exception, e:
-                    wx.MessageBox(_('Change income failture:') + str(e), _('Change income information'), wx.OK|wx.ICON_INFORMATION)
+                    wx.MessageBox(_('Change payout failture:') + str(e), _('Change payout information'), wx.OK|wx.ICON_INFORMATION)
                     logfile.info('update error:', traceback.format_exc())
                 else:
                     self.reload()
+            if not data['reuse']:
+                break
+
+    def OnCycle(self, event):
+        payout_catelist = self.category.payout_catelist
+        income_catelist = self.category.income_catelist
+
+        if len(payout_catelist) == 0 and len(income_catelist) == 0:
+            wx.MessageBox(_('Add category first!'), _('Can not add cycle item'), wx.OK|wx.ICON_INFORMATION)
+            return
+        
+        cyclelist = []
+        for k in storage.cycles:
+            if type(k) != types.IntType:
+                cyclelist.append(k)
+        cyclelist.reverse()
+
+        ready = {'payout_cates':payout_catelist, 'payout_cate':payout_catelist[0], 
+                 'income_cates':income_catelist, 'income_cate':income_catelist[0],
+                 'num':'', 'types':[_('Payout'), _('Income')], 'type':_('Payout'), 'addtime':_('Weekday'),
+                 'cycles':cyclelist, 'cycle':cycles[1],
+                 'explain':'',
+                 'pay':_('Cash'), 'mode':'insert'}
+        #print 'payout insert:', ready 
+        self.cycle_dialog(ready)
+
+    def cycle_dialog(self, ready):
+        dlg = dialogs.CycleDialog(self, ready)
+        #dlg.CenterOnParent()
+        while dlg.ShowModal() == wx.ID_OK:
+            data = dlg.values()
+            logfile.info('cycle dialog:', data)
+            
+            cate = data['cate'].split('->')[-1]
+            if data['mode'] == 'insert':
+                sql = "insert into recycle (category,num,ctime,payway,type,addtime,explain) values (?,?,?,?,?,?,?)"
+                try:
+                    typeid = catetypes[data['type']]
+                    if data['type'] == _('Payout'):
+                        cateid = self.category.payout_catemap[cate]
+                    else:
+                        cateid = self.category.income_catemap[cate]
+                    tnow   = int(time.time())
+                    num    = float(data['num'])
+                    payway = payways[data['pay']]
+                    addtime = cycles[data['addtime']]
+
+                    logfile.info('insert cycle:', sql)
+                    self.db.execute_param(sql, (cateid, num, tnow, payway, typeid, addtime, data['explain'],))
+                except Exception, e:
+                    wx.MessageBox(_('Add cycle failture:') + str(e), _('Add cycle information'), wx.OK|wx.ICON_INFORMATION)
+                    logfile.info('insert cycle error:', traceback.format_exc())
+                else:
+                    self.book.load_cycle()
+                    dlg.ClearForReinput()
+
+            elif data['mode'] == 'update':
+                sql = "update recycle set category=?,num=?,payway=?,type=?,addtime=?,explain=? where id=?"
+                try:
+                    typeid = catetypes[data['type']]
+                    if data['type'] == _('Payout'):
+                        cateid = self.category.payout_catemap[cate]
+                    else:
+                        cateid = self.category.income_catemap[cate]
+ 
+                    num    = float(data['num'])
+                    payway = payways[data['pay']]
+                    addtime = cycles[data['addtime']]
+
+                    logfile.info('update cycle:', sql)
+                    self.db.execute_param(sql, (cateid, num, payway, typeid, addtime, data['explain'], data['id'],))
+                except Exception, e:
+                    wx.MessageBox(_('Change cycle failture:') + str(e), _('Change cycle information'), wx.OK|wx.ICON_INFORMATION)
+                    logfile.info('update error:', traceback.format_exc())
+                else:
+                    self.book.load_cycle()
             if not data['reuse']:
                 break
 
@@ -636,10 +722,12 @@ class MainFrame (wx.Frame):
         
     def OnEditTabPayout(self, event):
         self.book.ChangeSelection(2)
+ 
+    def OnEditTabCycle(self, event):
+        self.book.ChangeSelection(3)
         
     def OnEditTabStat(self, event):
-        self.book.ChangeSelection(3)
-
+        self.book.ChangeSelection(4)
 
     def OnFileImportCate(self, event):
         dlg = dialogs.ImportCateDialog(self)
