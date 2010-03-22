@@ -5,9 +5,11 @@ import types, time
 import version
 
 createtable = ['create table if not exists category (id integer primary key autoincrement, name varchar(64) not null, parent integer default 0, type integer default 0)',
-               'create table if not exists capital (id integer primary key autoincrement, category integer, num float, ctime integer, year integer, month integer, day integer, payway integer, explain text, type integer default 0)',
+               'create table if not exists capital (id integer primary key autoincrement, category integer, num float, ctime integer, year integer, month integer, day integer, payway integer, explain text, type integer default 0, cycle integer default 0)',
                'create table if not exists user(password varchar(128), mtime integer default 0)', 
                'create table if not exists identity(name varchar(128))', 
+               'create table if not exists verinfo(version varchar(32), sys varchar(32))',
+               'create table if not exists recycle(id integer primary key autoincrement, category integer, num float, ctime integer, payway integer, type integer default 0, addtime integer, explain text)',
                ]
 
 catetypes = {0:_('Payout'), 1:_('Income'), _('Payout'):0, _('Income'):1}
@@ -45,6 +47,9 @@ class DBStorage:
         else:
             row = ret[0]
             name = row[0]
+
+        sql = "select * from capital limit 1"
+        ret = self.query(sql, True)
 
     def close(self):
         self.db.close()
