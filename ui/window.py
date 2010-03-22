@@ -3,7 +3,7 @@ import os, sys, copy, time
 import types
 import wx
 from wx.lib.wordwrap import wordwrap
-import panels, dialogs, config, storage, export
+import panels, dialogs, config, storage, export, recycle
 import event
 from loader import load_bitmap
 import sqlite3, datetime, shutil
@@ -51,6 +51,10 @@ class MainFrame (wx.Frame):
         wx.CallLater(100, self.notify)
 
         self.initcate()
+        
+        rc = recycle.RecordCycle(self.db)
+        rc.cycle()
+        rc = None
 
     def initcate(self):
         sql = "select count(*) from category"
