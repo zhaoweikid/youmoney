@@ -216,9 +216,9 @@ class Category:
     def catelist(self, ctype=None):
         if ctype is None:
             return {_('Payout'):self.payout_catelist, _('Income'):self.income_catelist}
-        elif ctype == 'payout':
+        elif ctype == 'payout' or ctype == 0:
             return self.payout_catelist
-        elif ctype == 'income':
+        elif ctype == 'income' or ctype == 1:
             return self.income_catelist
         return None
 
