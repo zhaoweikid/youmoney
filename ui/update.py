@@ -20,6 +20,21 @@ def sumfile(filename):
     return m.hexdigest()
 
 
+def windows_version():
+    info = sys.getwindowsversion()
+    verstr = '%d.%d.%d' % (info[3], info[0], info[1])
+        
+    win_version = {'1.4.0':'95', '1.4.10':'98', '1.4.90':'ME', 
+                   '2.4.0':'NT', '2.5.0':'2000', '2.5.1':'XP', '2.5.2':'2003',
+                   '2.6':'Vista', '2.6.0':'Vista', '2.6.1':'7'}
+    
+    try:
+        winver = 'Windows %s %s %s %s' % (win_version[verstr], platform.version(), str(info[2]), info[4])
+    except:
+        winver = 'Windows %s %s %s %s' % (verstr, platform.version(), str(info[2]), info[4])
+
+    return winver
+
 class Downloader:
     def __init__(self, url, savepath):
         self.url   = url
@@ -113,11 +128,14 @@ class Update:
                     if sys.platform == 'darwin':
                         x = platform.mac_ver()
                         info = '%s (Mac OS X %s)' % (platform.platform(), x[0])
+                    elif sys.platform == 'win32':
+                        info = windows_version()
                     else:
                         info = platform.platform()
                 except:
                     logfile.info(traceback.format_exc())
                 
+                logfile.info('version:', info) 
                 info = urllib.quote(info).strip()
                 u = u + '?sys=%s&ver=%s&info=%s&name=%s' % (sys.platform, version.VERSION, info, storage.name)
                 self.updateone(u)
@@ -210,7 +228,8 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    #main()
+    print windows_version()
 
         
 
