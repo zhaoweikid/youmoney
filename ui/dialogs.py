@@ -151,9 +151,13 @@ class CycleDialog (sc.SizedDialog):
         self.catetype = wx.ComboBox(panel, -1, readydata['type'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
         
         wx.StaticText(panel, -1, _('Category:'))
-        items = readydata['payout_cates']
-        self.cate = wx.ComboBox(panel, -1, readydata['payout_cate'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
-
+        if readydata['type'] == _('Payout'):
+            items = readydata['payout_cates']
+            self.cate = wx.ComboBox(panel, -1, readydata['payout_cate'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
+        else:
+            items = readydata['income_cates']
+            self.cate = wx.ComboBox(panel, -1, readydata['income_cate'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
+ 
         wx.StaticText(panel, -1, _('Payment:'))
         items = [_('Cash'), _('Credit Card')]
         self.pay = wx.ComboBox(panel, -1, readydata['pay'], (90,50), (160,-1), items, wx.CB_DROPDOWN)

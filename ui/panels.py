@@ -1,6 +1,7 @@
 # coding: utf-8
 import os, sys
-import datetime, copy
+import datetime, copy, types
+import pprint
 import wx
 import wx.lib.sized_controls as sc
 import wx.gizmos as gizmos
@@ -226,11 +227,13 @@ class ItemListPanel (wx.Panel):
         self.list.InsertColumn(2, _("Money"))
         if self.type == 'payout':
             self.list.InsertColumn(3, _("Payment"))
+            self.list.InsertColumn(4, _("Record Cycle"))
+            self.list.InsertColumn(5, _("Explain"))
+            self.list.SetColumnWidth(5, 300)
+        else:
+            self.list.InsertColumn(3, _("Record Cycle"))
             self.list.InsertColumn(4, _("Explain"))
             self.list.SetColumnWidth(4, 300)
-        else:
-            self.list.InsertColumn(3, _("Explain"))
-            self.list.SetColumnWidth(3, 300)
 
     def load(self):
         self.list.ClearAll()
@@ -257,15 +260,18 @@ class ItemListPanel (wx.Panel):
                 self.list.SetStringItem(item, 1, cate)
                 self.list.SetStringItem(item, 2, str(row['num']))
                 self.list.SetItemData(item, row['id'])
-                if row['payway'] == 1:
-                    payway = _('Cash')
-                else:
-                    payway = _('Credit Card')
+                payway = storage.payways[row['payway']]
+
+                cyclestr = ''
+                if row['cycle'] > 0:
+                    cyclestr = _('Yes')
                 if self.type == 'payout':
                     self.list.SetStringItem(item, 3, payway)
-                    self.list.SetStringItem(item, 4, row['explain'])
+                    self.list.SetStringItem(item, 4, cyclestr)
+                    self.list.SetStringItem(item, 5, row['explain'])
                 else:
-                    self.list.SetStringItem(item, 3, row['explain'])
+                    self.list.SetStringItem(item, 3, cyclestr)
+                    self.list.SetStringItem(item, 4, row['explain'])
                 numall += row['num']
             self.total.SetValue(str(numall))
         else:
@@ -288,11 +294,7 @@ class ItemListPanel (wx.Panel):
         ret = self.parent.parent.db.query(sql)
         if ret:
             row = ret[0]
-            if row['payway'] == 1:
-                payway = _('Cash')
-            else:
-                payway = _('Credit Card')
-
+            payway = storage.payways[row['payway']]
             ready = {'cates':category.catelist(self.type), 
                      'cate':category.catestr_by_id(self.type, row['category']), 'num': row['num'], 
                      'explain':row['explain'], 
@@ -392,21 +394,33 @@ class CycleListPanel (wx.Panel):
         currentItem = event.m_itemIndex
         id = self.list.GetItemData(currentItem)
         category = self.parent.parent.category
+
+        cyclelist = []
+        for k in storage.cycles:
+            if type(k) != types.IntType:
+                cyclelist.append(k)
+        cyclelist.reverse()
+    
         sql = "select * from recycle where id=" + str(id)
         ret = self.parent.parent.db.query(sql)
         if ret:
             row = ret[0]
-            if row['payway'] == 1:
-                payway = _('Cash')
+            typestr = storage.catetypes[row['type']] 
+            
+            if typestr == _('Payout'):
+                payout_cate = category.catestr_by_id('payout', row['category'])
+                income_cate = category.income_catelist[0]
             else:
-                payway = _('Credit Card')
-
-            ready = {'cates':category.catelist(self.type), 
-                     'cate':category.catestr_by_id(self.type, row['category']), 'num': row['num'], 
-                     'explain':row['explain'],
-                     'addtime':row['addtime'],
-                     'pay':payway, 'mode':'update', 'id':row['id']}
-
+                payout_cate = category.payout_catelist[0]
+                income_cate = category.catestr_by_id('income', row['category'])
+ 
+            ready = {'payout_cates':category.payout_catelist, 'payout_cate':payout_cate, 
+                 'income_cates':category.income_catelist, 'income_cate':income_cate,
+                 'num':row['num'], 
+                 'types':[_('Payout'), _('Income')], 'type':typestr, 
+                 'cycles':cyclelist, 'cycle':storage.cycles[row['addtime']],
+                 'explain':row['explain'],
+                 'pay':storage.payways[row['payway']], 'mode':'update', 'id':row['id']}
             logfile.info('ready:', ready)
             #print 'update data:', ready
             self.parent.parent.cycle_dialog(ready)

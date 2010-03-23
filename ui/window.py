@@ -52,10 +52,6 @@ class MainFrame (wx.Frame):
 
         self.initcate()
         
-        rc = recycle.RecordCycle(self.db)
-        rc.cycle()
-        rc = None
-
     def initcate(self):
         sql = "select count(*) from category"
         count = self.db.query_one(sql)
@@ -114,6 +110,11 @@ class MainFrame (wx.Frame):
         if dbver > prgver:
             wx.MessageBox(_('Database version is newer than program.'), _('Error'), wx.OK|wx.ICON_INFORMATION)
             sys.exit()
+        # check record cycle
+        rc = recycle.RecordCycle(self.db)
+        rc.cycle()
+        rc = None
+
         
     def load(self):
         tday = datetime.date.today()
@@ -595,7 +596,7 @@ class MainFrame (wx.Frame):
 
         ready = {'payout_cates':payout_catelist, 'payout_cate':payout_catelist[0], 
                  'income_cates':income_catelist, 'income_cate':income_catelist[0],
-                 'num':'', 'types':[_('Payout'), _('Income')], 'type':_('Payout'), 'addtime':_('Weekday'),
+                 'num':'', 'types':[_('Payout'), _('Income')], 'type':_('Payout'),
                  'cycles':cyclelist, 'cycle':cycles[1],
                  'explain':'',
                  'pay':_('Cash'), 'mode':'insert'}
@@ -629,7 +630,12 @@ class MainFrame (wx.Frame):
                     wx.MessageBox(_('Add cycle failture:') + str(e), _('Add cycle information'), wx.OK|wx.ICON_INFORMATION)
                     logfile.info('insert cycle error:', traceback.format_exc())
                 else:
-                    self.book.load_cycle()
+                    cid = self.db.last_insert_id() 
+                    rc = recycle.RecordCycle(self.db)
+                    rc.cycle(cid)
+                    rc = None
+
+                    self.reload()
                     dlg.ClearForReinput()
 
             elif data['mode'] == 'update':
@@ -651,7 +657,7 @@ class MainFrame (wx.Frame):
                     wx.MessageBox(_('Change cycle failture:') + str(e), _('Change cycle information'), wx.OK|wx.ICON_INFORMATION)
                     logfile.info('update error:', traceback.format_exc())
                 else:
-                    self.book.load_cycle()
+                    self.reload()
             if not data['reuse']:
                 break
 
