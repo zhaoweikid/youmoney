@@ -109,7 +109,8 @@ class Downloader:
 
 class Update:
     def __init__(self):
-        self.updatefile = ['http://www.pythonid.com/youmoney/update.php', 'http://youmoney.googlecode.com/files/update.txt']
+        self.updatefile = ['http://www.pythonid.com/youmoney/update.php', 
+                           'http://youmoney.googlecode.com/files/update.txt']
         self.home  = os.path.dirname(os.path.abspath(sys.argv[0]))
         if sys.platform.startswith('win32'):
             self.tmpdir = os.path.join(self.home, 'tmp')
@@ -120,6 +121,7 @@ class Update:
             os.mkdir(self.tmpdir)
 
     def update(self):
+        ret = None
         for u in self.updatefile:
             try:
                 logfile.info('try update file:', u)
@@ -138,11 +140,14 @@ class Update:
                 logfile.info('version:', info) 
                 info = urllib.quote(info).strip()
                 u = u + '?sys=%s&ver=%s&info=%s&name=%s' % (sys.platform, version.VERSION, info, storage.name)
-                self.updateone(u)
+                ret = self.updateone(u)
             except:
                 logfile.info(traceback.format_exc())
                 continue
             break
+
+        return ret
+
 
     def updateone(self, fileurl):
         socket.setdefaulttimeout = 30
@@ -164,8 +169,19 @@ class Update:
             return None
         logfile.info('found new version: ', info['version']) 
         return info['version']
-    
-        fileurl = 'http://youmoney.googlecode.com/files/YouMoney-noinstall-%s.zip' % (info['version'])
+   
+    def download(self, version):
+        if sys.platform == 'win32':
+            exe = os.path.join(self.home, 'youmoney.exe')
+            if os.path.isfile(exe):
+                fileurl = 'http://youmoney.googlecode.com/files/YouMoney-noinstall-%s.zip' % (version)
+            else:
+                fileurl = 'http://youmoney.googlecode.com/files/YouMoney-src-%s.zip' % (version)
+        elif sys.platform == 'darwin':
+            fileurl = 'http://youmoney.googlecode.com/files/YouMoney-macosx10.5-%s.app.zip' % (version)
+        else:
+            fileurl = 'http://youmoney.googlecode.com/files/YouMoney-src-%s.zip' % (version)
+
         filepath = os.path.join(self.tmpdir, os.path.basename(fileurl))
         logfile.info('try download %s' % fileurl)
         logfile.info('save:', filepath)
@@ -183,24 +199,15 @@ class Update:
         md5str = sumfile(filepath)
         if md5str == info['md5']:
             logfile('file md5 check ok!')
+            return True
         else:
             logfile('file md5 check failed. remove')
             os.remove(filepath)
+            return False
  
     def version_diff(self, newver):
-        if version.VERSION == newver:
-            return 0
-        #usever = version.VERSION.split('.')
-        #nowver = newver.split('.')
-        
-        #for i in range(0, len(nowver)):
-        #    print nowver[i], usever[i]
-        #    if int(nowver[i]) > int(usever[i]):
-        #        return 1
-
         if int(newver.replace('.','')) > int(version.VERSION.replace('.','')):
             return 1
-        
         return 0
 
 def check(frame):
