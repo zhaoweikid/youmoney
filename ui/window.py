@@ -1,6 +1,6 @@
 # coding: utf-8
 import os, sys, copy, time
-import types
+import types, webbrowser
 import wx
 from wx.lib.wordwrap import wordwrap
 import panels, dialogs, config, storage, export, recycle
@@ -703,7 +703,8 @@ class MainFrame (wx.Frame):
     def OnUpdateNotify(self, event):
         dlg = dialogs.UpdateDialog(self, event.version)
         dlg.CenterOnScreen()
-        dlg.ShowModal()
+        if dlg.ShowModal() == wx.ID_OK:
+            webbrowser.open('http://code.google.com/p/youmoney/')
         dlg.Destroy()
 
     def OnFilePassword(self, event):
