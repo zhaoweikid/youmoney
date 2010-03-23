@@ -18,12 +18,14 @@ class StatPanel (wx.Panel):
         box = wx.BoxSizer(wx.HORIZONTAL)
         tday = datetime.date.today()
         items = [ str(x) for x in range(2009, 2020) ]
-        tm = wx.DateTime()
-        tm.Set(tday.day, tday.month-1, tday.year)
-        self.fromdate = wx.DatePickerCtrl(self, dt=tm, size=(90, -1), 
+        tmto = wx.DateTime()
+        tmto.Set(tday.day, tday.month-1, tday.year)
+        tmfrom = wx.DateTime()
+        tmfrom.Set(1, tday.month-1, tday.year)
+        self.fromdate = wx.DatePickerCtrl(self, dt=tmfrom, size=(90, -1), 
                             style=wx.DP_DROPDOWN|wx.DP_SHOWCENTURY)
 
-        self.todate   = wx.DatePickerCtrl(self, dt=tm, size=(90, -1), 
+        self.todate   = wx.DatePickerCtrl(self, dt=tmto, size=(90, -1), 
                             style=wx.DP_DROPDOWN|wx.DP_SHOWCENTURY)
 
 
