@@ -177,7 +177,6 @@ class MainFrame (wx.Frame):
         self.exportmenu.Append(self.ID_FILE_EXPORT_CATE, _('Export Category'))
         self.exportmenu.Append(self.ID_FILE_EXPORT_DATA, _('Export Data'))
 
-
         self.filemenu = wx.Menu()
         self.filemenu.Append(self.ID_FILE_NEW, _('New Account'))
         self.filemenu.Append(self.ID_FILE_OPEN, _('Open Account'))
@@ -275,18 +274,14 @@ class MainFrame (wx.Frame):
         self.Bind(wx.EVT_TOOL, self.OnPayout, id=self.ID_TB_PAYOUT)
         self.Bind(wx.EVT_TOOL, self.OnCycle, id=self.ID_TB_CYCLE)
 
-
-
     def make_statusbar(self):
         self.statusbar = self.CreateStatusBar()
         self.statusbar.SetFieldsCount(1)
         self.SetStatusWidths([-1])
 
-
     def OnCloseWindow(self, event):
         self.Destroy()
         sys.exit() 
-
 
     def OnFileOpen(self, event):
         dlg = wx.FileDialog(
@@ -307,6 +302,8 @@ class MainFrame (wx.Frame):
             self.reload()
             self.conf['lastdb'] = path
             self.conf.dump()
+            
+            self.SetStatusText(_('Database file: ') + self.conf['lastdb'], 0)
             
         dlg.Destroy()
 

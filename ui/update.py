@@ -109,9 +109,9 @@ class Downloader:
 
 class Update:
     def __init__(self):
-        #self.updatefile = ['http://www.pythonid.com/youmoney/update.php', 
-        #                   'http://youmoney.googlecode.com/files/update.txt']
-        self.updatefile = ['http://youmoney.googlecode.com/files/update2.txt']
+        self.updatefile = ['http://www.pythonid.com/youmoney/update.php', 
+                           'http://youmoney.googlecode.com/files/update.txt']
+        #self.updatefile = ['http://youmoney.googlecode.com/files/update2.txt']
         self.home  = os.path.dirname(os.path.abspath(sys.argv[0]))
         if sys.platform.startswith('win32'):
             self.tmpdir = os.path.join(self.home, 'tmp')
