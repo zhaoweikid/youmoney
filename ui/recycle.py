@@ -26,7 +26,6 @@ class RecordCycle:
         daynow = datetime.date.today()
     
         for data in datas:
-            print '---------------------------------'
             lasttime = data['lasttime']
             if lasttime == 0:
                 lasttime = data['ctime']
@@ -36,19 +35,19 @@ class RecordCycle:
             addtime = data['addtime']
 
             cycleitems = {} 
-            sql = "select id,cycle,ctime from capital where cycle>0 and ctime>%d" % (int(datestart.strftime('%s')))
+            tm = int(time.mktime(datestart.timetuple()))
+            sql = "select id,cycle,ctime from capital where cycle>0 and ctime>%d" % (tm)
             ret = self.db.query(sql, False)
             if ret:
                 for row in ret:
                     x = datetime.date.fromtimestamp(row[2])
                     k = str(x) + '_' + str(row[1])
-                    print 'add:', k
                     cycleitems[k] = row[0]
 
             while True:
                 if dateck > daynow:
                     break
-                print 'check:', data['id'], addtime, dateck, daynow
+                #print 'check:', data['id'], addtime, dateck, daynow
                 k = str(dateck)
                 ck = k + '_' + str(data['id'])
                 if not self.checkfunc[addtime](dateck):
@@ -56,7 +55,7 @@ class RecordCycle:
                     continue
 
                 if ck not in  cycleitems:
-                    print 'cycle add:', ck
+                    #print 'cycle add:', ck
                     sql = "insert into capital(category,num,ctime,year,month,day,payway,type,cycle,explain) values (?,?,?,?,?,?,?,?,?,?)"
                     self.db.execute_param(sql, (data['category'], data['num'], int(time.time()), 
                             dateck.year, dateck.month, dateck.day,
@@ -80,7 +79,6 @@ class RecordCycle:
         return datenow + datetime.timedelta(7 - datenow.weekday())
 
     def check_weekend(self, datenow):
-        print 'weekend:', datenow.weekday()
         if datenow.weekday() >= 5:
             return True
         return False

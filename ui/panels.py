@@ -247,7 +247,7 @@ class ItemListPanel (wx.Panel):
         else:
             mytype = 1
 
-        sql = "select * from capital where year=%s and month=%s and type=%d order by id" % (year, month, mytype)
+        sql = "select * from capital where year=%s and month=%s and type=%d order by day,id" % (year, month, mytype)
         logfile.info(sql)
         rets = self.parent.parent.db.query(sql)
         if rets:
