@@ -8,18 +8,6 @@ import version
 import logfile, event, storage
 import wx
 
-def sumfile(filename):
-    m = md5.new()
-    fobj = open(filename, 'r')
-    while True:
-        d = fobj.read(8086)
-        if not d:
-            break
-        m.update(d)
-    fobj.close()
-    return m.hexdigest()
-
-
 def windows_version():
     info = sys.getwindowsversion()
     verstr = '%d.%d.%d' % (info[3], info[0], info[1])
@@ -34,78 +22,6 @@ def windows_version():
         winver = 'Windows %s %s %s %s' % (verstr, platform.version(), str(info[2]), info[4])
 
     return winver
-
-class Downloader:
-    def __init__(self, url, savepath):
-        self.url   = url
-        self.local = savepath
-        self.localsize = 0
-        #self.home  = os.path.dirname(os.path.abspath(sys.argv[0]))
-        #self.tmpdir = os.path.join(self.home, 'tmp')
-
-        #if not os.path.isdir(self.tmpdir):
-        #    os.mkdir(self.tmpdir)
-        
-        if os.path.isfile(savepath):
-            self.localsize = os.path.getsize(savepath)
-
-        parts = urlparse.urlsplit(self.url)
-        self.host = parts[1]
-        self.relurl = parts[2]
-
-        self.h = None
-
-    def getheader(self, size=0):        
-        if self.h:
-            self.h.close()
-
-        self.h = httplib.HTTP()
-        #self.h.set_debuglevel(1)
-        self.h.connect(self.host)
-        self.h.putrequest('GET', self.relurl)
-        self.h.putheader('Host', self.host)
-        self.h.putheader('User-Agent', 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)')
-        self.h.putheader('Accept', '*/*')
-        self.h.putheader('Accept-Language', 'zh-cn')
-        self.h.putheader('Connection', 'Keep-Alive')
-
-        if size > 0:
-            self.h.putheader('Range', 'bytes=%d-' % (size))
-
-        print self.h._conn._buffer
-        self.h.endheaders()
-         
-        return self.h.getreply()
-
-    def getdata(self):
-        f = open(self.local, 'a+b')
-        
-        try:     
-            while True:
-                data = self.h.file.read(8192)        
-                if not data:
-                    break
-                f.write(data)
-        except Exception, e:
-            logfile.info(e) 
-            f.close()
-            return
-        f.close()
-
-    def download(self):
-        status, reason, headers = self.getheader(0)
-        self.filesize = int(headers.getheader('Content-Length'))
-        print self.localsize, self.filesize
-        
-        if self.filesize == self.localsize:
-            return
-
-        if self.localsize > self.filesize:
-            self.localsize = 0
-            os.remove(self.local)
-            
-        status, reason, headers = self.getheader(self.localsize)
-        self.getdata()
 
 class Update:
     def __init__(self):
@@ -171,41 +87,6 @@ class Update:
         logfile.info('found new version: ', info['version']) 
         return info['version']
    
-    def download(self, version):
-        if sys.platform == 'win32':
-            exe = os.path.join(self.home, 'youmoney.exe')
-            if os.path.isfile(exe):
-                fileurl = 'http://youmoney.googlecode.com/files/YouMoney-noinstall-%s.zip' % (version)
-            else:
-                fileurl = 'http://youmoney.googlecode.com/files/YouMoney-src-%s.zip' % (version)
-        elif sys.platform == 'darwin':
-            fileurl = 'http://youmoney.googlecode.com/files/YouMoney-macosx10.5-%s.app.zip' % (version)
-        else:
-            fileurl = 'http://youmoney.googlecode.com/files/YouMoney-src-%s.zip' % (version)
-
-        filepath = os.path.join(self.tmpdir, os.path.basename(fileurl))
-        logfile.info('try download %s' % fileurl)
-        logfile.info('save:', filepath)
-        
-        count = 3
-        while count > 0: 
-            try:
-                dw = Downloader(fileurl, filepath)
-                dw.download()
-            except:
-                count -= 1
-                continue 
-            break
-
-        md5str = sumfile(filepath)
-        if md5str == info['md5']:
-            logfile('file md5 check ok!')
-            return True
-        else:
-            logfile('file md5 check failed. remove')
-            os.remove(filepath)
-            return False
- 
     def version_diff(self, newver):
         if int(newver.replace('.','')) > int(version.VERSION.replace('.','')):
             return 1
