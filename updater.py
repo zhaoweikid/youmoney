@@ -2,7 +2,7 @@
 import os, sys
 import urllib, urlparse, httplib
 import socket, urllib2
-import shutil
+import shutil, zipfile
 import traceback, md5
 import version
 from ui import logfile
@@ -54,13 +54,17 @@ class Downloader:
          
         return self.h.getreply()
 
-    def getdata(self, length):
+    def getdata(self, length, callback=None):
         logfile.info('length:', length)
         f = open(self.local, 'a+b')
         num = 0 
+        bufsize = 8192
         try:     
             while True:
-                data = self.h.file.read(8192)        
+                leave = length - num
+                if leave < bufsize:
+                    bufsize = leave
+                data = self.h.file.read(bufsize)
                 if not data:
                     break
                 num += len(data)
@@ -195,6 +199,30 @@ class Updater:
     
     def install(self, filename):
         self.backup()
+        issrc = False
+        if filename.find('src') > 0:
+            issrc = True
+
+        f = zipfile.ZipFile(filename, 'r')
+        for info in f.infolist():
+            if info.file_size == 0:
+                continue
+            filepath = info.filename
+            if not issrc and filepath.find('/.hg/') > 0:
+                continue
+            pos = filepath.find('/')
+            newpath = os.path.join(self.home, filepath[pos+1:].replace('/', os.sep))
+            newdir = os.path.dirname(newpath)
+
+            if not os.path.isdir(newdir):
+                os.mkdirs(newdir)
+
+            newf = open(newpath, 'wb')
+            newf.write(f.read(filepath))
+            newf.close()
+
+            logfile.info('copy:', info.filename, 'to:', newpath)
+        f.close()
 
     def backup(self):
         backdir = os.path.join(self.home, 'tmp', 'backup') 
@@ -202,14 +230,31 @@ class Updater:
             shutil.rmtree(backdir)
 
         os.mkdir(backdir)
-
-        for root,dirs,files in os.walk(self.home):
-            for fname in files:
-                fpath = os.path.join(root, fname)
-                if fpath.find('/tmp/') > 0 or fpath.find('/.hg/') > 0:
-                    continue
-                newpath = os.path.join(self.home, 'tmp', 'backup', fpath[len(self.home):].lstrip(os.sep))
-                print fpath, newpath
+        
+        for topdir in os.listdir(self.home):
+            if topdir in ['.hg', 'tmp'] or topdir.endswith(('.swp', '.log')):
+                continue
+            toppath = os.path.join(self.home, topdir)
+            if os.path.isdir(toppath):
+                for root,dirs,files in os.walk(toppath):
+                    for fname in files:
+                        fpath = os.path.join(root, fname)
+                        if fpath.endswith('.swp'):
+                            continue
+                        newpath = os.path.join(self.home, 'tmp', 'backup', fpath[len(self.home):].lstrip(os.sep))
+                        newdir = os.path.dirname(newpath)
+                        if not os.path.isdir(newdir):
+                            os.makedirs(newdir)
+                        shutil.move(fpath, newpath)
+                        logfile.info('move:', fpath, newpath)
+            else:
+                newpath = os.path.join(self.home, 'tmp', 'backup', toppath[len(self.home):].lstrip(os.sep))
+                newdir = os.path.dirname(newpath)
+                if not os.path.isdir(newdir):
+                    os.makedirs(newdir)
+                shutil.move(toppath, newpath)
+                logfile.info('move:', fpath, newpath)
+ 
 
 
 def main():
