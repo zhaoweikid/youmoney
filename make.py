@@ -85,12 +85,24 @@ def mac_main():
     z = zipfile.ZipFile(filename, 'w', zipfile.ZIP_DEFLATED)
     z.write(newname)
     z.close() 
- 
+
+
+def src_main():
+    if os.path.isdir('youmoney'):
+        shutil.rmtree('youmoney')
+
+    cmd = 'hg clone https://youmoney.googlecode.com/hg/ youmoney'
+    os.system(cmd)
+    os.rename('youmoney', 'YouMoney-src-%s' % (version.VERSION))
+
+
+
 
 if __name__ == '__main__':
     if sys.platform == 'darwin':
         mac_main()
     elif sys.platform.startswith('win32'):
         win32_main()
+        src_main()
 
 

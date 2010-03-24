@@ -14,14 +14,18 @@ def sumfile(filename):
     return m.hexdigest()
 
 def main():
-    filename = 'YouMoney-noinstall-%s.zip' % (version.VERSION)
-    size = os.path.getsize(filename) 
-    md5val = sumfile(filename) 
+    noinstall = 'YouMoney-noinstall-%s.zip' % (version.VERSION)
+    #size = os.path.getsize(filename) 
+    noinstall_md5val = sumfile(noinstall) 
+ 
+    src = 'YouMoney-src-%s.zip' % (version.VERSION)
+    #size = os.path.getsize(filename) 
+    src_md5val = sumfile(src) 
     
     f = open("update.txt", 'w')
     f.write('version\t%s\n' % (version.VERSION))
-    f.write('md5\t%s\n' % (md5val))
-    f.write('size\t%d\n' % (size))
+    f.write('%s\t%s\n' % (noinstall, noinstall_md5val))
+    f.write('%s\t%s\n' % (src, src_md5val))
     f.close()
 
 
