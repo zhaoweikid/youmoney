@@ -31,7 +31,7 @@ elif sys.platform.startswith('win32'):
                 'compressed': 0,
                 'optimize': 2,
                 'includes': includes,
-                'bundle_files': 1
+                #'bundle_files': 1
                 }}
 
 
@@ -55,5 +55,17 @@ elif sys.platform.startswith('win32'):
         zipfile = None,
         windows = [{'script': 'youmoney.pyw', 
                 'icon_resources': [(1, 'images/youmoney.ico')]}]
+    )
+
+
+    setup(version=version.VERSION,
+        description = 'YouMoney Updater',
+        name = 'Updater',
+        author = 'zhaoweikid',
+        author_email = 'zhaoweikid@gmail.com',
+        url = 'http://code.google.com/p/youomoney/',
+        options = options,
+        zipfile = None,
+        windows = [{'script': 'updater.py'}]
     )
 

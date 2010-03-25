@@ -1,11 +1,30 @@
 # coding: utf-8
 import os, sys
 import urllib, urlparse, httplib
-import socket, urllib2
+import socket, urllib2, time
 import shutil, zipfile
 import traceback, md5
 import version
-from ui import logfile
+import wx
+from ui import logfile, config, i18n
+
+home  = os.path.dirname(os.path.abspath(sys.argv[0]))
+cf = config.Configure()
+langdir = os.path.join(home, 'lang')
+try:
+    i18n.install(langdir, [cf['lang']])
+except:
+    i18n.install(langdir, ['en_US'])
+    cf['lang'] = 'en_US'
+    cf.dump()
+
+
+class BackupError (Exception):
+    pass
+
+class InstallError (Exception):
+    pass
+
 
 def sumfile(filename):
     m = md5.new()
@@ -19,10 +38,11 @@ def sumfile(filename):
     return m.hexdigest()
 
 class Downloader:
-    def __init__(self, url, savepath):
+    def __init__(self, url, savepath, callback):
         self.url   = url
         self.local = savepath
         self.localsize = 0
+        self.callback = callback
         
         if os.path.isfile(savepath):
             self.localsize = os.path.getsize(savepath)
@@ -54,7 +74,7 @@ class Downloader:
          
         return self.h.getreply()
 
-    def getdata(self, length, callback=None):
+    def getdata(self, length):
         logfile.info('length:', length)
         f = open(self.local, 'a+b')
         num = 0 
@@ -70,6 +90,11 @@ class Downloader:
                 num += len(data)
                 f.write(data)
                 logfile.info('download size:', num)
+                rate = float(self.filesize - length + num) / self.filesize
+                going, skip = self.callback.Update(200 + rate * 700, _('Download package') + '... %.2d%%' % (rate * 100))
+                if not going:
+                    f.close()
+                    return
         except Exception, e:
             logfile.info(traceback.format_exc()) 
 
@@ -78,6 +103,7 @@ class Downloader:
     def download(self):
         status, reason, headers = self.getheader(0)
         self.filesize = int(headers.getheader('Content-Length'))
+        self.callback.Update(150, _('Package size') + ': ' + str(self.filesize))
         logfile.info('local size:', self.localsize, 'http size:', self.filesize)
         
         if self.filesize == self.localsize:
@@ -88,13 +114,14 @@ class Downloader:
             os.remove(self.local)
             
         status, reason, headers = self.getheader(self.localsize)
+        self.callback.Update(200, _('Download package') + ' ... 0%')
         self.getdata(self.filesize - self.localsize)
 
 
 class Updater:
-    def __init__(self):
+    def __init__(self, callback):
         self.home  = os.path.dirname(os.path.abspath(sys.argv[0]))
-        
+        self.callback = callback 
         if sys.platform == 'win32':
             self.tmpdir = os.path.join(self.home, 'tmp')
         else:
@@ -111,14 +138,16 @@ class Updater:
         socket.setdefaulttimeout = 30
         updatefile = ['http://www.pythonid.com/youmoney/update2.txt', 
                       'http://youmoney.googlecode.com/files/update2.txt']
-
+        num = 0
         for url in updatefile:
+            self.callback.Update(50 * num, _('Download update.txt') + '...')
             logfile.info('get:', url)
             try:
                 op = urllib2.urlopen(url)
                 lines = op.readlines()
             except:
                 logfile.info(traceback.format_exc())
+                num += 1
                 continue
         
             logfile.info(lines)
@@ -134,11 +163,12 @@ class Updater:
                 self.info[parts[0]] = parts[1]
              
             return
-
+        
         raise IOError, 'get update.txt error!'
+        self.callback.Update(100)
 
-
-    def download(self, verstr):
+    def download(self):
+        verstr = self.info['version']
         if int(version.VERSION.replace('.','')) >= int(verstr.replace('.', '')):
             logfile.info('not need update:', version.VERSION, verstr)
             return
@@ -179,12 +209,18 @@ class Updater:
         count = 3
         while count > 0: 
             try:
-                dw = Downloader(fileurl, filepath)
+                dw = Downloader(fileurl, filepath, self.callback)
                 dw.download()
             except:
+                logfile.info(traceback.format_exc())
                 count -= 1
                 continue 
             break
+        
+        self.callback.Update(900, _('Validate package') + '...')
+        size = os.path.getsize(filepath)
+        if dw.filesize > size:
+            return
 
         md5str = sumfile(filepath)
         name = os.path.basename(fileurl)
@@ -192,13 +228,13 @@ class Updater:
         if md5str == self.info[name]:
             logfile.info('file md5 check ok!')
             return filepath
-        else:
+        elif filesize >= dw.filesize:
             logfile.info('file md5 check failed. remove')
             os.remove(filepath)
             return
     
     def install(self, filename):
-        self.backup()
+        #self.backup()
         issrc = False
         if filename.find('src') > 0:
             issrc = True
@@ -231,13 +267,18 @@ class Updater:
 
         os.mkdir(backdir)
         
+        allfiles = []
+        
         for topdir in os.listdir(self.home):
+            logfile.info('topdir:', topdir)
             if topdir in ['.hg', 'tmp'] or topdir.endswith(('.swp', '.log')):
                 continue
             toppath = os.path.join(self.home, topdir)
             if os.path.isdir(toppath):
+                logfile.info('walk:', toppath)
                 for root,dirs,files in os.walk(toppath):
                     for fname in files:
+                        logfile.info('filename:', fname)
                         fpath = os.path.join(root, fname)
                         if fpath.endswith('.swp'):
                             continue
@@ -245,19 +286,29 @@ class Updater:
                         newdir = os.path.dirname(newpath)
                         if not os.path.isdir(newdir):
                             os.makedirs(newdir)
-                        shutil.move(fpath, newpath)
-                        logfile.info('move:', fpath, newpath)
+                        shutil.copyfile(fpath, newpath)
+                        allfiles.append(fpath)
+                        logfile.info('copy:', fpath, newpath)
             else:
                 newpath = os.path.join(self.home, 'tmp', 'backup', toppath[len(self.home):].lstrip(os.sep))
                 newdir = os.path.dirname(newpath)
                 if not os.path.isdir(newdir):
                     os.makedirs(newdir)
-                shutil.move(toppath, newpath)
-                logfile.info('move:', fpath, newpath)
+                shutil.copyfile(toppath, newpath)
+                allfiles.append(toppath)
+                logfile.info('copy:', toppath, newpath)
  
+        for fname in allfiles:
+            logfile.info('remove file:', fname)
+            try:
+                os.remove(fname)
+            except:
+                newname = fname + '.backup.' + str(time.time())
+                logfile.info('rename:', newname)
+                os.rename(fname, newname)
+         
 
-
-def main():
+def test():
     verstr = sys.argv[1]
     home  = os.path.dirname(os.path.abspath(sys.argv[0]))
     logname = os.path.join(home, 'youmoney.update.log')
@@ -268,9 +319,58 @@ def main():
     try:
         filepath = up.download(verstr)
         if filepath:
+            up.backup()
             up.install(filepath)
+            os.remove(filepath)
     except:
         logfile.info(traceback.format_exc())
+
+class UpdaterApp (wx.App):
+    def __init__(self):
+        wx.App.__init__(self, 0)
+
+    def OnInit(self):
+        max = 1000
+        dlg = wx.ProgressDialog(_("YouMoney Updater"), _("Updating") + "...",
+                               maximum = max,parent=None,
+                               style = wx.PD_CAN_ABORT| wx.PD_APP_MODAL
+                                | wx.PD_ELAPSED_TIME| wx.PD_REMAINING_TIME)
+
+        up = Updater(dlg)
+        filepath = None
+        try:
+            dlg.Update(0, _('Updating') + '...')
+            filepath = up.download()
+            dlg.Update(950, _('Backup old data') + '...')
+            if filepath:
+                up.backup()
+                up.install(filepath)
+
+            os.remove(filepath)
+        except:
+            logfile.info(traceback.format_exc())
+
+        if filepath:
+            dlg.Update(1000, _('Update complete!'))
+        else:
+            going, skip = dlg.Update(999)
+            if going:
+                dlg.Update(1000, _('Update failed!'))
+            else:
+                dlg.Update(1000, _('Update cancled!'))
+        dlg.Destroy()
+         
+        return True
+
+
+def main():
+    logname = os.path.join(home, 'youmoney.update.log')
+    logfile.install(logname)
+    #logfile.install('stdout')
+
+    app = UpdaterApp()
+    app.MainLoop()
+
 
 if __name__ == '__main__':
     main()

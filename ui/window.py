@@ -1,6 +1,6 @@
 # coding: utf-8
 import os, sys, copy, time
-import types, webbrowser
+import types, webbrowser, subprocess
 import wx
 from wx.lib.wordwrap import wordwrap
 import panels, dialogs, config, storage, export, recycle
@@ -702,6 +702,20 @@ class MainFrame (wx.Frame):
         dlg.CenterOnScreen()
         if dlg.ShowModal() == wx.ID_OK:
             webbrowser.open('http://code.google.com/p/youmoney/')
+            cmd = ''
+            if sys.platform == 'win32':
+                exe = os.path.join(self.rundir, 'updater.exe')
+                if os.path.isfile(exe):
+                    cmd = exe
+                else:
+                    cmd = os.path.join(self.rundir, 'updater.pyw')
+            elif sys.platform == 'darwin':
+                pass
+            elif sys.platform.startswith('linux'):
+                if not self.rundir.startswith('/usr/share'):
+                    cmd = '/usr/bin/python ' + os.path.join(self.rundir, 'updater.py')
+            if cmd:
+                p = subprocess.Popen(cmd, shell=True)
         dlg.Destroy()
 
     def OnFilePassword(self, event):
