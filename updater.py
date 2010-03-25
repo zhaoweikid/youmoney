@@ -2,10 +2,12 @@
 import os, sys
 import urllib, urlparse, httplib
 import socket, urllib2, time
-import shutil, zipfile
+import shutil, zipfile, select
 import traceback, md5
-import version
 import wx
+from errno import EALREADY, EINPROGRESS, EWOULDBLOCK, ECONNRESET, \
+     ENOTCONN, ESHUTDOWN, EINTR, EISCONN, errorcode
+import version
 from ui import logfile, config, i18n
 
 home  = os.path.dirname(os.path.abspath(sys.argv[0]))
@@ -304,18 +306,46 @@ class Updater:
          
     
     def close_youmoney(self):
-        maxc = 20
+        maxc = 30
         issend = False
         socket.setdefaulttimeout(30)
         while  maxc > 0:
             logfile.info('try connect to youmoney...')
+            self.callback.Update(950)
             try:
                 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                sock.connect(('127.0.0.1', 9595))
+                sock.setblocking(0)
+                ret = sock.connect_ex(('127.0.0.1', 9595))
+                #logfile.info('connect: ', ret) 
+
+                if ret in [EINPROGRESS, EALREADY, EWOULDBLOCK]:
+                    checkmax = 4
+                    while checkmax > 0:
+                        logfile.info('checkmax:', checkmax)
+                        self.callback.Update(950)
+                        r = [sock]
+                        try:
+                            r, w, e = select.select(r, [], [], 0.5)
+                        except select.error, err:
+                            logfile.info('select error:', err[0], err[1])
+                            if err[0] == EINTR:
+                                continue
+                            raise IOError, 'connect error' 
+                        logfile.info(r, w, e)
+                        if sock in r:
+                            break
+                        else:
+                            checkmax -= 1
+                    else:
+                        raise IOError, 'connect error' 
+                else:
+                    raise IOError, 'connect error'
+                sock.setblocking(1)
             except:
                 sock.close()
                 logfile.info(traceback.format_exc())
                 return True
+            self.callback.Update(950)
             logfile.info('connect ok!') 
             if not issend:
                 sockfile = sock.makefile()
@@ -334,7 +364,7 @@ class Updater:
                     issend = True
             else:
                 sock.close()
-            time.sleep(3)
+            time.sleep(2)
 
 
     def rollback(self):
@@ -384,10 +414,11 @@ class UpdaterApp (wx.App):
         try:
             dlg.Update(0, _('Updating') + '...')
             filepath = up.download()
-            dlg.Update(950, _('Backup old data') + '...')
+            dlg.Update(950, _('Close YouMoney') + '...')
             if filepath:
                 try:
                     up.close_youmoney()
+                    dlg.Update(950, _('Backup old data') + '...')
                     up.backup()
                     up.install(filepath)
                 except:
