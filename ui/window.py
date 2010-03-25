@@ -48,6 +48,7 @@ class MainFrame (wx.Frame):
         self.check_password()
 
         self.Bind(event.EVT_UPDATE_NOTIFY, self.OnUpdateNotify) 
+        self.Bind(event.EVT_MYALERT, self.OnMyAlert) 
         wx.CallLater(100, self.notify)
 
         self.initcate()
@@ -717,6 +718,14 @@ class MainFrame (wx.Frame):
             if cmd:
                 p = subprocess.Popen(cmd, shell=True)
         dlg.Destroy()
+
+    def OnMyAlert(self, event):
+        dlg = wx.MessageDialog(self, event.message, _('Note:'), wx.OK|wx.ICON_INFORMATION)
+        ret = dlg.ShowModal()
+        dlg.Destroy()
+
+        if event.name == 'update' and ret == wx.ID_OK:
+            sys.exit()
 
     def OnFilePassword(self, event):
         dlg = dialogs.PasswordDialog(self)

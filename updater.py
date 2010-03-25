@@ -135,7 +135,7 @@ class Updater:
         self.openinfo()
 
     def openinfo(self):
-        socket.setdefaulttimeout = 30
+        socket.setdefaulttimeout(30)
         updatefile = ['http://www.pythonid.com/youmoney/update2.txt', 
                       'http://youmoney.googlecode.com/files/update2.txt']
         num = 0
@@ -149,8 +149,7 @@ class Updater:
                 logfile.info(traceback.format_exc())
                 num += 1
                 continue
-        
-            logfile.info(lines)
+            #logfile.info(lines)
 
             for line in lines:
                 line = line.strip()
@@ -257,28 +256,24 @@ class Updater:
             newf.write(f.read(filepath))
             newf.close()
 
-            logfile.info('copy:', info.filename, 'to:', newpath)
+            logfile.info('install:', info.filename, 'to:', newpath)
         f.close()
 
     def backup(self):
         backdir = os.path.join(self.home, 'tmp', 'backup') 
         if os.path.isdir(backdir):
             shutil.rmtree(backdir)
-
         os.mkdir(backdir)
         
         allfiles = []
         
         for topdir in os.listdir(self.home):
-            logfile.info('topdir:', topdir)
-            if topdir in ['.hg', 'tmp'] or topdir.endswith(('.swp', '.log')):
+            if topdir in ['.hg', 'tmp'] or topdir.endswith(('.swp', '.log')) or topdir.find('.backup.') > 0:
                 continue
             toppath = os.path.join(self.home, topdir)
             if os.path.isdir(toppath):
-                logfile.info('walk:', toppath)
                 for root,dirs,files in os.walk(toppath):
                     for fname in files:
-                        logfile.info('filename:', fname)
                         fpath = os.path.join(root, fname)
                         if fpath.endswith('.swp'):
                             continue
@@ -307,6 +302,53 @@ class Updater:
                 logfile.info('rename:', newname)
                 os.rename(fname, newname)
          
+    
+    def close_youmoney(self):
+        maxc = 20
+        issend = False
+        socket.setdefaulttimeout(30)
+        while  maxc > 0:
+            logfile.info('try connect to youmoney...')
+            try:
+                sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                sock.connect(('127.0.0.1', 9595))
+            except:
+                sock.close()
+                logfile.info(traceback.format_exc())
+                return True
+            logfile.info('connect ok!') 
+            if not issend:
+                sockfile = sock.makefile()
+                line = sockfile.readline()
+                logfile.info('read:', line.strip()) 
+                if not line.startswith('YouMoney'):
+                    sock.close()
+                    return False
+                else:
+                    sockfile.write('update\r\n')
+                    sockfile.flush()
+                    line = sockfile.readline()
+                    logfile.info('read:', line.strip())
+                    sock.close()
+
+                    issend = True
+            else:
+                sock.close()
+            time.sleep(3)
+
+
+    def rollback(self):
+        backhome = os.path.join(self.home, 'tmp', 'backup')
+
+        for root,dirs,files in os.walk(backhome):
+            for fname in files:
+                fpath = os.path.join(root, fname)
+                dstpath = self.home + fpath[len(backhome):]
+                try:
+                    shutil.copyfile(fpath, dstpath)
+                except:
+                    logfile.info(traceback.format_exc())
+                logfile.info('rollback file:', fpath, dstpath)
 
 def test():
     verstr = sys.argv[1]
@@ -338,26 +380,35 @@ class UpdaterApp (wx.App):
 
         up = Updater(dlg)
         filepath = None
+        errorinfo = ''
         try:
             dlg.Update(0, _('Updating') + '...')
             filepath = up.download()
             dlg.Update(950, _('Backup old data') + '...')
             if filepath:
-                up.backup()
-                up.install(filepath)
-
-            os.remove(filepath)
+                try:
+                    up.close_youmoney()
+                    up.backup()
+                    up.install(filepath)
+                except:
+                    logfile.info(traceback.format_exc())
+                    up.rollback()
+                else:
+                    os.remove(filepath)
         except:
             logfile.info(traceback.format_exc())
 
-        if filepath:
-            dlg.Update(1000, _('Update complete!'))
+        if errorinfo:
+            dlg.Update(1000, errorinfo)
         else:
-            going, skip = dlg.Update(999)
-            if going:
-                dlg.Update(1000, _('Update failed!'))
+            if filepath:
+                dlg.Update(1000, _('Update complete!'))
             else:
-                dlg.Update(1000, _('Update cancled!'))
+                going, skip = dlg.Update(999)
+                if going:
+                    dlg.Update(1000, _('Update failed!'))
+                else:
+                    dlg.Update(1000, _('Update cancled!'))
         dlg.Destroy()
          
         return True

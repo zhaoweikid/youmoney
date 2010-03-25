@@ -22,7 +22,7 @@ except:
     cf.dump()
 
 import version
-from ui import window, logfile, update
+from ui import window, logfile, update, task
 
 
 class YouMoney (wx.App):
@@ -48,10 +48,6 @@ class YouMoney (wx.App):
 
 
 def main():
-    #home = os.path.dirname(os.path.abspath(sys.argv[0]))
-    #datadir = os.path.join(home, 'data')
-    #if not os.path.isdir(datadir):
-    #    os.mkdir(datadir)
     if sys.platform.startswith('win32'):
         filename = os.path.join(home, "youmoney.log")
         vername  = os.path.join(home, "version.dat")
@@ -65,9 +61,13 @@ def main():
     f.write(version.VERSION)
     f.close()
 
-    app = YouMoney()
-    th = threading.Thread(target=update.check, args=(app.frame,))
+    th = task.Task()
     th.start()
+ 
+    app = YouMoney()
+    th2 = threading.Thread(target=task.start_server, args=(app.frame,))
+    th2.start()
+    task.taskq.put({'id':1, 'type':'update', 'frame':app.frame})
     app.MainLoop()
 
 
