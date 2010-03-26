@@ -174,8 +174,8 @@ class Updater:
             logfile.info('not need update:', version.VERSION, verstr)
             return
 
-        if sys.platform == 'darwin':
-            logfile.info('auto update not support Mac OS X.')
+        if sys.platform == 'darwin' and not self.home.startswith(os.envrion['HOME']):
+            logfile.info('auto update not support binary on Mac OS X.')
             return
 
         prefix = 'http://youmoney.googlecode.com/files/'
