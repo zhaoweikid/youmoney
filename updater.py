@@ -315,7 +315,7 @@ class Updater:
             try:
                 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 sock.setblocking(0)
-                ret = sock.connect_ex(('127.0.0.1', 9595))
+                ret = sock.connect_ex(('127.0.0.1', 9596))
                 #logfile.info('connect: ', ret) 
 
                 if ret in [EINPROGRESS, EALREADY, EWOULDBLOCK]:

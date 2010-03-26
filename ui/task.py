@@ -62,7 +62,7 @@ class MyRequest (SocketServer.StreamRequestHandler):
 class MyServer (SocketServer.TCPServer):
     def __init__(self, frame):
         self.frame = frame
-        SocketServer.TCPServer.__init__(self, ('127.0.0.1', 9595), MyRequest)
+        SocketServer.TCPServer.__init__(self, ('127.0.0.1', 9596), MyRequest)
 
 def start_server(frame):
     svr = MyServer(frame)
