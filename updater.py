@@ -138,8 +138,8 @@ class Updater:
 
     def openinfo(self):
         socket.setdefaulttimeout(30)
-        updatefile = ['http://www.pythonid.com/youmoney/update2.txt', 
-                      'http://youmoney.googlecode.com/files/update2.txt']
+        updatefile = ['http://www.pythonid.com/youmoney/update.txt', 
+                      'http://youmoney.googlecode.com/files/update.txt']
         num = 0
         for url in updatefile:
             self.callback.Update(50 * num, _('Download update.txt') + '...')
