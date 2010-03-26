@@ -4,7 +4,7 @@ import version
 
 def sumfile(filename):
     m = md5.new()
-    fobj = open(filename, 'r')
+    fobj = open(filename, 'rb')
     while True:
         d = fobj.read(8086)
         if not d:
