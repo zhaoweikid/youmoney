@@ -174,7 +174,7 @@ class Updater:
             logfile.info('not need update:', version.VERSION, verstr)
             return
 
-        if sys.platform == 'darwin' and not self.home.startswith(os.envrion['HOME']):
+        if sys.platform == 'darwin' and not self.home.startswith(os.environ['HOME']):
             logfile.info('auto update not support binary on Mac OS X.')
             return
 
