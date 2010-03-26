@@ -22,22 +22,54 @@ except:
     cf.dump()
 
 import version
-from ui import window, logfile, update, task
+from ui import window, logfile, update, task, loader
+
+
+class YouMoneySplashScreen (wx.SplashScreen):
+    def __init__(self, parent):
+        global home
+        self.parent = parent
+        bmp = loader.load_bitmap(os.path.join(home, 'images', 'splash.png'))
+        wx.SplashScreen.__init__(self, bmp, wx.SPLASH_CENTER_ON_SCREEN|wx.SPLASH_TIMEOUT, 5000, None, -1)
+        self.fc = wx.FutureCall(1000, self.ShowMain)
+
+
+    def OnClose(self, event):
+        event.Skip()
+        self.Hide()
+
+        if self.fc.IsRunning():
+            self.fc.Stop()
+            self.ShowMain()
+
+    def ShowMain(self):
+        global cf
+        self.frame = window.MainFrame(None, 101, 'YouMoney ' + version.VERSION, cf)
+        self.frame.CenterOnScreen()
+        self.parent.SetTopWindow(self.frame)
+        self.frame.Show(True)
 
 
 class YouMoney (wx.App):
     def __init__(self):
         wx.App.__init__(self, 0)
 
-    def OnInit(self):
+    def OnInit2(self):
         global cf
         self.frame = window.MainFrame(None, 101, 'YouMoney ' + version.VERSION, cf)
         self.frame.CenterOnScreen()
-        self.frame.Show(True)
         self.SetTopWindow(self.frame)
+        self.frame.Show(True)
 
         self.Bind(wx.EVT_ACTIVATE_APP, self.OnActivate)
         
+        return True
+
+    def OnInit(self):
+        splash = YouMoneySplashScreen(self)
+        #self.frame = splash.frame
+        splash.Show()
+
         return True
 
     def OnActivate(self, event):
@@ -56,7 +88,6 @@ def main():
         vername  = os.path.join(os.environ['HOME'], ".youmoney", "verion.dat")
     logfile.install(filename)
         
-    versionfile = os.path.join(home, '')
     f = open(vername, 'w')
     f.write(version.VERSION)
     f.close()
@@ -65,9 +96,6 @@ def main():
     th.start()
  
     app = YouMoney()
-    th2 = threading.Thread(target=task.start_server, args=(app.frame,))
-    th2.start()
-    task.taskq.put({'id':1, 'type':'update', 'frame':app.frame})
     app.MainLoop()
 
 

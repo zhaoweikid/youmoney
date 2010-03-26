@@ -411,7 +411,7 @@ class UpdaterApp (wx.App):
                     up.backup()
                     up.install(filepath)
                 except Exception, e:
-                    errorinfo = _('Update failed!') + str(e)
+                    errorinfo = _('Update failed!') + ' ' + str(e)
                     logfile.info(traceback.format_exc())
                     up.rollback()
                 else:
@@ -427,7 +427,7 @@ class UpdaterApp (wx.App):
             else:
                 going, skip = dlg.Update(999)
                 if going:
-                    dlg.Update(1000, _('Update failed!') + up.error_info)
+                    dlg.Update(1000, _('Update failed!') + ' ' + up.error_info)
                 else:
                     dlg.Update(1000, _('Update cancled!'))
         dlg.Destroy()

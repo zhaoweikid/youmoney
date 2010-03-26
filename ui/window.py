@@ -2,8 +2,9 @@
 import os, sys, copy, time
 import types, webbrowser, subprocess
 import wx
+import threading
 from wx.lib.wordwrap import wordwrap
-import panels, dialogs, config, storage, export, recycle
+import panels, dialogs, config, storage, export, recycle, task
 import event
 from loader import load_bitmap
 import sqlite3, datetime, shutil
@@ -52,6 +53,12 @@ class MainFrame (wx.Frame):
         wx.CallLater(100, self.notify)
 
         self.initcate()
+        
+        # start server
+        th = threading.Thread(target=task.start_server, args=(self,))
+        th.start()
+        # start check update
+        task.taskq.put({'id':1, 'type':'update', 'frame':self})
         
     def initcate(self):
         sql = "select count(*) from category"
@@ -104,7 +111,8 @@ class MainFrame (wx.Frame):
             path = self.conf.default_db_path()
             self.conf['lastdb'] = path
             self.db = storage.DBStorage(path)
-        #self.SetStatusText(_('Database file: ') + path, 0)
+
+        self.SetStatusText(_('Database file: ') + path, 0)
         dbver  = int(self.db.version.replace('.', '')) 
         prgver = int(version.VERSION.replace('.', ''))
         
