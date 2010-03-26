@@ -13,7 +13,7 @@ def create_po():
 
     os.chdir(os.path.join(home, 'scripts'))
 
-    cmd = "python %s %s" % ('pygettext.py', os.path.join(home, 'ui', '*.py'))
+    cmd = "python %s %s %s" % ('pygettext.py', os.path.join(home, 'ui', '*.py'), os.path.join(home, 'updater.py'))
     print cmd
     os.system(cmd)
 
