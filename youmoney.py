@@ -31,7 +31,7 @@ class YouMoneySplashScreen (wx.SplashScreen):
         self.parent = parent
         bmp = loader.load_bitmap(os.path.join(home, 'images', 'splash.png'))
         wx.SplashScreen.__init__(self, bmp, wx.SPLASH_CENTER_ON_SCREEN|wx.SPLASH_TIMEOUT, 5000, None, -1)
-        self.fc = wx.FutureCall(1000, self.ShowMain)
+        self.fc = wx.FutureCall(100, self.ShowMain)
 
 
     def OnClose(self, event):
