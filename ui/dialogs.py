@@ -28,7 +28,7 @@ class IncomeDialog (sc.SizedDialog):
         
         wx.StaticText(panel, -1, _('Category:'))
         items = readydata['cates']
-        self.cate = wx.ComboBox(panel, -1, readydata['cate'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
+        self.cate = wx.ComboBox(panel, -1, readydata['cate'], (90,50), (160,-1), items, wx.CB_DROPDOWN|wx.CB_READONLY)
 
         wx.StaticText(panel, -1, _('Money:'))
         self.num = wx.TextCtrl(panel, -1, str(readydata['num']), size=(125, -1))
@@ -48,7 +48,11 @@ class IncomeDialog (sc.SizedDialog):
         num = self.num.GetValue()
         ret = re.search(u'^[0-9]+(\.[0-9]+)?', num)
         if not ret:
-            numstr = '0'
+            ret = re.search(u'\.[0-9]+', num)
+            if ret:
+                numstr = '0' + num
+            else:
+                numstr = '0'
         else:
             numstr = ret.group()
 
@@ -89,11 +93,11 @@ class PayoutDialog (sc.SizedDialog):
         
         wx.StaticText(panel, -1, _('Category:'))
         items = readydata['cates']
-        self.cate = wx.ComboBox(panel, -1, readydata['cate'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
+        self.cate = wx.ComboBox(panel, -1, readydata['cate'], (90,50), (160,-1), items, wx.CB_DROPDOWN|wx.CB_READONLY)
 
         wx.StaticText(panel, -1, _('Payment:'))
         items = [_('Cash'), _('Credit Card')]
-        self.pay = wx.ComboBox(panel, -1, readydata['pay'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
+        self.pay = wx.ComboBox(panel, -1, readydata['pay'], (90,50), (160,-1), items, wx.CB_DROPDOWN|wx.CB_READONLY)
 
         wx.StaticText(panel, -1, _('Money:'))
         self.num = wx.TextCtrl(panel, -1, str(readydata['num']), size=(125, -1))
@@ -112,7 +116,11 @@ class PayoutDialog (sc.SizedDialog):
         num = self.num.GetValue()
         ret = re.search('^[0-9]+(\.[0-9]+)?', num)
         if not ret:
-            numstr = '0'
+            ret = re.search(u'\.[0-9]+', num)
+            if ret:
+                numstr = '0' + num
+            else:
+                numstr = '0'
         else:
             numstr = ret.group()
 
@@ -148,26 +156,26 @@ class CycleDialog (sc.SizedDialog):
 
         wx.StaticText(panel, -1, _('Type:'))
         items = readydata['types']
-        self.catetype = wx.ComboBox(panel, -1, readydata['type'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
+        self.catetype = wx.ComboBox(panel, -1, readydata['type'], (90,50), (160,-1), items, wx.CB_DROPDOWN|wx.CB_READONLY)
         
         wx.StaticText(panel, -1, _('Category:'))
         if readydata['type'] == _('Payout'):
             items = readydata['payout_cates']
-            self.cate = wx.ComboBox(panel, -1, readydata['payout_cate'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
+            self.cate = wx.ComboBox(panel, -1, readydata['payout_cate'], (90,50), (160,-1), items, wx.CB_DROPDOWN|wx.CB_READONLY)
         else:
             items = readydata['income_cates']
-            self.cate = wx.ComboBox(panel, -1, readydata['income_cate'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
+            self.cate = wx.ComboBox(panel, -1, readydata['income_cate'], (90,50), (160,-1), items, wx.CB_DROPDOWN|wx.CB_READONLY)
  
         wx.StaticText(panel, -1, _('Payment:'))
         items = [_('Cash'), _('Credit Card')]
-        self.pay = wx.ComboBox(panel, -1, readydata['pay'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
+        self.pay = wx.ComboBox(panel, -1, readydata['pay'], (90,50), (160,-1), items, wx.CB_DROPDOWN|wx.CB_READONLY)
 
         wx.StaticText(panel, -1, _('Money:'))
         self.num = wx.TextCtrl(panel, -1, str(readydata['num']), size=(125, -1))
 
         wx.StaticText(panel, -1, _('Cycle:'))
         items = readydata['cycles']
-        self.addtime = wx.ComboBox(panel, -1, readydata['cycle'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
+        self.addtime = wx.ComboBox(panel, -1, readydata['cycle'], (90,50), (160,-1), items, wx.CB_DROPDOWN|wx.CB_READONLY)
 
         wx.StaticText(panel, -1, _('Explain:'))
         self.explain = wx.TextCtrl(panel, -1, readydata['explain'], size=(220,100), style=wx.TE_MULTILINE)
@@ -206,7 +214,12 @@ class CycleDialog (sc.SizedDialog):
         num = self.num.GetValue()
         ret = re.search('^[0-9]+(\.[0-9]+)?', num)
         if not ret:
-            numstr = '0'
+            ret = re.search(u'\.[0-9]+', num)
+            if ret:
+                numstr = '0' + num
+            else:
+                numstr = '0'
+ 
         else:
             numstr = ret.group()
 
@@ -241,7 +254,7 @@ class CategoryDialog (sc.SizedDialog):
        
         wx.StaticText(panel, -1, _("Type:"))
         items = [_('Payout'), _('Income')]
-        self.catetype = wx.ComboBox(panel, -1, readydata['catetype'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
+        self.catetype = wx.ComboBox(panel, -1, readydata['catetype'], (90,50), (160,-1), items, wx.CB_DROPDOWN|wx.CB_READONLY)
 
         wx.StaticText(panel, -1, _("Category:"))
         self.cate = wx.TextCtrl(panel, -1, readydata['cate'], size=(125, -1))
@@ -249,7 +262,7 @@ class CategoryDialog (sc.SizedDialog):
 
         wx.StaticText(panel, -1, _('Higher Category:'))
         items = readydata['cates'][readydata['catetype']]
-        self.upcate = wx.ComboBox(panel, -1, readydata['upcate'], (90,50), (160,-1), items, wx.CB_DROPDOWN)
+        self.upcate = wx.ComboBox(panel, -1, readydata['upcate'], (90,50), (160,-1), items, wx.CB_DROPDOWN|wx.CB_READONLY)
 
         self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
         self.SetMinSize(wx.Size(300, 170))

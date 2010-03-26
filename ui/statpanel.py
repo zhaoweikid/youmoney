@@ -39,14 +39,14 @@ class StatPanel (wx.Panel):
         #items = [_('Payout and Income'), _('Payout'), _('Income')]
         items = [_('Payout'), _('Income'), _('Surplus')]
         self.default_type = items[0]
-        self.type = wx.ComboBox(self, -1, items[0], (60, 50), (80, -1), items, wx.CB_DROPDOWN)
+        self.type = wx.ComboBox(self, -1, items[0], (60, 50), (80, -1), items, wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.type, 0, wx.EXPAND)
     
         box.Add(wx.StaticText(self, -1, _("   Category "), (8, 10)), 0, wx.ALIGN_CENTER)
         #items = self.data[self.default_type]
         #items = [_('All Categories')]
         items = self.data[_('Payout')]
-        self.category = wx.ComboBox(self, -1, items[0], (60, 50), (100, -1), items, wx.CB_DROPDOWN)
+        self.category = wx.ComboBox(self, -1, items[0], (60, 50), (100, -1), items, wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.category, 0, wx.EXPAND)
 
         box.Add(wx.StaticText(self, -1, u"  ", (8, 10)), 0, wx.ALIGN_CENTER)

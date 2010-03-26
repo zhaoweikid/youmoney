@@ -180,9 +180,9 @@ class ItemListPanel (wx.Panel):
         box = wx.BoxSizer(wx.HORIZONTAL)
         tday = datetime.date.today()
         items = [ str(x) for x in range(2009, 2020) ]
-        self.year  = wx.ComboBox(self, 500, str(tday.year), (60, 50), (80, -1), items, wx.CB_DROPDOWN)
+        self.year  = wx.ComboBox(self, 500, str(tday.year), (60, 50), (80, -1), items, wx.CB_DROPDOWN|wx.CB_READONLY)
         items = [ str(x) for x in range(1, 13) ]
-        self.month = wx.ComboBox(self, 500, str(tday.month), (60, 50), (60, -1), items, wx.CB_DROPDOWN)
+        self.month = wx.ComboBox(self, 500, str(tday.month), (60, 50), (60, -1), items, wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(wx.StaticText(self, -1, _(' Date: '), (8, 10)), 0, wx.ALIGN_CENTER)
         box.Add(self.year, 0, wx.EXPAND)
         box.Add(wx.StaticText(self, -1, _(" Year: "), (8, 10)), 0, wx.ALIGN_CENTER)

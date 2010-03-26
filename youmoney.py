@@ -54,7 +54,7 @@ class YouMoney (wx.App):
     def __init__(self):
         wx.App.__init__(self, 0)
 
-    def OnInit2(self):
+    def OnInit(self):
         global cf
         self.frame = window.MainFrame(None, 101, 'YouMoney ' + version.VERSION, cf)
         self.frame.CenterOnScreen()
@@ -65,7 +65,7 @@ class YouMoney (wx.App):
         
         return True
 
-    def OnInit(self):
+    def OnInit2(self):
         splash = YouMoneySplashScreen(self)
         #self.frame = splash.frame
         splash.Show()

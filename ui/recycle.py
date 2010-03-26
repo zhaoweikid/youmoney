@@ -1,6 +1,7 @@
 # coding: utf-8
 import os, sys
 import storage
+import pprint
 import datetime, time
 
 class RecordCycle:
@@ -36,14 +37,19 @@ class RecordCycle:
 
             cycleitems = {} 
             tm = int(time.mktime(datestart.timetuple()))
-            sql = "select id,cycle,ctime from capital where cycle>0 and ctime>%d" % (tm)
+            sql = "select id,cycle,ctime from capital where cycle=%d and ctime>%d" % (data['id'], tm)
             ret = self.db.query(sql, False)
             if ret:
                 for row in ret:
                     x = datetime.date.fromtimestamp(row[2])
                     k = str(x) + '_' + str(row[1])
                     cycleitems[k] = row[0]
+             
+            if datestart == daynow and data['lasttime'] > 0:
+                k = str(datestart) + '_' + str(data['id'])
+                cycleitems[k] = 0
 
+            #pprint.pprint(cycleitems)
             while True:
                 if dateck > daynow:
                     break
@@ -51,8 +57,9 @@ class RecordCycle:
                 k = str(dateck)
                 ck = k + '_' + str(data['id'])
                 if not self.checkfunc[addtime](dateck):
-                    dateck = self.addfunc[addtime](dateck)
-                    continue
+                    if not ((addtime == 4 or addtime == 5) and data['lasttime'] == 0):
+                        dateck = self.addfunc[addtime](dateck)
+                        continue
 
                 if ck not in  cycleitems:
                     #print 'cycle add:', ck
