@@ -60,6 +60,7 @@ class MyRequest (SocketServer.StreamRequestHandler):
         self.wfile.flush()
         
 class MyServer (SocketServer.TCPServer):
+    allow_reuse_address = True
     def __init__(self, frame):
         self.frame = frame
         SocketServer.TCPServer.__init__(self, ('127.0.0.1', 9596), MyRequest)
