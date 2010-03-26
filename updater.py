@@ -268,9 +268,12 @@ class Updater:
 
     def backup(self):
         backdir = os.path.join(self.home, 'tmp', 'backup') 
-        if os.path.isdir(backdir):
-            shutil.rmtree(backdir)
-        os.mkdir(backdir)
+        try:
+            if os.path.isdir(backdir):
+                 shutil.rmtree(backdir)
+        except:
+            os.rename(backdir, backdir + '.autobak.' + str(time.time()))
+        os.makedirs(backdir)
         
         allfiles = []
         
@@ -411,9 +414,9 @@ class UpdaterApp (wx.App):
                     up.backup()
                     up.install(filepath)
                 except Exception, e:
-                    errorinfo = _('Update failed!') + ' ' + str(e)
                     logfile.info(traceback.format_exc())
                     up.rollback()
+                    errorinfo = _('Update failed!') + ' ' + str(e)
                 else:
                     os.remove(filepath)
         except:
