@@ -133,7 +133,7 @@ class Updater:
             os.mkdir(self.tmpdir)
 
         self.info = {}
-        
+        self.error_info = '' 
         self.openinfo()
 
     def openinfo(self):
@@ -172,10 +172,12 @@ class Updater:
         verstr = self.info['version']
         if int(version.VERSION.replace('.','')) >= int(verstr.replace('.', '')):
             logfile.info('not need update:', version.VERSION, verstr)
+            self.error_info = _('Not need update:') + verstr
             return
 
         if sys.platform == 'darwin' and not self.home.startswith(os.environ['HOME']):
             logfile.info('auto update not support binary on Mac OS X.')
+            self.error_info = _('Mac OS X binary version dose not support the automatic update.')
             return
 
         prefix = 'http://youmoney.googlecode.com/files/'
@@ -187,6 +189,7 @@ class Updater:
         if os.path.isfile(srcmainfile):
             if sys.platform.startswith('linux') and self.home.startswith('/usr/share'):
                 logfile.info('Linux rpm and deb install not support auto update')
+                self.err_info = _('Linux rpm and deb install does not support the automaitc update.')
                 return
             fileurl = srcfile
         else:     
@@ -198,6 +201,7 @@ class Updater:
                     fileurl = srcfile
             elif sys.platform == 'darwin':
                 logfile.info('Mac OS X not support binary auto update.')
+                self.error_info = _('Mac OS X binary version dose not support the automatic update.')
                 return
             elif sys.platform.startswith('linux'):
                 fileurl = srcfile
@@ -221,6 +225,7 @@ class Updater:
         self.callback.Update(900, _('Validate package') + '...')
         size = os.path.getsize(filepath)
         if dw.filesize > size:
+            self.error_info = _('Package size is too small. Try update again.')
             return
 
         md5str = sumfile(filepath)
@@ -232,10 +237,10 @@ class Updater:
         elif size >= dw.filesize:
             logfile.info('file md5 check failed. remove')
             os.remove(filepath)
+            self.error_info = _('Package md5 is error! Try update again.')
             return
     
     def install(self, filename):
-        #self.backup()
         issrc = False
         if filename.find('src') > 0:
             issrc = True
@@ -380,22 +385,6 @@ class Updater:
                     logfile.info(traceback.format_exc())
                 logfile.info('rollback file:', fpath, dstpath)
 
-def test():
-    verstr = sys.argv[1]
-    home  = os.path.dirname(os.path.abspath(sys.argv[0]))
-    logname = os.path.join(home, 'youmoney.update.log')
-    #logfile.install(logname)
-    logfile.install('stdout')
-
-    up = Updater()
-    try:
-        filepath = up.download(verstr)
-        if filepath:
-            up.backup()
-            up.install(filepath)
-            os.remove(filepath)
-    except:
-        logfile.info(traceback.format_exc())
 
 class UpdaterApp (wx.App):
     def __init__(self):
@@ -421,7 +410,8 @@ class UpdaterApp (wx.App):
                     dlg.Update(950, _('Backup old data') + '...')
                     up.backup()
                     up.install(filepath)
-                except:
+                except Exception, e:
+                    errorinfo = _('Update failed!') + str(e)
                     logfile.info(traceback.format_exc())
                     up.rollback()
                 else:
@@ -437,7 +427,7 @@ class UpdaterApp (wx.App):
             else:
                 going, skip = dlg.Update(999)
                 if going:
-                    dlg.Update(1000, _('Update failed!'))
+                    dlg.Update(1000, _('Update failed!') + up.error_info)
                 else:
                     dlg.Update(1000, _('Update cancled!'))
         dlg.Destroy()

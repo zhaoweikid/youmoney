@@ -162,6 +162,8 @@ class MainFrame (wx.Frame):
         self.ID_VIEW_LANG_EN = wx.NewId()
         self.ID_VIEW_LANG_CN = wx.NewId()
         self.ID_VIEW_LANG_JP = wx.NewId()
+        
+        self.ID_ABOUT_UPDATE  = wx.NewId()
         self.ID_ABOUT_WEBSITE = wx.NewId()
             
         self.lang2id['zh_CN'] = self.ID_VIEW_LANG_CN
@@ -215,6 +217,7 @@ class MainFrame (wx.Frame):
         menubar.Append(self.viewmenu, _('View'))
         
         self.aboutmenu = wx.Menu()
+        self.aboutmenu.Append(self.ID_ABOUT_UPDATE, _('Update YouMoney'))
         self.aboutmenu.Append(self.ID_ABOUT_WEBSITE, _('About Information'))
         menubar.Append(self.aboutmenu, _('About'))
 
@@ -245,6 +248,8 @@ class MainFrame (wx.Frame):
         self.Bind(wx.EVT_MENU, self.OnLanguage, id=self.ID_VIEW_LANG_CN)
         self.Bind(wx.EVT_MENU, self.OnLanguage, id=self.ID_VIEW_LANG_EN)
         self.Bind(wx.EVT_MENU, self.OnLanguage, id=self.ID_VIEW_LANG_JP)
+
+        self.Bind(wx.EVT_MENU, self.OnAboutUpdate, id=self.ID_ABOUT_UPDATE)
         self.Bind(wx.EVT_MENU, self.OnAboutInfo, id=self.ID_ABOUT_WEBSITE)
         
         lang = self.conf['lang']
@@ -698,26 +703,35 @@ class MainFrame (wx.Frame):
         wx.AboutBox(info)
 
 
+    def OnAboutUpdate(self, event):
+        self.updater()
+
+    def updater(self):
+        cmd = ''
+        if sys.platform == 'win32':
+            exe = os.path.join(self.rundir, 'updater.exe')
+            if os.path.isfile(exe):
+                cmd = exe
+            else:
+                cmd = os.path.join(self.rundir, 'updater.pyw')
+        elif sys.platform == 'darwin':
+            if self.rundir.startswith(os.environ['HOME']):
+                cmd = '/usr/bin/python ' + os.path.join(self.rundir, 'updater.py')
+        elif sys.platform.startswith('linux'):
+            if not self.rundir.startswith('/usr/share'):
+                cmd = '/usr/bin/python ' + os.path.join(self.rundir, 'updater.py')
+        if cmd:
+            p = subprocess.Popen(cmd, shell=True)
+        else:
+            wx.MessageBox(_('This version is not support automatic update. Only windows and run with source support.'), _('Note:'), wx.OK|wx.ICON_INFORMATION)
+
+
     def OnUpdateNotify(self, event):
         dlg = dialogs.UpdateDialog(self, event.version)
         dlg.CenterOnScreen()
         if dlg.ShowModal() == wx.ID_OK:
             webbrowser.open('http://code.google.com/p/youmoney/')
-            cmd = ''
-            if sys.platform == 'win32':
-                exe = os.path.join(self.rundir, 'updater.exe')
-                if os.path.isfile(exe):
-                    cmd = exe
-                else:
-                    cmd = os.path.join(self.rundir, 'updater.pyw')
-            elif sys.platform == 'darwin':
-                if self.rundir.startswith(os.environ['HOME']):
-                    cmd = '/usr/bin/python ' + os.path.join(self.rundir, 'updater.py')
-            elif sys.platform.startswith('linux'):
-                if not self.rundir.startswith('/usr/share'):
-                    cmd = '/usr/bin/python ' + os.path.join(self.rundir, 'updater.py')
-            if cmd:
-                p = subprocess.Popen(cmd, shell=True)
+            self.updater()
         dlg.Destroy()
 
     def OnMyAlert(self, event):

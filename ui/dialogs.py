@@ -286,10 +286,12 @@ class UpdateDialog (sc.SizedDialog):
 
         wx.StaticText(panel, -1, _('Found new version:') + ' YouMoney-%s' % (version))
         hl.HyperLinkCtrl(panel, wx.ID_ANY, _("Open download page"),URL="http://code.google.com/p/youmoney/")
+        wx.StaticText(panel, -1, _('Click OK to start the automatic update.'))
                 
         self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
         self.SetMinSize(wx.Size(300, 170))
         self.Fit()
+
 
 class PasswordDialog (sc.SizedDialog):
     def __init__(self, parent):
