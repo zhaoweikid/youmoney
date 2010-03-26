@@ -225,11 +225,11 @@ class Updater:
 
         md5str = sumfile(filepath)
         name = os.path.basename(fileurl)
-
+        logfile.info('file md5:', md5str, self.info[name])
         if md5str == self.info[name]:
             logfile.info('file md5 check ok!')
             return filepath
-        elif filesize >= dw.filesize:
+        elif size >= dw.filesize:
             logfile.info('file md5 check failed. remove')
             os.remove(filepath)
             return
