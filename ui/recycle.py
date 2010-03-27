@@ -45,9 +45,10 @@ class RecordCycle:
                     k = str(x) + '_' + str(row[1])
                     cycleitems[k] = row[0]
              
-            if datestart == daynow and data['lasttime'] > 0:
+            if data['lasttime'] > 0:
                 k = str(datestart) + '_' + str(data['id'])
-                cycleitems[k] = 0
+                if not cycle.has_key(k):
+                    cycleitems[k] = 0
 
             #pprint.pprint(cycleitems)
             while True:

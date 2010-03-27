@@ -113,6 +113,7 @@ class MainFrame (wx.Frame):
             self.db = storage.DBStorage(path)
 
         self.SetStatusText(_('Database file: ') + path, 0)
+
         dbver  = int(self.db.version.replace('.', '')) 
         prgver = int(version.VERSION.replace('.', ''))
         
