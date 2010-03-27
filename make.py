@@ -96,6 +96,38 @@ def src_main():
     os.rename('youmoney', 'YouMoney-src-%s' % (version.VERSION))
 
 
+def debian_main():
+    cmd = "rm -rf ../youmoney_*"
+    os.system(cmd)
+
+    cmd = 'rm -rf debian/youmoney'
+    os.system(cmd)
+
+    f = open('debian/files', 'w')
+    s = 'youmoney_%s-1_i386.deb Office extra' % (version.VERSION)
+    print s
+    f.write(s)
+    f.close()
+    
+    f = open('debian/changelog', 'r')
+    lines = f.readlines()
+    f.close()
+
+    f = open('debian/changelog', 'w')
+    s = 'youmoney (%s-1) unstable; urgency=low\n' % (version.VERSION)
+    f.write(s)
+    for line in lines[1:]:
+        f.write(line)
+    f.close() 
+
+    cmd = 'dpkg-buildpackage -rfakeroot'
+    os.system(cmd)
+
+def rpm_main():
+    os.path.insert(0, 'rpm')
+    import  make
+    os.chdir('rpm')
+    make.main()
 
 
 if __name__ == '__main__':
@@ -104,5 +136,13 @@ if __name__ == '__main__':
     elif sys.platform.startswith('win32'):
         win32_main()
         src_main()
+    elif sys.platform.startswith('linux'):
+        f = open('/etc/issue', 'r')
+        line = f.readline()
+        f.close()
 
-
+        if line.find('Ubuntu') >= 0:
+            debian_main()
+        else:
+            rpm_main()
+    
