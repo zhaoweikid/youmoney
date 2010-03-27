@@ -79,15 +79,22 @@ class CategoryPanel (wx.Panel):
         
         if not hasattr(self, "ID_POPUP_DEL"):
             self.ID_POPUP_DEL = wx.NewId()
+            self.ID_POPUP_EDIT = wx.NewId()
             self.Bind(wx.EVT_MENU, self.OnCategoryDel, id=self.ID_POPUP_DEL)
+            self.Bind(wx.EVT_MENU, self.OnItemActivated, id=self.ID_POPUP_EDIT)
         menu = wx.Menu()
+        menu.Append(self.ID_POPUP_EDIT, _('Edit')) 
         menu.Append(self.ID_POPUP_DEL, _('Delete')) 
         self.PopupMenu(menu)
         menu.Destroy()
 
 
     def OnItemActivated(self, event):
-        data  = self.tree.GetPyData(event.GetItem())
+        try:
+            data  = self.tree.GetPyData(event.GetItem())
+        except:
+            data  = self.tree.GetPyData(self.currentItem)
+
         frame = self.parent.parent
         if data['id'] > 0:
             sql = "select * from category where id=" + str(data['id'])
@@ -124,14 +131,14 @@ class CategoryPanel (wx.Panel):
         if name == _('No Category'):
             dlg = wx.MessageDialog(self, _('Can not delete this category!'),
                                _('Notice:'),
-                               wx.OK | wx.ICON_INFORMATION | wx.ICON_INFORMATION)
+                               wx.OK | wx.ICON_INFORMATION)
             dlg.ShowModal()
             dlg.Destroy()
             return   
         else:
             dlg = wx.MessageDialog(self, _('To delete category') + name + _(', all child categories will move to "No Category"'),
                                _('Notice:'),
-                               wx.OK | wx.ICON_INFORMATION | wx.CANCEL | wx.ICON_INFORMATION)
+                               wx.OK | wx.ICON_INFORMATION | wx.CANCEL)
         if dlg.ShowModal() == wx.ID_OK:
             # 检查要删除的所有分类，包括子类
             idlist = [str(data['id'])]
@@ -212,9 +219,12 @@ class ItemListPanel (wx.Panel):
     def OnPopupMenu(self, event):
         if not hasattr(self, "ID_POPUP_DEL"):
             self.ID_POPUP_DEL = wx.NewId()
+            self.ID_POPUP_EDIT = wx.NewId()
             
             self.Bind(wx.EVT_MENU, self.OnDelete, id=self.ID_POPUP_DEL)
+            self.Bind(wx.EVT_MENU, self.OnItemActivated, id=self.ID_POPUP_EDIT)
         menu = wx.Menu()
+        menu.Append(self.ID_POPUP_EDIT, _("Edit"))
         menu.Append(self.ID_POPUP_DEL, _("Delete"))
         self.PopupMenu(menu)
         menu.Destroy()
@@ -287,7 +297,10 @@ class ItemListPanel (wx.Panel):
 
     
     def OnItemActivated(self, event):
-        currentItem = event.m_itemIndex
+        try:
+            currentItem = event.m_itemIndex
+        except:
+            currentItem = self.currentItem
         id = self.list.GetItemData(currentItem)
         category = self.parent.parent.category
         sql = "select * from capital where id=" + str(id)
@@ -310,6 +323,13 @@ class ItemListPanel (wx.Panel):
 
 
     def OnDelete(self, event):
+        dlg = wx.MessageDialog(self, _('Is really delete? Delete can not be restored!'), _('Notice:'),
+                               wx.OK | wx.CANCEL| wx.ICON_INFORMATION)
+        if dlg.ShowModal() != wx.ID_OK:
+            dlg.Destroy()
+            return
+        dlg.Destroy()
+ 
         if self.currentItem is None:
             return
         id = self.list.GetItemData(self.currentItem)
@@ -351,9 +371,12 @@ class CycleListPanel (wx.Panel):
     def OnPopupMenu(self, event):
         if not hasattr(self, "ID_POPUP_DEL"):
             self.ID_POPUP_DEL = wx.NewId()
+            self.ID_POPUP_EDIT = wx.NewId()
             
             self.Bind(wx.EVT_MENU, self.OnDelete, id=self.ID_POPUP_DEL)
+            self.Bind(wx.EVT_MENU, self.OnItemActivated, id=self.ID_POPUP_EDIT)
         menu = wx.Menu()
+        menu.Append(self.ID_POPUP_EDIT, _("Edit"))
         menu.Append(self.ID_POPUP_DEL, _("Delete"))
         self.PopupMenu(menu)
         menu.Destroy()
@@ -391,7 +414,10 @@ class CycleListPanel (wx.Panel):
                 self.list.SetItemData(item, row['id'])
     
     def OnItemActivated(self, event):
-        currentItem = event.m_itemIndex
+        try:
+            currentItem = event.m_itemIndex
+        except:
+            currentItem = self.currentItem
         id = self.list.GetItemData(currentItem)
         category = self.parent.parent.category
 
@@ -427,6 +453,13 @@ class CycleListPanel (wx.Panel):
 
 
     def OnDelete(self, event):
+        dlg = wx.MessageDialog(self, _('Is really delete? Delete can not be restored!'), _('Notice:'),
+                               wx.OK | wx.CANCEL| wx.ICON_INFORMATION)
+        if dlg.ShowModal() != wx.ID_OK:
+            dlg.Destroy()
+            return
+        dlg.Destroy()
+ 
         if self.currentItem is None:
             return
         id = self.list.GetItemData(self.currentItem)

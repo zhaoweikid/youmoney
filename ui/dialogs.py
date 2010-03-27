@@ -7,7 +7,12 @@ import logfile
 
 class IncomeDialog (sc.SizedDialog):
     def __init__(self, parent, readydata):
-        sc.SizedDialog.__init__(self, None, -1, _('Add income item'), 
+        if readydata['mode'] == 'insert':
+            title = _('Add income item')
+        else:
+            title = _('Edit income item')
+
+        sc.SizedDialog.__init__(self, None, -1, title, 
                                 style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         self.parent = parent
         self.data = readydata
@@ -75,7 +80,11 @@ class IncomeDialog (sc.SizedDialog):
 
 class PayoutDialog (sc.SizedDialog):
     def __init__(self, parent, readydata):
-        sc.SizedDialog.__init__(self, None, -1, _('Add payout item'), 
+        if readydata['mode'] == 'insert':
+            title = _('Add payout item')
+        else:
+            title = _('Edit payout item')
+        sc.SizedDialog.__init__(self, None, -1, title, 
                                 style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         self.parent = parent
         self.data = readydata
@@ -143,7 +152,11 @@ class PayoutDialog (sc.SizedDialog):
 
 class CycleDialog (sc.SizedDialog):
     def __init__(self, parent, readydata):
-        sc.SizedDialog.__init__(self, None, -1, _('Add cycle item'), 
+        if readydata['mode'] == 'insert':
+            title = _('Add cycle item')
+        else:
+            title = _('Edit cycle item')
+        sc.SizedDialog.__init__(self, None, -1, title, 
                                 style=wx.DEFAULT_DIALOG_STYLE)
         self.parent = parent
         self.data = readydata
@@ -245,8 +258,13 @@ class CycleDialog (sc.SizedDialog):
 class CategoryDialog (sc.SizedDialog):
     def __init__(self, parent, readydata):
         self.data = readydata
-        #print 'ready:', readydata
-        sc.SizedDialog.__init__(self, None, -1, _('Add Category'), 
+
+        if readydata['mode'] == 'insert':
+            title = _('Add Category')
+        else:
+            title = _('Edit Category')
+
+        sc.SizedDialog.__init__(self, None, -1, title, 
                                 style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         self.parent = parent
         panel = self.GetContentsPane()

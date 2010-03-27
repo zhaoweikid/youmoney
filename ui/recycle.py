@@ -47,7 +47,7 @@ class RecordCycle:
              
             if data['lasttime'] > 0:
                 k = str(datestart) + '_' + str(data['id'])
-                if not cycle.has_key(k):
+                if not cycleitems.has_key(k):
                     cycleitems[k] = 0
 
             #pprint.pprint(cycleitems)
