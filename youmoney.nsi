@@ -1,7 +1,7 @@
 !include "MUI2.nsh"
 
 Name "YouMoney"
-OutFile "YouMoney-0.8.2.exe"
+OutFile "YouMoney-0.8.4.exe"
 
 InstallDir "$PROGRAMFILES\YouMoney"
 
@@ -56,6 +56,7 @@ LangString DESC_SecDummy ${LANG_SIMPCHINESE} "YouMoney°²×°."
 
 Section "Uninstall"
     ;ADD YOUR OWN FILES HERE...
+	StrCpy $StartMenuFolder "YouMoney"
 
     Delete "$INSTDIR\Uninstall.exe"
 
