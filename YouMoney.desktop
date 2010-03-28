@@ -1,0 +1,16 @@
+#!/usr/bin/env xdg-open
+
+[Desktop Entry]
+Version=0.6.6
+Encoding=UTF-8
+Name=YouMoney
+Name[zh_CN]=YouMoney 有钱记账
+GenericName=YouMoney
+Comment=Personal Finace
+Comment[zh_CN]=个人记账软件
+Exec=/usr/bin/python /usr/share/YouMoney/youmoney.py
+Icon=/usr/share/YouMoney/images/cashin.png
+Terminal=false
+Type=Application
+MimeType=application/x-youmoney
+Categories=Application;Office

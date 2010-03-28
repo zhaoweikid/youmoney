@@ -1,0 +1,12 @@
+Source: youmoney
+Section: Office
+Priority: extra
+Maintainer: zhaowei <zhaoweikid@gmail.com>
+Build-Depends: debhelper (>= 7)
+Standards-Version: 3.8.1
+Homepage: http://code.google.com/p/youmoney/
+
+Package: youmoney
+Architecture: any
+Depends: python-wxgtk2.8 (>=2.8.9)
+Description: YouMoney is a free personal finance software
