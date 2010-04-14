@@ -17,11 +17,11 @@ msgstr ""
 
 #: D:\projects\youmoney\ui\category.py:77
 msgid "payout"
-msgstr "Ö§³ö"
+msgstr "æ”¯å‡º"
 
 #: D:\projects\youmoney\ui\category.py:78
 msgid "income"
-msgstr "…§Èë"
+msgstr "åå…¥"
 
 #: D:\projects\youmoney\ui\category.py:218
 #: D:\projects\youmoney\ui\category.py:228
@@ -38,7 +38,7 @@ msgstr "…§Èë"
 #: D:\projects\youmoney\ui\window.py:611 D:\projects\youmoney\ui\window.py:630
 #: D:\projects\youmoney\ui\window.py:657
 msgid "Payout"
-msgstr "Ö§³ö"
+msgstr "æ”¯å‡º"
 
 #: D:\projects\youmoney\ui\category.py:218
 #: D:\projects\youmoney\ui\category.py:228
@@ -49,58 +49,58 @@ msgstr "Ö§³ö"
 #: D:\projects\youmoney\ui\storage.py:15 D:\projects\youmoney\ui\window.py:418
 #: D:\projects\youmoney\ui\window.py:432 D:\projects\youmoney\ui\window.py:611
 msgid "Income"
-msgstr "…§Èë"
+msgstr "åå…¥"
 
 #: D:\projects\youmoney\ui\dialogs.py:11
 msgid "Add income item"
-msgstr "…§Èë¤ò×·¼Ó"
+msgstr "åå…¥ã‚’è¿½åŠ "
 
 #: D:\projects\youmoney\ui\dialogs.py:13
 msgid "Edit income item"
-msgstr "ËùµÃÃ÷¼š¤ò¾¼¯"
+msgstr "æ‰€å¾—æ˜ç´°ã‚’ç·¨é›†"
 
 #: D:\projects\youmoney\ui\dialogs.py:23 D:\projects\youmoney\ui\dialogs.py:95
 #: D:\projects\youmoney\ui\panels.py:234
 msgid "Date:"
-msgstr "ÈÕ¸¶:"
+msgstr "æ—¥ä»˜:"
 
 #: D:\projects\youmoney\ui\dialogs.py:34
 #: D:\projects\youmoney\ui\dialogs.py:103
 #: D:\projects\youmoney\ui\dialogs.py:174
 #: D:\projects\youmoney\ui\dialogs.py:277
 msgid "Category:"
-msgstr "¥«¥Æ¥´¥ê:"
+msgstr "ã‚«ãƒ†ã‚´ãƒª:"
 
 #: D:\projects\youmoney\ui\dialogs.py:38
 #: D:\projects\youmoney\ui\dialogs.py:111
 #: D:\projects\youmoney\ui\dialogs.py:186
 msgid "Money:"
-msgstr "½ğî~:"
+msgstr "é‡‘é¡:"
 
 #: D:\projects\youmoney\ui\dialogs.py:41
 #: D:\projects\youmoney\ui\dialogs.py:114
 #: D:\projects\youmoney\ui\dialogs.py:193
 msgid "Explain:"
-msgstr "ÄÚÔU:"
+msgstr "å†…è¨³:"
 
 #: D:\projects\youmoney\ui\dialogs.py:45
 #: D:\projects\youmoney\ui\dialogs.py:118
 #: D:\projects\youmoney\ui\dialogs.py:197
 msgid "Not close dialog, continue."
-msgstr "¥À¥¤¥¢¥í¥° ¥Ü¥Ã¥¯¥¹¤òé]¤¸¤Ê¤¤¤Ç¾A¤±¤ÆÈëÁ¦¤·¤Æ¤¯¤À¤µ¤¤"
+msgstr "ãƒ€ã‚¤ã‚¢ãƒ­ã‚° ãƒœãƒƒã‚¯ã‚¹ã‚’é–‰ã˜ãªã„ã§ç¶šã‘ã¦å…¥åŠ›ã—ã¦ãã ã•ã„"
 
 #: D:\projects\youmoney\ui\dialogs.py:84
 msgid "Add payout item"
-msgstr "Ö§³ö¤ò×·¼Ó"
+msgstr "æ”¯å‡ºã‚’è¿½åŠ "
 
 #: D:\projects\youmoney\ui\dialogs.py:86
 msgid "Edit payout item"
-msgstr "Ö§’BÃ÷¼š¤ò¾¼¯"
+msgstr "æ”¯æ‰•æ˜ç´°ã‚’ç·¨é›†"
 
 #: D:\projects\youmoney\ui\dialogs.py:107
 #: D:\projects\youmoney\ui\dialogs.py:182
 msgid "Payment:"
-msgstr "Ö§’B·½·¨:"
+msgstr "æ”¯æ‰•æ–¹æ³•:"
 
 #: D:\projects\youmoney\ui\dialogs.py:108
 #: D:\projects\youmoney\ui\dialogs.py:183
@@ -111,130 +111,130 @@ msgstr "Ö§’B·½·¨:"
 #: D:\projects\youmoney\ui\storage.py:16 D:\projects\youmoney\ui\window.py:539
 #: D:\projects\youmoney\ui\window.py:614
 msgid "Cash"
-msgstr "¬F½ğ"
+msgstr "ç¾é‡‘"
 
 #: D:\projects\youmoney\ui\dialogs.py:108
 #: D:\projects\youmoney\ui\dialogs.py:183
 #: D:\projects\youmoney\ui\dialogs.py:216
 #: D:\projects\youmoney\ui\storage.py:16
 msgid "Credit Card"
-msgstr "¥¯¥ì¥¸¥Ã¥È¥«©`¥É"
+msgstr "ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰"
 
 #: D:\projects\youmoney\ui\dialogs.py:156
 msgid "Add cycle item"
-msgstr "¥µ¥¤¥¯¥ë¥¢¥¤¥Æ¥à¤ò×·¼Ó"
+msgstr "ã‚µã‚¤ã‚¯ãƒ«ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¿½åŠ "
 
 #: D:\projects\youmoney\ui\dialogs.py:158
 msgid "Edit cycle item"
-msgstr "¥µ¥¤¥¯¥ë¥¢¥¤¥Æ¥à¤ò¾¼¯"
+msgstr "ã‚µã‚¤ã‚¯ãƒ«ã‚¢ã‚¤ãƒ†ãƒ ã‚’ç·¨é›†"
 
 #: D:\projects\youmoney\ui\dialogs.py:167 D:\projects\youmoney\ui\window.py:81
 #: D:\projects\youmoney\ui\window.py:699 D:\projects\youmoney\ui\window.py:735
 #: D:\projects\youmoney\ui\window.py:747
 msgid "Note:"
-msgstr "×¢Òâ:"
+msgstr "æ³¨æ„:"
 
 #: D:\projects\youmoney\ui\dialogs.py:168
 msgid "Record cycle will automatic add payout or income by every time that you specify."
-msgstr "¥ì¥³©`¥É¤Î¥µ¥¤¥¯¥ë¤ò×Ô„ÓµÄ¤Ë×·¼Ó¤Ç¤­¤Ş¤¹¡£"
+msgstr "ãƒ¬ã‚³ãƒ¼ãƒ‰ã®ã‚µã‚¤ã‚¯ãƒ«ã‚’è‡ªå‹•çš„ã«è¿½åŠ ã§ãã¾ã™ã€‚"
 
 #: D:\projects\youmoney\ui\dialogs.py:170
 #: D:\projects\youmoney\ui\dialogs.py:273
 msgid "Type:"
-msgstr "·Nî:"
+msgstr "ç¨®é¡:"
 
 #: D:\projects\youmoney\ui\dialogs.py:189
 msgid "Cycle:"
-msgstr "¥µ¥¤¥¯¥ë"
+msgstr "ã‚µã‚¤ã‚¯ãƒ«"
 
 #: D:\projects\youmoney\ui\dialogs.py:263
 #: D:\projects\youmoney\ui\window.py:207 D:\projects\youmoney\ui\window.py:279
 msgid "Add Category"
-msgstr "¥«¥Æ¥´¥ê¤ò×·¼Ó"
+msgstr "ã‚«ãƒ†ã‚´ãƒªã‚’è¿½åŠ "
 
 #: D:\projects\youmoney\ui\dialogs.py:265
 msgid "Edit Category"
-msgstr "¥«¥Æ¥´¥ê©`¤ò¾¼¯"
+msgstr "ã‚«ãƒ†ã‚´ãƒªãƒ¼ã‚’ç·¨é›†"
 
 #: D:\projects\youmoney\ui\dialogs.py:281
 msgid "Higher Category:"
-msgstr "¸ßµÈ¥«¥Æ¥´¥ê©`:"
+msgstr "é«˜ç­‰ã‚«ãƒ†ã‚´ãƒªãƒ¼:"
 
 #: D:\projects\youmoney\ui\dialogs.py:312
 msgid "Update"
-msgstr "¸üĞÂ"
+msgstr "æ›´æ–°"
 
 #: D:\projects\youmoney\ui\dialogs.py:318
 msgid "Found new version:"
-msgstr "ĞÂ¤·¤¤¥Ğ©`¥¸¥ç¥ó¤òÒŠ¤Ä¤±¤¿"
+msgstr "æ–°ã—ã„ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚’è¦‹ã¤ã‘ãŸ"
 
 #: D:\projects\youmoney\ui\dialogs.py:319
 msgid "Open download page"
-msgstr "¥À¥¦¥ó¥í©`¥É¥Ú©`¥¸¤òé_¤±¤Æ"
+msgstr "ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ãƒšãƒ¼ã‚¸ã‚’é–‹ã‘ã¦"
 
 #: D:\projects\youmoney\ui\dialogs.py:320
 msgid "Click OK to start the automatic update."
-msgstr "¡¸¤Ï¤¤¡¹¤ò¤ò¥¯¥ê¥Ã¥¯¤·¤Æ×Ô„Ó¸üĞÂ¤òé_Ê¼¤·¤Ş¤¹¡£"
+msgstr "ã€Œã¯ã„ã€ã‚’ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦è‡ªå‹•æ›´æ–°ã‚’é–‹å§‹ã—ã¾ã™ã€‚"
 
 #: D:\projects\youmoney\ui\dialogs.py:329
 #: D:\projects\youmoney\ui\window.py:198
 msgid "Set Password"
-msgstr "¥Ñ¥¹¥ï©`¥É"
+msgstr "ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰"
 
 #: D:\projects\youmoney\ui\dialogs.py:338
 msgid "Password:"
-msgstr "°µºÅ:"
+msgstr "æš—å·:"
 
 #: D:\projects\youmoney\ui\dialogs.py:341
 msgid "Password Again:"
-msgstr "°µºÅ¤ÎÔÙÈëÁ¦:"
+msgstr "æš—å·ã®å†å…¥åŠ›:"
 
 #: D:\projects\youmoney\ui\dialogs.py:358
 msgid "User Password"
-msgstr "°µºÅ"
+msgstr "æš—å·"
 
 #: D:\projects\youmoney\ui\dialogs.py:367
 msgid "Password: "
-msgstr "°µºÅ: "
+msgstr "æš—å·: "
 
 #: D:\projects\youmoney\ui\dialogs.py:384
 #: D:\projects\youmoney\ui\window.py:185
 msgid "Import Category"
-msgstr "¥¤¥ó¥İ©`¥È·Öî"
+msgstr "ã‚¤ãƒ³ãƒãƒ¼ãƒˆåˆ†é¡"
 
 #: D:\projects\youmoney\ui\dialogs.py:390
 msgid "Import category format:"
-msgstr "·Öî¥Õ¥©©`¥Ş¥Ã¥È:"
+msgstr "åˆ†é¡ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ:"
 
 #: D:\projects\youmoney\ui\dialogs.py:391
 #: D:\projects\youmoney\ui\dialogs.py:438
 msgid "It use csv format.The first row is fields description, not data."
-msgstr "csvĞÎÊ½¥Õ¥¡¥¤¥ë¤òÊ¹ÓÃ¤·¤Ş¤¹¡¢×î³õ¤ÎĞĞ¤Ï¥Ç©`¥¿¤Ç¤Ï¤Ê¤¯¡¢¥Õ¥£©`¥ë¥É¤ÎÕhÃ÷¤Ç¤¹¡£"
+msgstr "csvå½¢å¼ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½¿ç”¨ã—ã¾ã™ã€æœ€åˆã®è¡Œã¯ãƒ‡ãƒ¼ã‚¿ã§ã¯ãªãã€ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®èª¬æ˜ã§ã™ã€‚"
 
 #: D:\projects\youmoney\ui\dialogs.py:392
 msgid "This have three fields: main category, sub category, type."
-msgstr "¤³¤ì¤Ï¥á¥¤¥ó¥«¥Æ¥´¥ê©`¡¢¥µ¥Ö¥«¥Æ¥´¥ê©`¤ÈÈëÁ¦ÄÚÈİ3¤Ä¤Î¥Õ¥£©`¥ë¥É¤¬¤¢¤ë¡£"
+msgstr "ã“ã‚Œã¯ãƒ¡ã‚¤ãƒ³ã‚«ãƒ†ã‚´ãƒªãƒ¼ã€ã‚µãƒ–ã‚«ãƒ†ã‚´ãƒªãƒ¼ã¨å…¥åŠ›å†…å®¹3ã¤ã®ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ãŒã‚ã‚‹ã€‚"
 
 #: D:\projects\youmoney\ui\dialogs.py:394
 #: D:\projects\youmoney\ui\dialogs.py:447
 msgid "Example:"
-msgstr "Àı£º"
+msgstr "ä¾‹ï¼š"
 
 #: D:\projects\youmoney\ui\dialogs.py:395
 msgid "Main Category,Sub Category,Type"
-msgstr "¥á¥¤¥ó¥«¥Æ¥´¥ê©`¡¢¥µ¥Ö¥«¥Æ¥´¥ê©`¤ÈÈëÁ¦ÄÚÈİ"
+msgstr "ãƒ¡ã‚¤ãƒ³ã‚«ãƒ†ã‚´ãƒªãƒ¼ã€ã‚µãƒ–ã‚«ãƒ†ã‚´ãƒªãƒ¼ã¨å…¥åŠ›å†…å®¹"
 
 #: D:\projects\youmoney\ui\dialogs.py:396
 msgid "Recreation,KTV,Payout"
-msgstr "¥ì¥¯¥ê¥¨©`¥·¥ç¥ó¡¢¥«¥é¥ª¥±¤ÎÖ§³ö"
+msgstr "ãƒ¬ã‚¯ãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã€ã‚«ãƒ©ã‚ªã‚±ã®æ”¯å‡º"
 
 #: D:\projects\youmoney\ui\dialogs.py:397
 msgid "Recreation,Basketball,Payout"
-msgstr "¥ì¥¯¥ê¥¨©`¥·¥ç¥ó¡¢¥Ğ¥¹¥±¥Ã¥È¥Ü©`¥ë¤ÎÖ§³ö"
+msgstr "ãƒ¬ã‚¯ãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã€ãƒã‚¹ã‚±ãƒƒãƒˆãƒœãƒ¼ãƒ«ã®æ”¯å‡º"
 
 #: D:\projects\youmoney\ui\dialogs.py:398
 msgid "Public Traffic,Payout"
-msgstr "¹«¹²½»Í¨¤ÎÖ§³ö"
+msgstr "å…¬å…±äº¤é€šã®æ”¯å‡º"
 
 #: D:\projects\youmoney\ui\dialogs.py:399
 msgid "Weges,,Income"
@@ -243,239 +243,239 @@ msgstr ""
 #: D:\projects\youmoney\ui\dialogs.py:405
 #: D:\projects\youmoney\ui\dialogs.py:456
 msgid "Open csv file:"
-msgstr "csv¥Õ¥¡¥¤¥ë¤òé_¤¯:"
+msgstr "csvãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã:"
 
 #: D:\projects\youmoney\ui\dialogs.py:407
 #: D:\projects\youmoney\ui\dialogs.py:458
 msgid "Browse csv file"
-msgstr "é‡ÓEcsv¥Õ¥¡¥¤¥ë"
+msgstr "é–²è¦§csvãƒ•ã‚¡ã‚¤ãƒ«"
 
 #: D:\projects\youmoney\ui\dialogs.py:420
 #: D:\projects\youmoney\ui\dialogs.py:471
 msgid "Choose csv file:"
-msgstr "ßx’k¤·¤Æcsv¥Õ¥¡¥¤¥ë:"
+msgstr "é¸æŠã—ã¦csvãƒ•ã‚¡ã‚¤ãƒ«:"
 
 #: D:\projects\youmoney\ui\dialogs.py:421
 #: D:\projects\youmoney\ui\dialogs.py:472
 #: D:\projects\youmoney\ui\window.py:838 D:\projects\youmoney\ui\window.py:853
 msgid "csv file (*.csv)|*.csv"
-msgstr "csv ¥Õ¥¡¥¤¥ë (*.csv)|*.csv"
+msgstr "csv ãƒ•ã‚¡ã‚¤ãƒ« (*.csv)|*.csv"
 
 #: D:\projects\youmoney\ui\dialogs.py:431
 #: D:\projects\youmoney\ui\window.py:186
 msgid "Import Data"
-msgstr "¥Ç©`¥¿¤Î¥¤¥ó¥İ©`¥È"
+msgstr "ãƒ‡ãƒ¼ã‚¿ã®ã‚¤ãƒ³ãƒãƒ¼ãƒˆ"
 
 #: D:\projects\youmoney\ui\dialogs.py:437
 msgid "Import data format:"
-msgstr "¥Ç©`¥¿¥Õ¥©©`¥Ş¥Ã¥È"
+msgstr "ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ"
 
 #: D:\projects\youmoney\ui\dialogs.py:439
 msgid "This have ten fields: Main Category,Sub Category,Money,Payway,Type,Time,Year,Month,Day,Explain."
-msgstr "¥á¥¤¥ó¥«¥Æ¥´¥ê©`¡¢¥µ¥Ö¥«¥Æ¥´¥ê©`¡¢½ğ¡¢Ö§’B·½·¨¡¢·Nî¡¢•rég¡¢Äê¡¢ÔÂ¡¢ÈÕ¤ÈÕhÃ÷10¤Î¥Õ¥£©`¥ë¥É¤¬¤¢¤ë¡£"
+msgstr "ãƒ¡ã‚¤ãƒ³ã‚«ãƒ†ã‚´ãƒªãƒ¼ã€ã‚µãƒ–ã‚«ãƒ†ã‚´ãƒªãƒ¼ã€é‡‘ã€æ”¯æ‰•æ–¹æ³•ã€ç¨®é¡ã€æ™‚é–“ã€å¹´ã€æœˆã€æ—¥ã¨èª¬æ˜10ã®ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ãŒã‚ã‚‹ã€‚"
 
 #: D:\projects\youmoney\ui\dialogs.py:440
 msgid "If category is not exists, create."
-msgstr "¥«¥Æ¥´¥ê¤¬¤Ê¤¤ˆöºÏ¤Ï¡¢×÷³É¤¹¤ë¡£"
+msgstr "ã‚«ãƒ†ã‚´ãƒªãŒãªã„å ´åˆã¯ã€ä½œæˆã™ã‚‹ã€‚"
 
 #: D:\projects\youmoney\ui\dialogs.py:441
 msgid "Money is payout number."
-msgstr "½ğ¤ÏÖ§’B½ğî~¤Ç¤¹¡£"
+msgstr "é‡‘ã¯æ”¯æ‰•é‡‘é¡ã§ã™ã€‚"
 
 #: D:\projects\youmoney\ui\dialogs.py:442
 msgid "Payway is Cash or Credit Card."
-msgstr "Ö§’B·½·¨¤Ï¬F½ğ¤È¥¯¥ì¥¸¥Ã¥È¥«©`¥É¤Ç¤¹¡£"
+msgstr "æ”¯æ‰•æ–¹æ³•ã¯ç¾é‡‘ã¨ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰ã§ã™ã€‚"
 
 #: D:\projects\youmoney\ui\dialogs.py:443
 msgid "Type is Payout or Income."
-msgstr "·Nî¤ÏÖ§³ö¤È…§Èë¡£"
+msgstr "ç¨®é¡ã¯æ”¯å‡ºã¨åå…¥ã€‚"
 
 #: D:\projects\youmoney\ui\dialogs.py:444
 msgid "Time is record create time."
-msgstr "•rég¤ÏÓ›åh•rég¤ò×÷³É¤¹¤ë¤³¤È¤Ç¤¹¡£"
+msgstr "æ™‚é–“ã¯è¨˜éŒ²æ™‚é–“ã‚’ä½œæˆã™ã‚‹ã“ã¨ã§ã™ã€‚"
 
 #: D:\projects\youmoney\ui\dialogs.py:445
 msgid "Year, Month, Day is pay time."
-msgstr "Äê¡¢ÔÂ¡¢ÈÕ¤ÏÖ§’B•rég¤Ç¤¢¤ë¡£"
+msgstr "å¹´ã€æœˆã€æ—¥ã¯æ”¯æ‰•æ™‚é–“ã§ã‚ã‚‹ã€‚"
 
 #: D:\projects\youmoney\ui\dialogs.py:448
 msgid "Main Category,Sub Category,Money,Payway,Type,Time,Year,Month,Day,Explain"
-msgstr "¥á¥¤¥ó¥«¥Æ¥´¥ê©`¡¢¥µ¥Ö¥«¥Æ¥´¥ê©`¡¢½ğ¡¢Ö§’B·½·¨¡¢·Nî¡¢•rég¡¢Äê¡¢ÔÂ¡¢ÈÕ¤ÈÕhÃ÷"
+msgstr "ãƒ¡ã‚¤ãƒ³ã‚«ãƒ†ã‚´ãƒªãƒ¼ã€ã‚µãƒ–ã‚«ãƒ†ã‚´ãƒªãƒ¼ã€é‡‘ã€æ”¯æ‰•æ–¹æ³•ã€ç¨®é¡ã€æ™‚é–“ã€å¹´ã€æœˆã€æ—¥ã¨èª¬æ˜"
 
 #: D:\projects\youmoney\ui\dialogs.py:449
 msgid "Recreation,KTV,220,Cash,Payout,2010-02-10 18:12:01,2010,2,9,go ktv"
-msgstr "¥ì¥¯¥ê¥¨©`¥·¥ç¥ó¡¢¥«¥é¥ª¥±¡¢220¡¢¬F½ğ¡¢Ö§’B¤¦,2010 - 02 - 10¡¡18:12:01,2010,2,9¡¢¥«¥é¥ª¥±¤ËĞĞ¤¯"
+msgstr "ãƒ¬ã‚¯ãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã€ã‚«ãƒ©ã‚ªã‚±ã€220ã€ç¾é‡‘ã€æ”¯æ‰•ã†,2010 - 02 - 10ã€€18:12:01,2010,2,9ã€ã‚«ãƒ©ã‚ªã‚±ã«è¡Œã"
 
 #: D:\projects\youmoney\ui\dialogs.py:450
 msgid "Public Traffic,,6,Cash,Payout,2010-02-11 10:09:01,2010,2,11,go home by bus"
-msgstr "¹«¹²½»Í¨¡¢6¡¢¬F½ğ¡¢Ö§³ö,2010 - 02¤«¤é11 10:09:01,2010,2,11¡¢¥Ğ¥¹¤Ç¼Ò¤Ë¢¤ë"
+msgstr "å…¬å…±äº¤é€šã€6ã€ç¾é‡‘ã€æ”¯å‡º,2010 - 02ã‹ã‚‰11 10:09:01,2010,2,11ã€ãƒã‚¹ã§å®¶ã«å¸°ã‚‹"
 
 #: D:\projects\youmoney\ui\drawstat.py:268
 msgid "Sum: "
-msgstr "¾tÓ‹: "
+msgstr "ç·è¨ˆ: "
 
 #: D:\projects\youmoney\ui\drawstat.py:337
 #: D:\projects\youmoney\ui\export.py:75
 msgid "Time"
-msgstr "•rég"
+msgstr "æ™‚é–“"
 
 #: D:\projects\youmoney\ui\drawstat.py:339
 #: D:\projects\youmoney\ui\export.py:75 D:\projects\youmoney\ui\panels.py:237
 #: D:\projects\youmoney\ui\panels.py:387
 msgid "Money"
-msgstr "½ğî~"
+msgstr "é‡‘é¡"
 
 #: D:\projects\youmoney\ui\export.py:31 D:\projects\youmoney\ui\export.py:75
 msgid "Main Category"
-msgstr "Ö÷¤Ê¥«¥Æ¥´¥ê"
+msgstr "ä¸»ãªã‚«ãƒ†ã‚´ãƒª"
 
 #: D:\projects\youmoney\ui\export.py:31 D:\projects\youmoney\ui\export.py:75
 msgid "Sub Category"
-msgstr "¥µ¥Ö¥«¥Æ¥´¥ê"
+msgstr "ã‚µãƒ–ã‚«ãƒ†ã‚´ãƒª"
 
 #: D:\projects\youmoney\ui\export.py:31 D:\projects\youmoney\ui\export.py:75
 #: D:\projects\youmoney\ui\panels.py:385
 msgid "Type"
-msgstr "·Nî"
+msgstr "ç¨®é¡"
 
 #: D:\projects\youmoney\ui\export.py:75
 msgid "Day"
-msgstr "ÈÕ"
+msgstr "æ—¥"
 
 #: D:\projects\youmoney\ui\export.py:75
 msgid "Month"
-msgstr "ÔÂ"
+msgstr "æœˆ"
 
 #: D:\projects\youmoney\ui\export.py:75
 msgid "Payway"
-msgstr "¤ªÖ§’B¤¤·½·¨"
+msgstr "ãŠæ”¯æ‰•ã„æ–¹æ³•"
 
 #: D:\projects\youmoney\ui\export.py:75
 msgid "Year"
-msgstr "Äê"
+msgstr "å¹´"
 
 #: D:\projects\youmoney\ui\export.py:75 D:\projects\youmoney\ui\panels.py:241
 #: D:\projects\youmoney\ui\panels.py:245 D:\projects\youmoney\ui\panels.py:392
 msgid "Explain"
-msgstr "ÄÚÔU"
+msgstr "å†…è¨³"
 
 #: D:\projects\youmoney\ui\i18n.py:12
 msgid "hello"
-msgstr "¤³¤ó¤Ë¤Á¤Ï"
+msgstr "ã“ã‚“ã«ã¡ã¯"
 
 #: D:\projects\youmoney\ui\i18n.py:13
 msgid "me"
-msgstr "Ë½"
+msgstr "ç§"
 
 #: D:\projects\youmoney\ui\panels.py:31 D:\projects\youmoney\ui\panels.py:236
 #: D:\projects\youmoney\ui\panels.py:386 D:\projects\youmoney\ui\panels.py:482
 #: D:\projects\youmoney\ui\window.py:212
 msgid "Category"
-msgstr "¥«¥Æ¥´¥ê"
+msgstr "ã‚«ãƒ†ã‚´ãƒª"
 
 #: D:\projects\youmoney\ui\panels.py:32
 msgid "Month Total"
-msgstr "½ñÔÂ¤Î¾tÓ‹"
+msgstr "ä»Šæœˆã®ç·è¨ˆ"
 
 #: D:\projects\youmoney\ui\panels.py:86 D:\projects\youmoney\ui\panels.py:227
 #: D:\projects\youmoney\ui\panels.py:379 D:\projects\youmoney\ui\window.py:217
 msgid "Edit"
-msgstr "¾¼¯"
+msgstr "ç·¨é›†"
 
 #: D:\projects\youmoney\ui\panels.py:87 D:\projects\youmoney\ui\panels.py:228
 #: D:\projects\youmoney\ui\panels.py:380
 msgid "Delete"
-msgstr "Ï÷³ı"
+msgstr "å‰Šé™¤"
 
 #: D:\projects\youmoney\ui\panels.py:107 D:\projects\youmoney\ui\window.py:412
 #: D:\projects\youmoney\ui\window.py:418 D:\projects\youmoney\ui\window.py:419
 #: D:\projects\youmoney\ui\window.py:423 D:\projects\youmoney\ui\window.py:433
 #: D:\projects\youmoney\ui\window.py:436
 msgid "No Higher Category"
-msgstr "¸ßµÈ¤Î¥«¥Æ¥´¥ê¤¬¤Ê¤·"
+msgstr "é«˜ç­‰ã®ã‚«ãƒ†ã‚´ãƒªãŒãªã—"
 
 #: D:\projects\youmoney\ui\panels.py:131 D:\projects\youmoney\ui\panels.py:152
 #: D:\projects\youmoney\ui\panels.py:155 D:\projects\youmoney\ui\panels.py:157
 msgid "No Category"
-msgstr "¥«¥Æ¥´¥ê¤¬¤Ê¤·"
+msgstr "ã‚«ãƒ†ã‚´ãƒªãŒãªã—"
 
 #: D:\projects\youmoney\ui\panels.py:132
 msgid "Can not delete this category!"
-msgstr "¤³¤Î¥«¥Æ¥´¥ê¤òÏ÷³ı¤Ç¤­¤Ê¤¤"
+msgstr "ã“ã®ã‚«ãƒ†ã‚´ãƒªã‚’å‰Šé™¤ã§ããªã„"
 
 #: D:\projects\youmoney\ui\panels.py:133 D:\projects\youmoney\ui\panels.py:140
 #: D:\projects\youmoney\ui\panels.py:326 D:\projects\youmoney\ui\panels.py:456
 msgid "Notice:"
-msgstr "×¢Òâ:"
+msgstr "æ³¨æ„:"
 
 #: D:\projects\youmoney\ui\panels.py:139
 msgid ", all child categories will move to \"No Category\""
-msgstr ", ¤³¤Î¥«¥Æ¥´¥ê¤Î¤¹¤Ù¤Æ¤Î¥Á¥ã¥ë¥É\"¥«¥Æ¥´¥ê¤¬¤Ê¤·\"¤ØÒÆÜ"
+msgstr ", ã“ã®ã‚«ãƒ†ã‚´ãƒªã®ã™ã¹ã¦ã®ãƒãƒ£ãƒ«ãƒ‰\"ã‚«ãƒ†ã‚´ãƒªãŒãªã—\"ã¸ç§»è»¢"
 
 #: D:\projects\youmoney\ui\panels.py:139
 msgid "To delete category"
-msgstr "¥«¥Æ¥´¥ê¤òÏ÷³ı"
+msgstr "ã‚«ãƒ†ã‚´ãƒªã‚’å‰Šé™¤"
 
 #: D:\projects\youmoney\ui\panels.py:172
 msgid "Delete category failure!"
-msgstr "¥«¥Æ¥´¥ê¤òÏ÷³ıÊ§”¡£¡"
+msgstr "ã‚«ãƒ†ã‚´ãƒªã‚’å‰Šé™¤å¤±æ•—ï¼"
 
 #: D:\projects\youmoney\ui\panels.py:172
 msgid "Delete category information"
-msgstr "¥«¥Æ¥´¥ê¥¤¥ó¥Õ¥©¥á©`¥·¥ç¥ó¤òÏ÷³ı"
+msgstr "ã‚«ãƒ†ã‚´ãƒªã‚¤ãƒ³ãƒ•ã‚©ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å‰Šé™¤"
 
 #: D:\projects\youmoney\ui\panels.py:193
 msgid " Date: "
-msgstr " ÈÕ¸¶: "
+msgstr " æ—¥ä»˜: "
 
 #: D:\projects\youmoney\ui\panels.py:195
 msgid " Year: "
-msgstr " Äê: "
+msgstr " å¹´: "
 
 #: D:\projects\youmoney\ui\panels.py:197
 msgid " Month:"
-msgstr " ÔÂ: "
+msgstr " æœˆ: "
 
 #: D:\projects\youmoney\ui\panels.py:198
 msgid "  Sum: "
-msgstr "  ¾tÓ‹: "
+msgstr "  ç·è¨ˆ: "
 
 #: D:\projects\youmoney\ui\panels.py:239 D:\projects\youmoney\ui\panels.py:389
 msgid "Payment"
-msgstr "Ö§’B·½·¨"
+msgstr "æ”¯æ‰•æ–¹æ³•"
 
 #: D:\projects\youmoney\ui\panels.py:240 D:\projects\youmoney\ui\panels.py:244
 #: D:\projects\youmoney\ui\window.py:215 D:\projects\youmoney\ui\window.py:282
 msgid "Record Cycle"
-msgstr "Ó›åhÖÜÆÚ"
+msgstr "è¨˜éŒ²å‘¨æœŸ"
 
 #: D:\projects\youmoney\ui\panels.py:277
 msgid "Yes"
-msgstr "¤Ï¤¤"
+msgstr "ã¯ã„"
 
 #: D:\projects\youmoney\ui\panels.py:326 D:\projects\youmoney\ui\panels.py:456
 msgid "Is really delete? Delete can not be restored!"
-msgstr "±¾µ±¤ËÏ÷³ı¤·¤Ş¤¹¤«£¿Ï÷³ı¤òÍÔª¤¹¤ë¤³¤È¤Ï¤Ç¤­¤Ş¤»¤ó£¡"
+msgstr "æœ¬å½“ã«å‰Šé™¤ã—ã¾ã™ã‹ï¼Ÿå‰Šé™¤ã‚’å¾©å…ƒã™ã‚‹ã“ã¨ã¯ã§ãã¾ã›ã‚“ï¼"
 
 #: D:\projects\youmoney\ui\panels.py:390
 msgid "Cycle"
-msgstr "ÖÜÆÚ"
+msgstr "å‘¨æœŸ"
 
 #: D:\projects\youmoney\ui\panels.py:484 D:\projects\youmoney\ui\window.py:214
 msgid "Payout List"
-msgstr "Ö§³ö¥ê¥¹¥È"
+msgstr "æ”¯å‡ºãƒªã‚¹ãƒˆ"
 
 #: D:\projects\youmoney\ui\panels.py:486 D:\projects\youmoney\ui\window.py:213
 msgid "Income List"
-msgstr "…§Èë¥ê¥¹¥È"
+msgstr "åå…¥ãƒªã‚¹ãƒˆ"
 
 #: D:\projects\youmoney\ui\panels.py:489
 msgid "Cycle List"
-msgstr "¥µ¥¤¥¯¥ë¥ê¥¹¥È"
+msgstr "ã‚µã‚¤ã‚¯ãƒ«ãƒªã‚¹ãƒˆ"
 
 #: D:\projects\youmoney\ui\panels.py:493 D:\projects\youmoney\ui\window.py:216
 msgid "Statistic"
-msgstr "½yÓ‹"
+msgstr "çµ±è¨ˆ"
 
 #: D:\projects\youmoney\ui\statpanel.py:16
 #: D:\projects\youmoney\ui\statpanel.py:107
@@ -483,402 +483,402 @@ msgstr "½yÓ‹"
 #: D:\projects\youmoney\ui\statpanel.py:243
 #: D:\projects\youmoney\ui\statpanel.py:244
 msgid "All Categories"
-msgstr "¤¹¤Ù¤Æ¤Î¥«¥Æ¥´¥ê"
+msgstr "ã™ã¹ã¦ã®ã‚«ãƒ†ã‚´ãƒª"
 
 #: D:\projects\youmoney\ui\statpanel.py:32
 msgid "Date Start:"
-msgstr "é_Ê¼ÈÕ¸¶:"
+msgstr "é–‹å§‹æ—¥ä»˜:"
 
 #: D:\projects\youmoney\ui\statpanel.py:35
 msgid "  Date End: "
-msgstr "  ½KÁËÈÕ¸¶: "
+msgstr "  çµ‚äº†æ—¥ä»˜: "
 
 #: D:\projects\youmoney\ui\statpanel.py:38
 msgid "   Type "
-msgstr " ·Nî "
+msgstr " ç¨®é¡ "
 
 #: D:\projects\youmoney\ui\statpanel.py:40
 #: D:\projects\youmoney\ui\statpanel.py:172
 #: D:\projects\youmoney\ui\statpanel.py:216
 #: D:\projects\youmoney\ui\statpanel.py:242
 msgid "Surplus"
-msgstr "²Ğ½ğ"
+msgstr "æ®‹é‡‘"
 
 #: D:\projects\youmoney\ui\statpanel.py:45
 msgid "   Category "
-msgstr "  ¥«¥Æ¥´¥ê "
+msgstr "  ã‚«ãƒ†ã‚´ãƒª "
 
 #: D:\projects\youmoney\ui\statpanel.py:53
 msgid "Categroy Stat"
-msgstr "·Öî"
+msgstr "åˆ†é¡"
 
 #: D:\projects\youmoney\ui\statpanel.py:55
 msgid "Month Stat"
-msgstr "ÔÂî~"
+msgstr "æœˆé¡"
 
 #: D:\projects\youmoney\ui\storage.py:17 D:\projects\youmoney\ui\storage.py:18
 msgid "Everyday"
-msgstr "š°ÈÕ"
+msgstr "æ¯æ—¥"
 
 #: D:\projects\youmoney\ui\storage.py:17 D:\projects\youmoney\ui\storage.py:18
 msgid "Monthly"
-msgstr "š°ÔÂ"
+msgstr "æ¯æœˆ"
 
 #: D:\projects\youmoney\ui\storage.py:17 D:\projects\youmoney\ui\storage.py:18
 msgid "Weekday"
-msgstr "Æ½ÈÕ"
+msgstr "å¹³æ—¥"
 
 #: D:\projects\youmoney\ui\storage.py:17 D:\projects\youmoney\ui\storage.py:18
 msgid "Weekend"
-msgstr "ßLÄ©"
+msgstr "é€±æœ«"
 
 #: D:\projects\youmoney\ui\storage.py:17 D:\projects\youmoney\ui\storage.py:18
 msgid "Weekly"
-msgstr "ßLég"
+msgstr "é€±é–“"
 
 #: D:\projects\youmoney\ui\task.py:51
 msgid "New package download complete! Update youmoney must close first. Click OK to close YouMoney."
-msgstr "ĞÂ¥Ñ¥Ã¥±©`¥¸ÍêÈ«¤Ë¥À¥¦¥ó¥í©`¥É¤·¤Ş¤·¤¿£¡youmoney¤Î¸üĞÂ¥½¥Õ¥È¤òé]¤¸¤ë±ØÒª¤¬¤¢¤ê¤Ş¤¹¡£¡¸¤Ï¤¤¡¹¤ò¥¯¥ê¥Ã¥¯¤·¤ÆYouMoney¤òé]¤¸¤Ş¤¹¡£"
+msgstr "æ–°ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸å®Œå…¨ã«ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã—ã¾ã—ãŸï¼youmoneyã®æ›´æ–°ã‚½ãƒ•ãƒˆã‚’é–‰ã˜ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚ã€Œã¯ã„ã€ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦YouMoneyã‚’é–‰ã˜ã¾ã™ã€‚"
 
 #: D:\projects\youmoney\ui\window.py:81
 msgid "You db file is in default path, strongly advise save it to other path. Choose menu File->Change Account Path to change path."
-msgstr "¥Ç¥Õ¥©¥ë¥È¤Î¥Ç¥£¥ì¥¯¥È¥ê¤Ç¤¢¤Ê¤¿¤Î¥¢¥«¥¦¥ó¥È,Ëû¤ÎˆöËù¤Ë¤ÏŠ¤¯ÍÆŠX¤µ¤ì¤Æ¤¤¤ë.¥á¥Ë¥å©`¥Ğ©`¤Ç¡¢¤³¤Î¥Ñ¥¹¤ò‰ä¸ü¤¹¤ë¤³¤È¤¬¤Ç¤­¤Ş¤¹:¥Õ¥¡¥¤¥ë->¥¢¥«¥¦¥ó¥È¤ò‰ä¸ü¥Ñ¥¹"
+msgstr "ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã§ã‚ãªãŸã®ã‚¢ã‚«ã‚¦ãƒ³ãƒˆ,ä»–ã®å ´æ‰€ã«ã¯å¼·ãæ¨å¥¨ã•ã‚Œã¦ã„ã‚‹.ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒãƒ¼ã§ã€ã“ã®ãƒ‘ã‚¹ã‚’å¤‰æ›´ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™:ãƒ•ã‚¡ã‚¤ãƒ«->ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã‚’å¤‰æ›´ãƒ‘ã‚¹"
 
 #: D:\projects\youmoney\ui\window.py:99
 msgid "Password error."
-msgstr "¥Ñ¥¹¥ï©`¥É¥¨¥é©`¤¬°kÉú."
+msgstr "ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿ."
 
 #: D:\projects\youmoney\ui\window.py:110
 msgid "Account file is not exist! You may create one or open exist."
-msgstr "¥¢¥«¥¦¥ó¥È¥Õ¥¡¥¤¥ë¤ò×÷³É¤Ş¤¿¤Ï¥ª©`¥×¥ó¤¹¤ë±ØÒª¤¬´æÔÚ¤·¤Ê¤¤."
+msgstr "ã‚¢ã‚«ã‚¦ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œæˆã¾ãŸã¯ã‚ªãƒ¼ãƒ—ãƒ³ã™ã‚‹å¿…è¦ãŒå­˜åœ¨ã—ãªã„."
 
 #: D:\projects\youmoney\ui\window.py:110 D:\projects\youmoney\ui\window.py:121
 msgid "Error"
-msgstr "¥ß¥¹"
+msgstr "ãƒŸã‚¹"
 
 #: D:\projects\youmoney\ui\window.py:115 D:\projects\youmoney\ui\window.py:137
 #: D:\projects\youmoney\ui\window.py:321 D:\projects\youmoney\ui\window.py:349
 #: D:\projects\youmoney\ui\window.py:406
 msgid "Database file: "
-msgstr "¥Ç©`¥¿¥Ù©`¥¹¥Õ¥¡¥¤¥ë: "
+msgstr "ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«: "
 
 #: D:\projects\youmoney\ui\window.py:121
 msgid "Database version is newer than program."
-msgstr "¥Ç©`¥¿¥Ù©`¥¹¤Î¥Ğ©`¥¸¥ç¥ó¤¬¥×¥í¥°¥é¥à¤è¤ê¤âĞÂ¤·¤¤¤Ç¤¹¡£"
+msgstr "ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ãŒãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚ˆã‚Šã‚‚æ–°ã—ã„ã§ã™ã€‚"
 
 #: D:\projects\youmoney\ui\window.py:189 D:\projects\youmoney\ui\window.py:837
 msgid "Export Category"
-msgstr "¥¨¥¯¥¹¥İ©`¥È·Öî"
+msgstr "ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆåˆ†é¡"
 
 #: D:\projects\youmoney\ui\window.py:190 D:\projects\youmoney\ui\window.py:852
 msgid "Export Data"
-msgstr "¥Ç©`¥¿¤Î¥¨¥¯¥¹¥İ©`¥È"
+msgstr "ãƒ‡ãƒ¼ã‚¿ã®ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ"
 
 #: D:\projects\youmoney\ui\window.py:193
 msgid "New Account"
-msgstr "ĞÂ¤·¤¤¥¢¥«¥¦¥ó¥È"
+msgstr "æ–°ã—ã„ã‚¢ã‚«ã‚¦ãƒ³ãƒˆ"
 
 #: D:\projects\youmoney\ui\window.py:194
 msgid "Open Account"
-msgstr "¥¢¥«¥¦¥ó¥È¤òé_¤¯"
+msgstr "ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã‚’é–‹ã"
 
 #: D:\projects\youmoney\ui\window.py:195
 msgid "Account Backup"
-msgstr "¥Ğ¥Ã¥¯¥¢¥Ã¥×¥¢¥«¥¦¥ó¥È"
+msgstr "ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚¢ã‚«ã‚¦ãƒ³ãƒˆ"
 
 #: D:\projects\youmoney\ui\window.py:196
 msgid "Change Account Path"
-msgstr "¥¢¥«¥¦¥ó¥È¤ò‰ä¸ü¥Ñ¥¹"
+msgstr "ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã‚’å¤‰æ›´ãƒ‘ã‚¹"
 
 #: D:\projects\youmoney\ui\window.py:200
 msgid "Import"
-msgstr "¥¤¥ó¥İ©`¥È"
+msgstr "ã‚¤ãƒ³ãƒãƒ¼ãƒˆ"
 
 #: D:\projects\youmoney\ui\window.py:201
 msgid "Export"
-msgstr "¥¨¥¯¥¹¥İ©`¥È"
+msgstr "ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ"
 
 #: D:\projects\youmoney\ui\window.py:203
 msgid "Exit"
-msgstr "½KÁË"
+msgstr "çµ‚äº†"
 
 #: D:\projects\youmoney\ui\window.py:204
 msgid "File"
-msgstr "¥Õ¥¡¥¤¥ë"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«"
 
 #: D:\projects\youmoney\ui\window.py:208 D:\projects\youmoney\ui\window.py:280
 msgid "Add Income"
-msgstr "…§Èë¤ò×·¼Ó"
+msgstr "åå…¥ã‚’è¿½åŠ "
 
 #: D:\projects\youmoney\ui\window.py:209 D:\projects\youmoney\ui\window.py:281
 msgid "Add Payout"
-msgstr "Ö§³ö¤ò×·¼Ó"
+msgstr "æ”¯å‡ºã‚’è¿½åŠ "
 
 #: D:\projects\youmoney\ui\window.py:210 D:\projects\youmoney\ui\window.py:282
 msgid "Add Record Cycle"
-msgstr "¥ì¥³©`¥É¤Î¥µ¥¤¥¯¥ë¤ò×·¼Ó¡£"
+msgstr "ãƒ¬ã‚³ãƒ¼ãƒ‰ã®ã‚µã‚¤ã‚¯ãƒ«ã‚’è¿½åŠ ã€‚"
 
 #: D:\projects\youmoney\ui\window.py:220
 msgid "Simple Chinese"
-msgstr "ÖĞ¹úÕZ"
+msgstr "ä¸­å›½èª"
 
 #: D:\projects\youmoney\ui\window.py:221
 msgid "English"
-msgstr "Ó¢ÕZ"
+msgstr "è‹±èª"
 
 #: D:\projects\youmoney\ui\window.py:222
 msgid "Japanese"
-msgstr "ÈÕ±¾ÕZ"
+msgstr "æ—¥æœ¬èª"
 
 #: D:\projects\youmoney\ui\window.py:225
 msgid "Language"
-msgstr "ÑÔÕZ"
+msgstr "è¨€èª"
 
 #: D:\projects\youmoney\ui\window.py:226
 msgid "View"
-msgstr "±íÊ¾"
+msgstr "è¡¨ç¤º"
 
 #: D:\projects\youmoney\ui\window.py:229
 msgid "Update YouMoney"
-msgstr "YouMoney¤ò¥¢¥Ã¥×¥Ç©`¥È¤¹¤ë"
+msgstr "YouMoneyã‚’ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã™ã‚‹"
 
 #: D:\projects\youmoney\ui\window.py:230
 msgid "About Information"
-msgstr "YouMoney¤Î¥Ğ©`¥¸¥ç¥óÇéˆó"
+msgstr "YouMoneyã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³æƒ…å ±"
 
 #: D:\projects\youmoney\ui\window.py:231
 msgid "About"
-msgstr "¥Ø¥ë¥×"
+msgstr "ãƒ˜ãƒ«ãƒ—"
 
 #: D:\projects\youmoney\ui\window.py:303
 msgid "Choose account file:"
-msgstr "¥¢¥«¥¦¥ó¥È¤Îßx’k¥Õ¥¡¥¤¥ë:"
+msgstr "ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã®é¸æŠãƒ•ã‚¡ã‚¤ãƒ«:"
 
 #: D:\projects\youmoney\ui\window.py:306 D:\projects\youmoney\ui\window.py:328
 #: D:\projects\youmoney\ui\window.py:357 D:\projects\youmoney\ui\window.py:379
 msgid "YouMoney Database (*.db)|*.db"
-msgstr "YouMoney ¥Ç©`¥¿¥Ù©`¥¹¥Õ¥¡¥¤¥ë (*.db)|*.db"
+msgstr "YouMoney ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ« (*.db)|*.db"
 
 #: D:\projects\youmoney\ui\window.py:327
 msgid "New account file save..."
-msgstr "ĞÂ¤·¤¤¥¢¥«¥¦¥ó¥È¤ò×÷³ÉÎÄ•ø¤Î±£´æ"
+msgstr "æ–°ã—ã„ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã‚’ä½œæˆæ–‡æ›¸ã®ä¿å­˜"
 
 #: D:\projects\youmoney\ui\window.py:337 D:\projects\youmoney\ui\window.py:366
 #: D:\projects\youmoney\ui\window.py:371 D:\projects\youmoney\ui\window.py:390
 #: D:\projects\youmoney\ui\window.py:395
 msgid "Can not save account file"
-msgstr "¥¢¥«¥¦¥ó¥È¤ò¥Õ¥¡¥¤¥ë¤Ë±£´æ¤Ç¤­¤Ş¤»¤ó"
+msgstr "ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜ã§ãã¾ã›ã‚“"
 
 #: D:\projects\youmoney\ui\window.py:337 D:\projects\youmoney\ui\window.py:366
 #: D:\projects\youmoney\ui\window.py:390
 msgid "File exist"
-msgstr "¥Õ¥¡¥¤¥ë¤ò¼È¤Ë´æÔÚ¤¹¤ë"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ—¢ã«å­˜åœ¨ã™ã‚‹"
 
 #: D:\projects\youmoney\ui\window.py:356
 msgid "Account save as..."
-msgstr "¥¢¥«¥¦¥ó¥È¤Ë±£´æ¤¹¤ë"
+msgstr "ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã«ä¿å­˜ã™ã‚‹"
 
 #: D:\projects\youmoney\ui\window.py:371
 msgid "Save account failture:"
-msgstr "¥¢¥«¥¦¥ó¥È¤Î±£´æ¤ËÊ§”¡¤·¤Ş¤·¤¿:"
+msgstr "ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã®ä¿å­˜ã«å¤±æ•—ã—ã¾ã—ãŸ:"
 
 #: D:\projects\youmoney\ui\window.py:378
 msgid "Change account path..."
-msgstr "¥¢¥«¥¦¥ó¥È¤ò‰ä¸ü¥Ñ¥¹..."
+msgstr "ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã‚’å¤‰æ›´ãƒ‘ã‚¹..."
 
 #: D:\projects\youmoney\ui\window.py:395
 msgid "Change account path failture:"
-msgstr "¥¢¥«¥¦¥ó¥È¤ò‰ä¸ü¡¢¥Ñ¥¹¤ÎÕÏº¦:"
+msgstr "ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã‚’å¤‰æ›´ã€ãƒ‘ã‚¹ã®éšœå®³:"
 
 #: D:\projects\youmoney\ui\window.py:447
 msgid "Add category failture:"
-msgstr "¥«¥Æ¥´¥ê¤ò×·¼ÓÊ§”¡:"
+msgstr "ã‚«ãƒ†ã‚´ãƒªã‚’è¿½åŠ å¤±æ•—:"
 
 #: D:\projects\youmoney\ui\window.py:447
 msgid "Add category information"
-msgstr "¥«¥Æ¥´¥ê¥¤¥ó¥Õ¥©¥á©`¥·¥ç¥ó¤ò×·¼Ó"
+msgstr "ã‚«ãƒ†ã‚´ãƒªã‚¤ãƒ³ãƒ•ã‚©ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’è¿½åŠ "
 
 #: D:\projects\youmoney\ui\window.py:457
 msgid "Change category failture:"
-msgstr "¥«¥Æ¥´¥ê¤ò‰ä¸üÊ§”¡:"
+msgstr "ã‚«ãƒ†ã‚´ãƒªã‚’å¤‰æ›´å¤±æ•—:"
 
 #: D:\projects\youmoney\ui\window.py:457
 msgid "Change category information"
-msgstr "¥«¥Æ¥´¥ê¥¤¥ó¥Õ¥©¥á©`¥·¥ç¥ó¤ò‰ä¸üÊ§”¡"
+msgstr "ã‚«ãƒ†ã‚´ãƒªã‚¤ãƒ³ãƒ•ã‚©ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å¤‰æ›´å¤±æ•—"
 
 #: D:\projects\youmoney\ui\window.py:466
 msgid "Can not add income item"
-msgstr "…§Èë¤ò×·¼Ó¤Ç¤­¤Ê¤¤"
+msgstr "åå…¥ã‚’è¿½åŠ ã§ããªã„"
 
 #: D:\projects\youmoney\ui\window.py:466 D:\projects\youmoney\ui\window.py:534
 #: D:\projects\youmoney\ui\window.py:600
 msgid "Add category first!"
-msgstr "¥«¥Æ¥´¥ê¤¬Ÿo¤¤¤¿¤á¡¢¥«¥Æ¥´¥ê¤ò×·¼Ó¤·¤Æ¤¯¤À¤µ¤¤!"
+msgstr "ã‚«ãƒ†ã‚´ãƒªãŒç„¡ã„ãŸã‚ã€ã‚«ãƒ†ã‚´ãƒªã‚’è¿½åŠ ã—ã¦ãã ã•ã„!"
 
 #: D:\projects\youmoney\ui\window.py:499
 msgid "Add income failture:"
-msgstr "…§Èë¤ò×·¼ÓÊ§”¡:"
+msgstr "åå…¥ã‚’è¿½åŠ å¤±æ•—:"
 
 #: D:\projects\youmoney\ui\window.py:499
 msgid "Add income information"
-msgstr "…§ÈëÃ÷¼š¤ò×·¼Ó"
+msgstr "åå…¥æ˜ç´°ã‚’è¿½åŠ "
 
 #: D:\projects\youmoney\ui\window.py:519
 msgid "Change income failture:"
-msgstr "…§Èë¤ò‰ä¸üÊ§”¡:"
+msgstr "åå…¥ã‚’å¤‰æ›´å¤±æ•—:"
 
 #: D:\projects\youmoney\ui\window.py:519
 msgid "Change income information"
-msgstr "…§ÈëÃ÷¼š¤ò‰ä¸ü"
+msgstr "åå…¥æ˜ç´°ã‚’å¤‰æ›´"
 
 #: D:\projects\youmoney\ui\window.py:534
 msgid "Can not add payout item"
-msgstr "Ö§³ö¤ò×·¼Ó¤Ç¤­¤Ê¤¤"
+msgstr "æ”¯å‡ºã‚’è¿½åŠ ã§ããªã„"
 
 #: D:\projects\youmoney\ui\window.py:567
 msgid "Add payout failture:"
-msgstr "Ö§³ö¤ò×·¼Ó¤Ç¤­¤Ê¤¤:"
+msgstr "æ”¯å‡ºã‚’è¿½åŠ ã§ããªã„:"
 
 #: D:\projects\youmoney\ui\window.py:567
 msgid "Add payout information"
-msgstr "Ö§³öÃ÷¼š¤ò×·¼Ó"
+msgstr "æ”¯å‡ºæ˜ç´°ã‚’è¿½åŠ "
 
 #: D:\projects\youmoney\ui\window.py:588
 msgid "Change payout failture:"
-msgstr "Ö§³ö¤ò‰ä¸ü¤ÏÊ§”¡£º"
+msgstr "æ”¯å‡ºã‚’å¤‰æ›´ã¯å¤±æ•—ï¼š"
 
 #: D:\projects\youmoney\ui\window.py:588
 msgid "Change payout information"
-msgstr "Ö§’BÇéˆó¤ò‰ä¸ü"
+msgstr "æ”¯æ‰•æƒ…å ±ã‚’å¤‰æ›´"
 
 #: D:\projects\youmoney\ui\window.py:600
 msgid "Can not add cycle item"
-msgstr "¥µ¥¤¥¯¥ë¥¢¥¤¥Æ¥à¤ò×·¼Ó¤Ï¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "ã‚µã‚¤ã‚¯ãƒ«ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¿½åŠ ã¯ã§ãã¾ã›ã‚“ã€‚"
 
 #: D:\projects\youmoney\ui\window.py:642
 msgid "Add cycle failture:"
-msgstr "¥µ¥¤¥¯¥ë¤ò×·¼Ó¤ÏÊ§”¡"
+msgstr "ã‚µã‚¤ã‚¯ãƒ«ã‚’è¿½åŠ ã¯å¤±æ•—"
 
 #: D:\projects\youmoney\ui\window.py:642
 msgid "Add cycle information"
-msgstr "¥µ¥¤¥¯¥ëÇéˆó¤ò×·¼Ó"
+msgstr "ã‚µã‚¤ã‚¯ãƒ«æƒ…å ±ã‚’è¿½åŠ "
 
 #: D:\projects\youmoney\ui\window.py:669
 msgid "Change cycle failture:"
-msgstr "¥µ¥¤¥¯¥ë¤ò‰ä¸ü¤ÏÊ§”¡"
+msgstr "ã‚µã‚¤ã‚¯ãƒ«ã‚’å¤‰æ›´ã¯å¤±æ•—"
 
 #: D:\projects\youmoney\ui\window.py:669
 msgid "Change cycle information"
-msgstr "¥µ¥¤¥¯¥ëÇéˆó¤ò‰ä¸ü"
+msgstr "ã‚µã‚¤ã‚¯ãƒ«æƒ…å ±ã‚’å¤‰æ›´"
 
 #: D:\projects\youmoney\ui\window.py:699
 msgid "Language changed! You must restart youmoney !"
-msgstr "ÑÔÕZ¤ò‰ä¸ü¤·¤Ş¤·¤¿£¡ÔÙÆğ„Ó¤«¤éÉú„¿£¡"
+msgstr "è¨€èªã‚’å¤‰æ›´ã—ã¾ã—ãŸï¼å†èµ·å‹•ã‹ã‚‰ç”ŸåŠ¹ï¼"
 
 #: D:\projects\youmoney\ui\window.py:706
 msgid "YouMoney is a opensource personal finance software write by Python language."
-msgstr "YouMoney¤Ïpython¤ÎÑÔÕZ¤òÊ¹ÓÃ¤·¤Æ×÷¤é¤ì¤¿¥ª¥Ú¥ó¥½©`¥¹¥½¥Õ¥È¤Ç¤¹¡£"
+msgstr "YouMoneyã¯pythonã®è¨€èªã‚’ä½¿ç”¨ã—ã¦ä½œã‚‰ã‚ŒãŸã‚ªãƒšãƒ³ã‚½ãƒ¼ã‚¹ã‚½ãƒ•ãƒˆã§ã™ã€‚"
 
 #: D:\projects\youmoney\ui\window.py:708
 msgid "YouMoney home page"
-msgstr "YouMoney¤Î¥Û©`¥à¥Ú¥Ã¥¸"
+msgstr "YouMoneyã®ãƒ›ãƒ¼ãƒ ãƒšãƒƒã‚¸"
 
 #: D:\projects\youmoney\ui\window.py:735
 msgid "This version is not support automatic update. Only windows and run with source support."
-msgstr "¤³¤Î¥Ğ©`¥¸¥ç¥ó¤Ç¤Ï×Ô„Ó¸üĞÂ¤ò¥µ¥İ©`¥È¤·¤Æ¤¤¤Ş¤»¤ó¡£Windows¤Î¤ß¡¢¥½©`¥¹¤ò¥µ¥İ©`¥È¤¹¤ëŒgĞĞ¤·¤Ş¤¹¡£"
+msgstr "ã“ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã§ã¯è‡ªå‹•æ›´æ–°ã‚’ã‚µãƒãƒ¼ãƒˆã—ã¦ã„ã¾ã›ã‚“ã€‚Windowsã®ã¿ã€ã‚½ãƒ¼ã‚¹ã‚’ã‚µãƒãƒ¼ãƒˆã™ã‚‹å®Ÿè¡Œã—ã¾ã™ã€‚"
 
 #: D:\projects\youmoney\ui\window.py:763
 msgid "Password must not null."
-msgstr "¥Ñ¥¹¥ï©`¥É¤ò¿Õ¤Ë¤¹¤ë¤³¤È¤Ï¤Ç¤­¤Ş¤»¤ó"
+msgstr "ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’ç©ºã«ã™ã‚‹ã“ã¨ã¯ã§ãã¾ã›ã‚“"
 
 #: D:\projects\youmoney\ui\window.py:767
 msgid "Different password."
-msgstr "¥Ñ¥¹¥ï©`¥É¤òÒ»ØĞÔ¤Î¤Ê¤¤"
+msgstr "ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’ä¸€è²«æ€§ã®ãªã„"
 
 #: D:\projects\youmoney\ui\window.py:805 D:\projects\youmoney\ui\window.py:828
 msgid "Import Error:"
-msgstr "¥¤¥ó¥İ©`¥È¥¨¥é©`"
+msgstr "ã‚¤ãƒ³ãƒãƒ¼ãƒˆã‚¨ãƒ©ãƒ¼"
 
 #: D:\projects\youmoney\ui\window.py:807 D:\projects\youmoney\ui\window.py:830
 msgid "Import complete!"
-msgstr "¥¤¥ó¥İ©`¥È¤¬ÍêÁË"
+msgstr "ã‚¤ãƒ³ãƒãƒ¼ãƒˆãŒå®Œäº†"
 
 #: D:\projects\youmoney\ui\window.py:807 D:\projects\youmoney\ui\window.py:830
 msgid "Information"
-msgstr "Çéˆó"
+msgstr "æƒ…å ±"
 
 #: D:\projects\youmoney\ui\window.py:821
 msgid "Importing..."
-msgstr "¥¤¥ó¥İ©`¥È..."
+msgstr "ã‚¤ãƒ³ãƒãƒ¼ãƒˆ..."
 
 #: D:\projects\youmoney\ui\window.py:821
 msgid "Waiting for importing."
-msgstr "¥¤¥ó¥İ©`¥È¤¹¤ë¤¿¤á´ı¤Ã¤Æ¤¤¤Ş¤¹¡£"
+msgstr "ã‚¤ãƒ³ãƒãƒ¼ãƒˆã™ã‚‹ãŸã‚å¾…ã£ã¦ã„ã¾ã™ã€‚"
 
 #: D:\projects\youmoney\ui\window.py:847 D:\projects\youmoney\ui\window.py:862
 msgid "Export Error:"
-msgstr "¥¨¥¯¥¹¥İ©`¥È¥¨¥é©`£º"
+msgstr "ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆã‚¨ãƒ©ãƒ¼ï¼š"
 
 #: D:\projects\youmoney\updater.py:96 D:\projects\youmoney\updater.py:119
 msgid "Download package"
-msgstr "¥Ñ¥Ã¥±©`¥¸¤ò¥À¥¦¥ó¥í©`¥É"
+msgstr "ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã‚’ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰"
 
 #: D:\projects\youmoney\updater.py:108
 msgid "Package size"
-msgstr "¥Ñ¥Ã¥±©`¥¸¥µ¥¤¥º"
+msgstr "ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã‚µã‚¤ã‚º"
 
 #: D:\projects\youmoney\updater.py:145
 msgid "Download update.txt"
-msgstr "update.txt¤ò¥À¥¦¥ó¥í©`¥É"
+msgstr "update.txtã‚’ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰"
 
 #: D:\projects\youmoney\updater.py:175
 msgid "Not need update:"
-msgstr "¥¢¥Ã¥×¥Ç©`¥È±ØÒª¤Ç¤Ï¤Ê¤¤"
+msgstr "ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆå¿…è¦ã§ã¯ãªã„"
 
 #: D:\projects\youmoney\updater.py:180 D:\projects\youmoney\updater.py:204
 msgid "Mac OS X binary version dose not support the automatic update."
-msgstr "Mac OS X¤Î¥Ğ¥¤¥Ê¥ê¥Ğ©`¥¸¥ç¥ó¤Ï¡¢×Ô„Ó¸üĞÂ¤ò¥µ¥İ©`¥È¤·¤Æ¤¤¤Ş¤»¤ó¡£"
+msgstr "Mac OS Xã®ãƒã‚¤ãƒŠãƒªãƒãƒ¼ã‚¸ãƒ§ãƒ³ã¯ã€è‡ªå‹•æ›´æ–°ã‚’ã‚µãƒãƒ¼ãƒˆã—ã¦ã„ã¾ã›ã‚“ã€‚"
 
 #: D:\projects\youmoney\updater.py:192
 msgid "Linux rpm and deb install does not support the automaitc update."
-msgstr "Linux¤Îrpm¤ädeb¥¤¥ó¥¹¥È©`¥ë¤Ï×Ô„Ó¸üĞÂ¤ò¥µ¥İ©`¥È¤·¤Æ¤¤¤Ş¤»¤ó¡£"
+msgstr "Linuxã®rpmã‚„debã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã¯è‡ªå‹•æ›´æ–°ã‚’ã‚µãƒãƒ¼ãƒˆã—ã¦ã„ã¾ã›ã‚“ã€‚"
 
 #: D:\projects\youmoney\updater.py:225
 msgid "Validate package"
-msgstr "—ÊÔ^¥Ñ¥Ã¥±©`¥¸"
+msgstr "æ¤œè¨¼ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸"
 
 #: D:\projects\youmoney\updater.py:228
 msgid "Package size is too small. Try update again."
-msgstr "¥Ñ¥Ã¥±©`¥¸¥µ¥¤¥º¤¬Ğ¡¤µ¤¹¤®¤Ş¤¹¡£ÔÙ¶È¸üĞÂ¤·¤Æ¤¯¤À¤µ¤¤¡£"
+msgstr "ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã‚µã‚¤ã‚ºãŒå°ã•ã™ãã¾ã™ã€‚å†åº¦æ›´æ–°ã—ã¦ãã ã•ã„ã€‚"
 
 #: D:\projects\youmoney\updater.py:240
 msgid "Package md5 is error! Try update again."
-msgstr "¥Ñ¥Ã¥±©`¥¸¤Ï¡¢md5¥¨¥é©`¤Ç¤¹£¡ÔÙ¶È¸üĞÂ¤·¤Æ¤¯¤À¤µ¤¤¡£"
+msgstr "ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã¯ã€md5ã‚¨ãƒ©ãƒ¼ã§ã™ï¼å†åº¦æ›´æ–°ã—ã¦ãã ã•ã„ã€‚"
 
 #: D:\projects\youmoney\updater.py:398
 msgid "YouMoney Updater"
-msgstr "YouMoney¥¢¥Ã¥×"
+msgstr "YouMoneyã‚¢ãƒƒãƒ—"
 
 #: D:\projects\youmoney\updater.py:398 D:\projects\youmoney\updater.py:407
 msgid "Updating"
-msgstr "¸üĞÂÖĞ"
+msgstr "æ›´æ–°ä¸­"
 
 #: D:\projects\youmoney\updater.py:409
 msgid "Close YouMoney"
-msgstr "YouMoney¤òé]¤¸¤ë"
+msgstr "YouMoneyã‚’é–‰ã˜ã‚‹"
 
 #: D:\projects\youmoney\updater.py:413
 msgid "Backup old data"
-msgstr "¹Å¤¤¥Ç©`¥¿¤ò¥Ğ¥Ã¥¯¥¢¥Ã¥×"
+msgstr "å¤ã„ãƒ‡ãƒ¼ã‚¿ã‚’ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—"
 
 #: D:\projects\youmoney\updater.py:419 D:\projects\youmoney\updater.py:436
 msgid "Update failed!"
-msgstr "¸üĞÂ¤¬Ê§”¡£¡"
+msgstr "æ›´æ–°ãŒå¤±æ•—ï¼"
 
 #: D:\projects\youmoney\updater.py:429
 msgid "Update complete!"
-msgstr "¸üĞÂ¤¬ÍêÁË£¡"
+msgstr "æ›´æ–°ãŒå®Œäº†ï¼"
 
 #: D:\projects\youmoney\updater.py:438
 msgid "Update cancled!"
-msgstr "¸üĞÂ¤¬ÖĞÖ¹¤µ¤ì¤¿£¡"
+msgstr "æ›´æ–°ãŒä¸­æ­¢ã•ã‚ŒãŸï¼"
