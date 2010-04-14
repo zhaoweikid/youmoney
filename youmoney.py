@@ -9,6 +9,7 @@ import os, sys
 import threading
 import wx
 import ui
+import traceback
 
 home = os.path.dirname(os.path.abspath(sys.argv[0]))
 
@@ -17,6 +18,7 @@ langdir = os.path.join(home, "lang")
 try:
     ui.i18n.install(langdir, [cf['lang']])
 except:
+    traceback.print_exc()
     ui.i18n.install(langdir, ['en_US'])
     cf['lang'] = 'en_US'
     cf.dump()

@@ -1,6 +1,6 @@
 # coding: utf-8
 import os, sys
-import sqlite3, locale
+import sqlite3, locale, uuid
 import types, time
 import version
 
@@ -43,12 +43,18 @@ class DBStorage:
         sql = "select * from identity"
         ret = self.query(sql, False)
         if not ret:
-            name = '%f.%s.%s' % (time.time(), version.VERSION, sys.platform)
+            name = '%f.%s.%s.%s' % (time.time(), version.VERSION, sys.platform, uuid.uuid1().hex)
             sql = "insert into identity values ('%s')" % (name)
             self.execute(sql)
         else:
             row = ret[0]
             name = row[0]
+            
+            if len(row[0]) < 42:
+                name = '%s.%s' % (row[0], uuid.uuid1().hex)
+                sql = "update identity set name='%s'" % (name)
+                self.execute(sql)
+ 
 
         sql = "pragma table_info(capital)"
         ret = self.query(sql, False)

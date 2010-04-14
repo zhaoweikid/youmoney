@@ -136,7 +136,7 @@ class CategoryPanel (wx.Panel):
             dlg.Destroy()
             return   
         else:
-            dlg = wx.MessageDialog(self, _('To delete category') + name + _(', all child categories will move to "No Category"'),
+            dlg = wx.MessageDialog(self, _('To delete category') + '"' + name + '"' + _(', all child categories will move to "No Category"'),
                                _('Notice:'),
                                wx.OK | wx.ICON_INFORMATION | wx.CANCEL)
         if dlg.ShowModal() == wx.ID_OK:
@@ -165,6 +165,11 @@ class CategoryPanel (wx.Panel):
                 sql = "update capital set category=%d where category in (%s) and type=%d" % (mycid, ids, mytype)
                 logfile.info('update category:', sql)
                 frame.db.execute(sql, False)
+
+                sql = "update recycle set category=%d where category in (%s) and type=%d" % (mycid, ids, mytype)
+                logfile.info('update recycle:', sql)
+                frame.db.execute(sql, False)
+ 
                 sql = "delete from category where id=%d or parent=%d" % (data['id'], data['id'])
                 frame.db.execute(sql, False)
             except Exception, e:
