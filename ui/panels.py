@@ -407,8 +407,14 @@ class CycleListPanel (wx.Panel):
         rets = self.parent.parent.db.query(sql)
         if rets:
             for row in rets:
-                cate = self.parent.parent.category.catemap(row['type'], row['category'])
-                item = self.list.InsertStringItem(0, storage.catetypes[row['type']])
+                try:
+                    cate = self.parent.parent.category.catemap(row['type'], row['category'])
+                    typestr = storage.catetypes[row['type']]
+                except:
+                    sql = "delete from recycle where id=" + str(row['id'])
+                    self.parent.parent.db.execute(sql)
+                    continue
+                item = self.list.InsertStringItem(0, typestr)
                 #self.list.SetStringItem(item, 0, storage.catetypes[row['type']]) 
                 self.list.SetStringItem(item, 1, cate)
                 self.list.SetStringItem(item, 2, str(row['num']))
