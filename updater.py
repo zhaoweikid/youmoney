@@ -252,7 +252,7 @@ class Updater:
             filepath = info.filename
             if not issrc and filepath.find('/.hg/') > 0:
                 continue
-            if filepath.endswith('youmoney.conf'):
+            if filepath.endswith('youmoney.conf') or filepath.endswith('youmoney.db'):
                 continue
             pos = filepath.find('/')
             newpath = os.path.join(self.home, filepath[pos+1:].replace('/', os.sep))
@@ -306,6 +306,8 @@ class Updater:
                 logfile.info('copy:', toppath, newpath)
  
         for fname in allfiles:
+            if fname.endswith('youmoney.conf') or fname.endswith('youmoney.db'):
+                continue
             logfile.info('remove file:', fname)
             try:
                 os.remove(fname)
