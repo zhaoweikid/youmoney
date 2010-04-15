@@ -252,6 +252,8 @@ class Updater:
             filepath = info.filename
             if not issrc and filepath.find('/.hg/') > 0:
                 continue
+            if filepath.endswith('youmoney.conf'):
+                continue
             pos = filepath.find('/')
             newpath = os.path.join(self.home, filepath[pos+1:].replace('/', os.sep))
             newdir = os.path.dirname(newpath)
