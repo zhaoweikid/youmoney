@@ -7,6 +7,6 @@ Standards-Version: 3.8.1
 Homepage: http://code.google.com/p/youmoney/
 
 Package: youmoney
-Architecture: any
+Architecture: all
 Depends: python-wxgtk2.8 (>=2.8.9)
 Description: YouMoney is a free personal finance software
