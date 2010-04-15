@@ -616,7 +616,7 @@ msgstr "支出を追加"
 
 #: D:\projects\youmoney\ui\window.py:210 D:\projects\youmoney\ui\window.py:282
 msgid "Add Record Cycle"
-msgstr "レコードのサイクルを追加。"
+msgstr "循環レコードを追加"
 
 #: D:\projects\youmoney\ui\window.py:220
 msgid "Simple Chinese"

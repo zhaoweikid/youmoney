@@ -14,7 +14,7 @@ from storage import catetypes, payways, cycles
 
 class MainFrame (wx.Frame):
     def __init__(self, parent, id, title, cf):
-        wx.Frame.__init__(self, parent, id, title, wx.DefaultPosition, wx.Size(800,600),
+        wx.Frame.__init__(self, parent, id, title, wx.DefaultPosition, wx.Size(900,600),
                 name=u'YouMoney', style=wx.DEFAULT_FRAME_STYLE)
         config.cf = cf
         self.rundir = os.path.dirname(os.path.abspath(sys.argv[0]))
