@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Sat Mar 27 11:50:36 2010\n"
+"POT-Creation-Date: Sat Apr 24 22:23:11 2010\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,21 +15,21 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 
-#: D:\projects\youmoney\ui\category.py:77
+#: D:\projects\youmoney\ui\category.py:80
 msgid "payout"
 msgstr "支出"
 
-#: D:\projects\youmoney\ui\category.py:78
+#: D:\projects\youmoney\ui\category.py:81
 msgid "income"
 msgstr "收入"
 
-#: D:\projects\youmoney\ui\category.py:218
-#: D:\projects\youmoney\ui\category.py:228
+#: D:\projects\youmoney\ui\category.py:236
+#: D:\projects\youmoney\ui\category.py:246
 #: D:\projects\youmoney\ui\dialogs.py:175
 #: D:\projects\youmoney\ui\dialogs.py:210
 #: D:\projects\youmoney\ui\dialogs.py:274
-#: D:\projects\youmoney\ui\panels.py:109 D:\projects\youmoney\ui\panels.py:436
-#: D:\projects\youmoney\ui\panels.py:446
+#: D:\projects\youmoney\ui\panels.py:113 D:\projects\youmoney\ui\panels.py:451
+#: D:\projects\youmoney\ui\panels.py:461
 #: D:\projects\youmoney\ui\statpanel.py:40
 #: D:\projects\youmoney\ui\statpanel.py:48
 #: D:\projects\youmoney\ui\statpanel.py:89
@@ -40,10 +40,10 @@ msgstr "收入"
 msgid "Payout"
 msgstr "支出"
 
-#: D:\projects\youmoney\ui\category.py:218
-#: D:\projects\youmoney\ui\category.py:228
+#: D:\projects\youmoney\ui\category.py:236
+#: D:\projects\youmoney\ui\category.py:246
 #: D:\projects\youmoney\ui\dialogs.py:274
-#: D:\projects\youmoney\ui\panels.py:111 D:\projects\youmoney\ui\panels.py:446
+#: D:\projects\youmoney\ui\panels.py:115 D:\projects\youmoney\ui\panels.py:461
 #: D:\projects\youmoney\ui\statpanel.py:40
 #: D:\projects\youmoney\ui\statpanel.py:91
 #: D:\projects\youmoney\ui\storage.py:15 D:\projects\youmoney\ui\window.py:418
@@ -60,7 +60,7 @@ msgid "Edit income item"
 msgstr "编辑收入条目"
 
 #: D:\projects\youmoney\ui\dialogs.py:23 D:\projects\youmoney\ui\dialogs.py:95
-#: D:\projects\youmoney\ui\panels.py:234
+#: D:\projects\youmoney\ui\panels.py:243
 msgid "Date:"
 msgstr "日期:"
 
@@ -129,8 +129,8 @@ msgid "Edit cycle item"
 msgstr "编辑循环记录条目"
 
 #: D:\projects\youmoney\ui\dialogs.py:167 D:\projects\youmoney\ui\window.py:81
-#: D:\projects\youmoney\ui\window.py:699 D:\projects\youmoney\ui\window.py:735
-#: D:\projects\youmoney\ui\window.py:747
+#: D:\projects\youmoney\ui\window.py:699 D:\projects\youmoney\ui\window.py:736
+#: D:\projects\youmoney\ui\window.py:748
 msgid "Note:"
 msgstr "注意:"
 
@@ -257,7 +257,7 @@ msgstr "选择csv文件:"
 
 #: D:\projects\youmoney\ui\dialogs.py:421
 #: D:\projects\youmoney\ui\dialogs.py:472
-#: D:\projects\youmoney\ui\window.py:838 D:\projects\youmoney\ui\window.py:853
+#: D:\projects\youmoney\ui\window.py:842 D:\projects\youmoney\ui\window.py:857
 msgid "csv file (*.csv)|*.csv"
 msgstr ""
 
@@ -310,18 +310,18 @@ msgstr "娱乐活动,KTV,220,现金,支出,2010-02-10 18:12:01,2010,2,9,去KTV"
 msgid "Public Traffic,,6,Cash,Payout,2010-02-11 10:09:01,2010,2,11,go home by bus"
 msgstr "公共交通,,6,现金,支出,2010-02-11 10:09:01,2010,2,11,坐公交车回家"
 
-#: D:\projects\youmoney\ui\drawstat.py:268
+#: D:\projects\youmoney\ui\drawstat.py:269
 msgid "Sum: "
 msgstr "总计: "
 
-#: D:\projects\youmoney\ui\drawstat.py:337
+#: D:\projects\youmoney\ui\drawstat.py:338
 #: D:\projects\youmoney\ui\export.py:75
 msgid "Time"
 msgstr "时间"
 
-#: D:\projects\youmoney\ui\drawstat.py:339
-#: D:\projects\youmoney\ui\export.py:75 D:\projects\youmoney\ui\panels.py:237
-#: D:\projects\youmoney\ui\panels.py:387
+#: D:\projects\youmoney\ui\drawstat.py:340
+#: D:\projects\youmoney\ui\export.py:75 D:\projects\youmoney\ui\panels.py:246
+#: D:\projects\youmoney\ui\panels.py:396
 msgid "Money"
 msgstr "金额"
 
@@ -334,7 +334,7 @@ msgid "Sub Category"
 msgstr "子类"
 
 #: D:\projects\youmoney\ui\export.py:31 D:\projects\youmoney\ui\export.py:75
-#: D:\projects\youmoney\ui\panels.py:385
+#: D:\projects\youmoney\ui\panels.py:394
 msgid "Type"
 msgstr "类型"
 
@@ -354,8 +354,8 @@ msgstr "支付方式"
 msgid "Year"
 msgstr "年"
 
-#: D:\projects\youmoney\ui\export.py:75 D:\projects\youmoney\ui\panels.py:241
-#: D:\projects\youmoney\ui\panels.py:245 D:\projects\youmoney\ui\panels.py:392
+#: D:\projects\youmoney\ui\export.py:75 D:\projects\youmoney\ui\panels.py:250
+#: D:\projects\youmoney\ui\panels.py:254 D:\projects\youmoney\ui\panels.py:401
 msgid "Explain"
 msgstr "说明"
 
@@ -367,8 +367,8 @@ msgstr ""
 msgid "me"
 msgstr ""
 
-#: D:\projects\youmoney\ui\panels.py:31 D:\projects\youmoney\ui\panels.py:236
-#: D:\projects\youmoney\ui\panels.py:386 D:\projects\youmoney\ui\panels.py:482
+#: D:\projects\youmoney\ui\panels.py:31 D:\projects\youmoney\ui\panels.py:245
+#: D:\projects\youmoney\ui\panels.py:395 D:\projects\youmoney\ui\panels.py:497
 #: D:\projects\youmoney\ui\window.py:212
 msgid "Category"
 msgstr "分类"
@@ -377,103 +377,107 @@ msgstr "分类"
 msgid "Month Total"
 msgstr "本月总计"
 
-#: D:\projects\youmoney\ui\panels.py:86 D:\projects\youmoney\ui\panels.py:227
-#: D:\projects\youmoney\ui\panels.py:379 D:\projects\youmoney\ui\window.py:217
+#: D:\projects\youmoney\ui\panels.py:33
+msgid "Day Total"
+msgstr "今日总计"
+
+#: D:\projects\youmoney\ui\panels.py:90 D:\projects\youmoney\ui\panels.py:236
+#: D:\projects\youmoney\ui\panels.py:388 D:\projects\youmoney\ui\window.py:217
 msgid "Edit"
 msgstr "编辑"
 
-#: D:\projects\youmoney\ui\panels.py:87 D:\projects\youmoney\ui\panels.py:228
-#: D:\projects\youmoney\ui\panels.py:380
+#: D:\projects\youmoney\ui\panels.py:91 D:\projects\youmoney\ui\panels.py:237
+#: D:\projects\youmoney\ui\panels.py:389
 msgid "Delete"
 msgstr "删除"
 
-#: D:\projects\youmoney\ui\panels.py:107 D:\projects\youmoney\ui\window.py:412
+#: D:\projects\youmoney\ui\panels.py:111 D:\projects\youmoney\ui\window.py:412
 #: D:\projects\youmoney\ui\window.py:418 D:\projects\youmoney\ui\window.py:419
 #: D:\projects\youmoney\ui\window.py:423 D:\projects\youmoney\ui\window.py:433
 #: D:\projects\youmoney\ui\window.py:436
 msgid "No Higher Category"
 msgstr "无上级分类"
 
-#: D:\projects\youmoney\ui\panels.py:131 D:\projects\youmoney\ui\panels.py:152
-#: D:\projects\youmoney\ui\panels.py:155 D:\projects\youmoney\ui\panels.py:157
+#: D:\projects\youmoney\ui\panels.py:135 D:\projects\youmoney\ui\panels.py:156
+#: D:\projects\youmoney\ui\panels.py:159 D:\projects\youmoney\ui\panels.py:161
 msgid "No Category"
 msgstr "未分类"
 
-#: D:\projects\youmoney\ui\panels.py:132
+#: D:\projects\youmoney\ui\panels.py:136
 msgid "Can not delete this category!"
 msgstr "该分类不能删除"
 
-#: D:\projects\youmoney\ui\panels.py:133 D:\projects\youmoney\ui\panels.py:140
-#: D:\projects\youmoney\ui\panels.py:326 D:\projects\youmoney\ui\panels.py:456
+#: D:\projects\youmoney\ui\panels.py:137 D:\projects\youmoney\ui\panels.py:144
+#: D:\projects\youmoney\ui\panels.py:335 D:\projects\youmoney\ui\panels.py:471
 msgid "Notice:"
 msgstr "注意:"
 
-#: D:\projects\youmoney\ui\panels.py:139
+#: D:\projects\youmoney\ui\panels.py:143
 msgid ", all child categories will move to \"No Category\""
 msgstr ", 该分类下所有子类将移动到\"未分类\"下"
 
-#: D:\projects\youmoney\ui\panels.py:139
+#: D:\projects\youmoney\ui\panels.py:143
 msgid "To delete category"
 msgstr "删除分类"
 
-#: D:\projects\youmoney\ui\panels.py:172
+#: D:\projects\youmoney\ui\panels.py:181
 msgid "Delete category failure!"
 msgstr "删除分类失败!"
 
-#: D:\projects\youmoney\ui\panels.py:172
+#: D:\projects\youmoney\ui\panels.py:181
 msgid "Delete category information"
 msgstr "删除分类信息"
 
-#: D:\projects\youmoney\ui\panels.py:193
+#: D:\projects\youmoney\ui\panels.py:202
 msgid " Date: "
 msgstr " 日期: "
 
-#: D:\projects\youmoney\ui\panels.py:195
+#: D:\projects\youmoney\ui\panels.py:204
 msgid " Year: "
 msgstr " 年: "
 
-#: D:\projects\youmoney\ui\panels.py:197
+#: D:\projects\youmoney\ui\panels.py:206
 msgid " Month:"
 msgstr " 月: "
 
-#: D:\projects\youmoney\ui\panels.py:198
+#: D:\projects\youmoney\ui\panels.py:207
 msgid "  Sum: "
 msgstr "  总计: "
 
-#: D:\projects\youmoney\ui\panels.py:239 D:\projects\youmoney\ui\panels.py:389
+#: D:\projects\youmoney\ui\panels.py:248 D:\projects\youmoney\ui\panels.py:398
 msgid "Payment"
 msgstr "支付方式"
 
-#: D:\projects\youmoney\ui\panels.py:240 D:\projects\youmoney\ui\panels.py:244
+#: D:\projects\youmoney\ui\panels.py:249 D:\projects\youmoney\ui\panels.py:253
 #: D:\projects\youmoney\ui\window.py:215 D:\projects\youmoney\ui\window.py:282
 msgid "Record Cycle"
 msgstr "循环记录"
 
-#: D:\projects\youmoney\ui\panels.py:277
+#: D:\projects\youmoney\ui\panels.py:286
 msgid "Yes"
 msgstr "是"
 
-#: D:\projects\youmoney\ui\panels.py:326 D:\projects\youmoney\ui\panels.py:456
+#: D:\projects\youmoney\ui\panels.py:335 D:\projects\youmoney\ui\panels.py:471
 msgid "Is really delete? Delete can not be restored!"
 msgstr "真的要删除吗? 删除将不能恢复"
 
-#: D:\projects\youmoney\ui\panels.py:390
+#: D:\projects\youmoney\ui\panels.py:399
 msgid "Cycle"
 msgstr "循环周期"
 
-#: D:\projects\youmoney\ui\panels.py:484 D:\projects\youmoney\ui\window.py:214
+#: D:\projects\youmoney\ui\panels.py:499 D:\projects\youmoney\ui\window.py:214
 msgid "Payout List"
 msgstr "支出列表"
 
-#: D:\projects\youmoney\ui\panels.py:486 D:\projects\youmoney\ui\window.py:213
+#: D:\projects\youmoney\ui\panels.py:501 D:\projects\youmoney\ui\window.py:213
 msgid "Income List"
 msgstr "收入列表"
 
-#: D:\projects\youmoney\ui\panels.py:489
+#: D:\projects\youmoney\ui\panels.py:504
 msgid "Cycle List"
 msgstr "循环记录列表"
 
-#: D:\projects\youmoney\ui\panels.py:493 D:\projects\youmoney\ui\window.py:216
+#: D:\projects\youmoney\ui\panels.py:508 D:\projects\youmoney\ui\window.py:216
 msgid "Statistic"
 msgstr "统计"
 
@@ -566,11 +570,11 @@ msgstr "数据库文件: "
 msgid "Database version is newer than program."
 msgstr "数据库版本比程序版本新!"
 
-#: D:\projects\youmoney\ui\window.py:189 D:\projects\youmoney\ui\window.py:837
+#: D:\projects\youmoney\ui\window.py:189 D:\projects\youmoney\ui\window.py:841
 msgid "Export Category"
 msgstr "导出分类"
 
-#: D:\projects\youmoney\ui\window.py:190 D:\projects\youmoney\ui\window.py:852
+#: D:\projects\youmoney\ui\window.py:190 D:\projects\youmoney\ui\window.py:856
 msgid "Export Data"
 msgstr "导出数据"
 
@@ -783,39 +787,43 @@ msgstr "YouMoney是一个开源的个人记账软件，他使用python语言编�
 msgid "YouMoney home page"
 msgstr "YouMoney官方主页"
 
-#: D:\projects\youmoney\ui\window.py:735
+#: D:\projects\youmoney\ui\window.py:736
 msgid "This version is not support automatic update. Only windows and run with source support."
 msgstr "当前版本的YouMoney不支持自动更新。只有windows版本或者源码版支持。"
 
-#: D:\projects\youmoney\ui\window.py:763
+#: D:\projects\youmoney\ui\window.py:764
+msgid "Delete password"
+msgstr ""
+
+#: D:\projects\youmoney\ui\window.py:767
 msgid "Password must not null."
 msgstr "密码不能为空"
 
-#: D:\projects\youmoney\ui\window.py:767
+#: D:\projects\youmoney\ui\window.py:771
 msgid "Different password."
 msgstr "两次密码不同"
 
-#: D:\projects\youmoney\ui\window.py:805 D:\projects\youmoney\ui\window.py:828
+#: D:\projects\youmoney\ui\window.py:809 D:\projects\youmoney\ui\window.py:832
 msgid "Import Error:"
 msgstr "导入错误:"
 
-#: D:\projects\youmoney\ui\window.py:807 D:\projects\youmoney\ui\window.py:830
+#: D:\projects\youmoney\ui\window.py:811 D:\projects\youmoney\ui\window.py:834
 msgid "Import complete!"
 msgstr "导入完成!"
 
-#: D:\projects\youmoney\ui\window.py:807 D:\projects\youmoney\ui\window.py:830
+#: D:\projects\youmoney\ui\window.py:811 D:\projects\youmoney\ui\window.py:834
 msgid "Information"
 msgstr "信息"
 
-#: D:\projects\youmoney\ui\window.py:821
+#: D:\projects\youmoney\ui\window.py:825
 msgid "Importing..."
 msgstr "导入..."
 
-#: D:\projects\youmoney\ui\window.py:821
+#: D:\projects\youmoney\ui\window.py:825
 msgid "Waiting for importing."
 msgstr "正在导入数据，请稍后..."
 
-#: D:\projects\youmoney\ui\window.py:847 D:\projects\youmoney\ui\window.py:862
+#: D:\projects\youmoney\ui\window.py:851 D:\projects\youmoney\ui\window.py:866
 msgid "Export Error:"
 msgstr "导出错误:"
 
@@ -855,31 +863,31 @@ msgstr "已下载的新版升级包大小异常，请重试"
 msgid "Package md5 is error! Try update again."
 msgstr "已下载新版升级包md5错误，请重试"
 
-#: D:\projects\youmoney\updater.py:398
+#: D:\projects\youmoney\updater.py:402
 msgid "YouMoney Updater"
 msgstr "YouMoney自动更新"
 
-#: D:\projects\youmoney\updater.py:398 D:\projects\youmoney\updater.py:407
+#: D:\projects\youmoney\updater.py:402 D:\projects\youmoney\updater.py:411
 msgid "Updating"
 msgstr "正在更新"
 
-#: D:\projects\youmoney\updater.py:409
+#: D:\projects\youmoney\updater.py:413
 msgid "Close YouMoney"
 msgstr "正在关闭YouMoney"
 
-#: D:\projects\youmoney\updater.py:413
+#: D:\projects\youmoney\updater.py:417
 msgid "Backup old data"
 msgstr "备份当前数据"
 
-#: D:\projects\youmoney\updater.py:419 D:\projects\youmoney\updater.py:436
+#: D:\projects\youmoney\updater.py:423 D:\projects\youmoney\updater.py:440
 msgid "Update failed!"
 msgstr "更新失败!"
 
-#: D:\projects\youmoney\updater.py:429
+#: D:\projects\youmoney\updater.py:433
 msgid "Update complete!"
 msgstr "更新完成!"
 
-#: D:\projects\youmoney\updater.py:438
+#: D:\projects\youmoney\updater.py:442
 msgid "Update cancled!"
 msgstr "更新被取消!"
 

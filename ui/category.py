@@ -1,5 +1,6 @@
 # coding: utf-8
 import os, sys
+import datetime
 import pprint, types
 import logfile
 
@@ -64,11 +65,11 @@ class Category:
         self.payout_parent = {}
         self.income_parent = {}
         
-        # parent and children text list
+        # parent and children text list, [xx->xx, ...]
         self.payout_catelist = []
         self.income_catelist = []
         
-        # only parent text list
+        # only parent text list, [xx, ...]
         self.payout_parentlist = []
         self.income_parentlist = []
         
@@ -82,7 +83,9 @@ class Category:
         self.init()
 
     def init(self):
+        # count, month_num, day_num
         cates = [{}, {}]
+        tday = datetime.date.today()
         # 统计出分类映射表
         for row in self.category_rec:
             if row['type'] == 0:
@@ -91,14 +94,14 @@ class Category:
                 self.payout_parent[row['id']]    = row['parent']        
                 self.payout_parent[row['name']]  = row['parent']        
 
-                cates[0][row['name']] = [0, 0]
+                cates[0][row['name']] = [0, 0, 0]
             elif row['type'] == 1:
                 self.income_catemap[row['name']] = row['id']
                 self.income_catemap[row['id']]   = row['name']
                 self.income_parent[row['id']]    = row['parent']        
                 self.income_parent[row['name']]  = row['parent']        
 
-                cates[1][row['name']]  = [0, 0]
+                cates[1][row['name']]  = [0, 0, 0]
 
         #print 'payout_catemap:', self.payout_catemap
         #print 'income_catemap:', self.income_catemap
@@ -160,9 +163,12 @@ class Category:
                 catestr = self.payout_catemap[cate]
             else:
                 catestr = self.income_catemap[cate]
+            #print 'catestr:', catestr
             x = cates[row['type']][catestr] 
             x[0] += 1
             x[1] += row['num']
+            if row['day'] == tday.day:
+                x[2] += row['num']
 
         #pprint.pprint(cates)
 
@@ -174,6 +180,7 @@ class Category:
                 vv = cates[0][self.payout_catemap[p]]
                 vv[0] += v1[0]
                 vv[1] += v1[1]
+                vv[2] += v1[2]
 
         #pprint.pprint(cates)
 
@@ -184,34 +191,43 @@ class Category:
                 vv = cates[1][self.income_catemap[p]]
                 vv[0] += v1[0]
                 vv[1] += v1[1]
+                vv[2] += v1[2]
         
         #pprint.pprint(cates)
        
-        total = 0
+        mtotal = 0
+        dtotal = 0
         for k in cates[0]:
             v = cates[0][k]
             node = treenode_find(self.payout_tree, k)
             if node:
                 node.count = v[0]
-                node.month_num   = v[1]
+                node.month_num = v[1]
+                node.day_num   = v[2]
                 if not node.childs:
-                    total += v[1]
+                    mtotal += v[1]
+                    dtotal += v[2]
             #self.payout_tree.echo()
-        self.payout_tree.month_num = total
+        self.payout_tree.month_num = mtotal
+        self.payout_tree.day_num = dtotal
 
         #self.payout_tree.echo()
         
-        total = 0
+        mtotal = 0
+        dtotal = 0
         for k in cates[1]:
             node = None
             v = cates[1][k]
             node = treenode_find(self.income_tree, k)
             if node:
                 node.count = v[0]
-                node.month_num   = v[1]
+                node.month_num = v[1]
+                node.day_num   = v[2]
                 if not node.childs:
-                    total += v[1]
-        self.income_tree.month_num = total
+                    mtotal += v[1]
+                    dtotal += v[2]
+        self.income_tree.month_num = mtotal
+        self.income_tree.day_num = dtotal
         #self.income_tree.echo()
 
 

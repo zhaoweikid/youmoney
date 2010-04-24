@@ -55,16 +55,19 @@ class CategoryPanel (wx.Panel):
 
         for root in [cate.payout_tree, cate.income_tree]:
             child = self.tree.AppendItem(self.root, root.name)
-            self.tree.SetItemText(child, str(root.num), 1)
+            self.tree.SetItemText(child, str(root.month_num), 1)
+            self.tree.SetItemText(child, str(root.day_num), 2)
             self.tree.SetPyData(child, {'id':root.id})
             
             for ch in root.childs: 
                 c1 = self.tree.AppendItem(child, ch.name)
-                self.tree.SetItemText(c1, str(ch.num), 1)
+                self.tree.SetItemText(c1, str(ch.month_num), 1)
+                self.tree.SetItemText(c1, str(ch.day_num), 2)
                 self.tree.SetPyData(c1, {'id':ch.id})
                 for ch2 in ch.childs:
                     c2 = self.tree.AppendItem(c1, ch2.name)
-                    self.tree.SetItemText(c2, str(ch2.num), 1)
+                    self.tree.SetItemText(c2, str(ch2.month_num), 1)
+                    self.tree.SetItemText(c2, str(ch2.day_num), 2)
                     self.tree.SetPyData(c2, {'id':ch2.id})
  
         #self.tree.ExpandAll(self.root)
