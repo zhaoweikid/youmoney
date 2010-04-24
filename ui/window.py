@@ -759,10 +759,13 @@ class MainFrame (wx.Frame):
             data = dlg.values()
             pass1 = data['password1']
             pass2 = data['password2']
-            
-            if not pass1 or not pass2:
-                dlg.set_warn(_('Password must not null.'))
-                continue
+           
+            if not pass1 and not pass2:
+                dlg.set_warn(_('Delete password'))
+            else:
+                if not pass1 or not pass2:
+                    dlg.set_warn(_('Password must not null.'))
+                    continue
 
             if pass1 != pass2:
                 dlg.set_warn(_('Different password.'))

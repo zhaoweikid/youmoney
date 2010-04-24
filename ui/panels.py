@@ -30,6 +30,7 @@ class CategoryPanel (wx.Panel):
     def init(self):
         self.tree.AddColumn(_("Category"))
         self.tree.AddColumn(_("Month Total"))
+        self.tree.AddColumn(_("Day Total"))
 
         self.tree.SetMainColumn(0)
         self.tree.SetColumnWidth(0, 200)

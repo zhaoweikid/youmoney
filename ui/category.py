@@ -10,7 +10,9 @@ class TreeNode:
         self.id   = id
         self.childs = []
         self.count  = 0
-        self.num    = 0.0
+        #self.num    = 0.0
+        self.month_num    = 0.0
+        self.day_num = 0.0
 
     def add_child(self, child):
         self.childs.append(child)
@@ -32,11 +34,11 @@ class TreeNode:
 
     def echo(self):
         print '--------------------' 
-        print self.name, self.num
+        print self.name, self.month_num, self.day_num
         for ch in self.childs:
-            print '  '+ch.name, ch.num
+            print '  '+ch.name, ch.month_num, ch.day_month
             for ch2 in ch.childs:
-                print '    '+ch2.name, ch2.num
+                print '    '+ch2.name, ch2.month_num, ch2.day_month
         print '--------------------' 
 
 def treenode_find(treenode, name):
@@ -191,11 +193,11 @@ class Category:
             node = treenode_find(self.payout_tree, k)
             if node:
                 node.count = v[0]
-                node.num   = v[1]
+                node.month_num   = v[1]
                 if not node.childs:
                     total += v[1]
             #self.payout_tree.echo()
-        self.payout_tree.num = total
+        self.payout_tree.month_num = total
 
         #self.payout_tree.echo()
         
@@ -206,10 +208,10 @@ class Category:
             node = treenode_find(self.income_tree, k)
             if node:
                 node.count = v[0]
-                node.num   = v[1]
+                node.month_num   = v[1]
                 if not node.childs:
                     total += v[1]
-        self.income_tree.num = total
+        self.income_tree.month_num = total
         #self.income_tree.echo()
 
 
