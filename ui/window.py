@@ -483,7 +483,8 @@ class MainFrame (wx.Frame):
 
             if data['mode'] == 'insert':
                 try:
-                    cateid = self.category.income_catemap[cate]
+                    #cateid = self.category.income_catemap[cate]
+                    cateid = self.category.income_catemap[data['cate']]
                     tnow   = int(time.time())
                     num    = float(data['num'])
                     #payway = payways[data['pay']]
@@ -506,7 +507,8 @@ class MainFrame (wx.Frame):
                 #sql = "update capital set category=%d,num=%d,year=%d,month=%d,day=%d,explain='%s' where id=%d"
                 sql = "update capital set category=?,num=?,year=?,month=?,day=?,explain=? where id=?"
                 try:
-                    cateid = self.category.income_catemap[cate]
+                    #cateid = self.category.income_catemap[cate]
+                    cateid = self.category.income_catemap[data['cate']]
                     num    = float(data['num'])
                     year   = data['date'].GetYear()
                     month  = data['date'].GetMonth() + 1
@@ -552,7 +554,8 @@ class MainFrame (wx.Frame):
                 #sql = "insert into capital (category,num,ctime,year,month,day,payway,explain,type) values (%d,%f,%d,%d,%d,%d,%d,'%s',0)"
                 sql = "insert into capital (category,num,ctime,year,month,day,payway,explain,type) values (?,?,?,?,?,?,?,?,0)"
                 try:
-                    cateid = self.category.payout_catemap[cate]
+                    #cateid = self.category.payout_catemap[cate]
+                    cateid = self.category.payout_catemap[data['cate']]
                     tnow   = int(time.time())
                     num    = float(data['num'])
                     payway = payways[data['pay']]
@@ -574,7 +577,8 @@ class MainFrame (wx.Frame):
                 #sql = "update capital set category=%d,num=%d,year=%d,month=%d,day=%d,payway=%d,explain='%s' where id=%d"
                 sql = "update capital set category=?,num=?,year=?,month=?,day=?,payway=?,explain=? where id=?"
                 try:
-                    cateid = self.category.payout_catemap[cate]
+                    #cateid = self.category.payout_catemap[cate]
+                    cateid = self.category.payout_catemap[data['cate']]
                     num    = float(data['num'])
                     payway = payways[data['pay']]
                     year   = data['date'].GetYear()
@@ -628,9 +632,11 @@ class MainFrame (wx.Frame):
                 try:
                     typeid = catetypes[data['type']]
                     if data['type'] == _('Payout'):
-                        cateid = self.category.payout_catemap[cate]
+                        #cateid = self.category.payout_catemap[cate]
+                        cateid = self.category.payout_catemap[data['cate']]
                     else:
-                        cateid = self.category.income_catemap[cate]
+                        #cateid = self.category.income_catemap[cate]
+                        cateid = self.category.income_catemap[data['cate']]
                     tnow   = int(time.time())
                     num    = float(data['num'])
                     payway = payways[data['pay']]
@@ -655,9 +661,11 @@ class MainFrame (wx.Frame):
                 try:
                     typeid = catetypes[data['type']]
                     if data['type'] == _('Payout'):
-                        cateid = self.category.payout_catemap[cate]
+                        #cateid = self.category.payout_catemap[cate]
+                        cateid = self.category.payout_catemap[data['cate']]
                     else:
-                        cateid = self.category.income_catemap[cate]
+                        #cateid = self.category.income_catemap[cate]
+                        cateid = self.category.income_catemap[data['cate']]
  
                     num    = float(data['num'])
                     payway = payways[data['pay']]

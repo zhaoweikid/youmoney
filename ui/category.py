@@ -58,10 +58,19 @@ class Category:
     def __init__(self, caterec, rec):
         self.category_rec = caterec
         self.data_rec = rec
-        
+       
+
+        # parent and children map , [xx->xx: 1, xx2->xx2: 2...]
         self.payout_catemap = {}
         self.income_catemap = {}
         
+        # id: name
+        self.idmap = {}
+       
+        # parent id: parent name, all category 
+        self.payout_parent_catemap = {}
+        self.income_parent_catemap = {}
+        # cate's parent id, child id to parent id
         self.payout_parent = {}
         self.income_parent = {}
         
@@ -79,6 +88,8 @@ class Category:
 
         self.payout_tree = TreeNode(None, _('payout'), 0)
         self.income_tree = TreeNode(None, _('income'), 0)
+   
+        self.types = {0: 'payout', 1: 'income', 'payout': 'payout', 'income': 'income'}
 
         self.init()
 
@@ -88,20 +99,32 @@ class Category:
         tday = datetime.date.today()
         # 统计出分类映射表
         for row in self.category_rec:
+            self.idmap[row['id']] = row['name']
+
             if row['type'] == 0:
-                self.payout_catemap[row['name']] = row['id']
-                self.payout_catemap[row['id']]   = row['name']
+                #self.payout_catemap[row['name']] = row['id']
+                #self.payout_catemap[row['id']]   = row['name']
                 self.payout_parent[row['id']]    = row['parent']        
-                self.payout_parent[row['name']]  = row['parent']        
+                #self.payout_parent[row['name']]  = row['parent']        
 
-                cates[0][row['name']] = [0, 0, 0]
+                #cates[0][row['name']] = [0, 0, 0]
+
+                if row['parent'] == 0:
+                    self.payout_parent_catemap[row['id']]   = row['name']
+                    self.payout_parent_catemap[row['name']] = row['id']
+
             elif row['type'] == 1:
-                self.income_catemap[row['name']] = row['id']
-                self.income_catemap[row['id']]   = row['name']
+                #self.income_catemap[row['name']] = row['id']
+                #self.income_catemap[row['id']]   = row['name']
                 self.income_parent[row['id']]    = row['parent']        
-                self.income_parent[row['name']]  = row['parent']        
+                #self.income_parent[row['name']]  = row['parent']        
 
-                cates[1][row['name']]  = [0, 0, 0]
+                #cates[1][row['name']]  = [0, 0, 0]
+
+                if row['parent'] == 0:
+                    self.income_parent_catemap[row['id']]   = row['name']
+                    self.income_parent_catemap[row['name']] = row['id']
+
 
         #print 'payout_catemap:', self.payout_catemap
         #print 'income_catemap:', self.income_catemap
@@ -113,16 +136,26 @@ class Category:
             if row['type'] == 0:
                 if row['parent'] == 0: 
                     self.payout_catelist.append(row['name'])
+                    self.payout_catemap[row['name']] = row['id']
+                    self.payout_catemap[row['id']] = row['name']
 
                     self.payout_rela[row['name']] = set()
                     self.payout_tree.add_child(TreeNode(self.payout_tree, row['name'], row['id']))
 
                     self.payout_parentlist.append(row['name'])
+
+                    cates[0][row['name']] = [0, 0, 0]
                 else:
-                    parentstr = self.payout_catemap[row['parent']]
-                    self.payout_catelist.append('%s->%s' % (parentstr, row['name']))
+                    parentstr = self.payout_parent_catemap[row['parent']]
+                    s = '%s->%s' % (parentstr, row['name'])
+                    self.payout_catelist.append(s)
+                    self.payout_catemap[s] = row['id']
+                    self.payout_catemap[row['id']] = s
+
                     parentitem[0].add(parentstr)
                         
+                    cates[0][s] = [0, 0, 0]
+
                     self.payout_rela[parentstr].add(row['name'])
                     node = self.payout_tree.find(parentstr)
                     if node:
@@ -131,14 +164,23 @@ class Category:
             elif row['type'] == 1:
                 if row['parent'] == 0: 
                     self.income_catelist.append(row['name'])
-                    
+                    self.income_catemap[row['name']] = row['id']
+                    self.income_catemap[row['id']] = row['name']
+  
                     self.income_rela[row['name']] = set()
                     self.income_tree.add_child_name(row['name'], row['id'])
                     self.income_parentlist.append(row['name'])
+                    cates[1][row['name']]  = [0, 0, 0]
                 else:
-                    parentstr = self.income_catemap[row['parent']]
-                    self.income_catelist.append('%s->%s' % (parentstr, row['name']))
+                    parentstr = self.income_parent_catemap[row['parent']]
+                    s = '%s->%s' % (parentstr, row['name'])
+                    self.income_catelist.append(s)
+                    self.income_catemap[s] = row['id']
+                    self.income_catemap[row['id']] = s
+
                     parentitem[1].add(parentstr)
+
+                    cates[1][s]  = [0, 0, 0]
 
                     self.income_rela[parentstr].add(row['name'])
                     node = self.income_tree.find(parentstr)
@@ -158,11 +200,11 @@ class Category:
         #print 'data:', self.data_rec
         #pprint.pprint(self.payout_rela)
         for row in self.data_rec:
-            cate = row['category']
+            cateid = row['category']
             if row['type'] == 0:
-                catestr = self.payout_catemap[cate]
+                catestr = self.payout_catemap[cateid]
             else:
-                catestr = self.income_catemap[cate]
+                catestr = self.income_catemap[cateid]
             #print 'catestr:', catestr
             x = cates[row['type']][catestr] 
             x[0] += 1
@@ -173,11 +215,13 @@ class Category:
         #pprint.pprint(cates)
 
         for k in cates[0]: 
-            p = self.payout_parent[k]
+            pos = k.find('->')
+            #p = self.payout_parent[k]
             #print 'parent:', k, p
-            if p > 0:
+            if pos > 0:
+                p = k[:pos]
                 v1 = cates[0][k]
-                vv = cates[0][self.payout_catemap[p]]
+                vv = cates[0][p]
                 vv[0] += v1[0]
                 vv[1] += v1[1]
                 vv[2] += v1[2]
@@ -185,10 +229,12 @@ class Category:
         #pprint.pprint(cates)
 
         for k in cates[1]: 
-            p = self.income_parent[k]
-            if p > 0:
+            pos = k.find('->')
+            #p = self.income_parent[k]
+            if pos > 0:
+                p = k[:pos]
                 v1 = cates[1][k]
-                vv = cates[1][self.income_catemap[p]]
+                vv = cates[1][p]
                 vv[0] += v1[0]
                 vv[1] += v1[1]
                 vv[2] += v1[2]
@@ -232,6 +278,7 @@ class Category:
 
 
     def catelist(self, ctype=None):
+        '''所有类别的列表, 每项为 parent->child'''
         if ctype is None:
             return {_('Payout'):self.payout_catelist, _('Income'):self.income_catelist}
         elif ctype == 'payout' or ctype == 0:
@@ -239,99 +286,67 @@ class Category:
         elif ctype == 'income' or ctype == 1:
             return self.income_catelist
         return None
-
-
    
     def catelist_parent(self):
+        '''所有一级类别列表'''
         return {_('Payout'):self.payout_parentlist, _('Income'):self.income_parentlist}
 
-    def parentcate(self, catype):
-        if type(catype) == types.IntType:
-            if catype == 0:
-                castr = 'payout'
-            else:
-                castr = 'income'
-
+    
     def parent_cate_id(self, catype, name):
-        if type(catype) == types.IntType:
-            if catype == 0:
-                castr = 'payout'
-            else:
-                castr = 'income'
-        else:
-            castr = catype
-            
+        '''查询某项类别的父类id'''
+        castr = self.types[catype]
         parent_dict  = getattr(self, castr + '_parent')
+
+        if type(name) != types.IntType:
+            catemap_dict  = getattr(self, castr + '_catemap')
+            return parent_dict[catemap_dict[name]]
         return parent_dict[name]
 
 
     def parent_cate_name(self, catype, name):
-        if type(catype) == types.IntType:
-            if catype == 0:
-                castr = 'payout'
-            else:
-                castr = 'income'
-        else:
-            castr = catype
-            
+        '''查询某项类别的父类名'''
+        castr = self.types[catype]
         parent_dict  = getattr(self, castr + '_parent')
         catemap_dict = getattr(self, castr + '_catemap')
+ 
+        if type(name) != types.IntType:
+            cid = parent_dict[catemap_dict[name]]
+        else:
+            cid = name
          
-        p = parent_dict[name]
-        if not p:
+        p = parent_dict[cid]
+        if p == 0:
             return ''
         else:
             return catemap_dict[p]
 
-    def catestr_by_id(self, catype, name):
-        if type(catype) == types.IntType:
-            if catype == 0:
-                castr = 'payout'
-            else:
-                castr = 'income'
-        else:
-            castr = catype
-
-        parent_dict  = getattr(self, castr + '_parent')
+    def catestr_by_id(self, catype, cid):
+        '''根据id查询名字，名字形式为 parent->child'''
+        castr = self.types[catype]
         catemap_dict = getattr(self, castr + '_catemap')
-        
-        p = parent_dict[name]
-        if p == 0:
-            return catemap_dict[name]
-        else:
-            return catemap_dict[p] + '->' + catemap_dict[name] 
-    
+        return catemap_dict[cid]
+
     def catemap(self, catype, name):
-        if type(catype) == types.IntType:
-            if catype == 0:
-                castr = 'payout'
-            else:
-                castr = 'income'
-        else:
-            castr = catype
- 
+        '''根据id或parent->child互查'''
+        castr = self.types[catype]
         catemap_dict = getattr(self, castr + '_catemap')
         return catemap_dict[name]
-        
 
-    def cate_subs(self, catype, name):
-        if type(catype) == types.IntType:
-            if catype == 0:
-                castr = 'payout'
-            else:
-                castr = 'income'
-        else:
-            castr = catype
+    def catemap_by_id(self, catype, cid):
+        return catestr_by_id(catype, cid)
+
+    def cate_subs_id(self, catype, name):
+        castr = self.types[catype]
         catemap_dict = getattr(self, castr + '_catemap')
         if type(name) == types.IntType:
-            namestr = catemap_dict[name]
+            namestr = self.idmap[name]
         else:
             namestr = name
         rela_dict  = getattr(self, castr + '_rela')
         ret = rela_dict[namestr]
 
         if ret:
-            return [ catemap_dict[k] for k in ret ]
+            return [ catemap_dict[namestr + '->' + k] for k in ret ]
         return [catemap_dict[namestr]]
 
 
