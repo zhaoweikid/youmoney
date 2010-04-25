@@ -5,6 +5,7 @@ import pprint
 import wx
 import wx.lib.sized_controls as sc
 import wx.gizmos as gizmos
+import wx.lib.mixins.listctrl as listmix
 import logfile, statpanel, storage
 
 class CategoryPanel (wx.Panel):
@@ -187,7 +188,7 @@ class CategoryPanel (wx.Panel):
     def OnItemSelected(self, event):
         self.currentItem = event.GetItem()
 
-class ItemListPanel (wx.Panel):
+class ItemListPanel (wx.Panel, listmix.ColumnSorterMixin):
     type = "payout"
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, -1, style=0)
@@ -221,9 +222,13 @@ class ItemListPanel (wx.Panel):
         self.Bind(wx.EVT_COMBOBOX, self.OnChooseMonth, self.month)
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnItemActivated, self.list)
         self.Bind(wx.EVT_LIST_ITEM_SELECTED, self.OnItemSelected, self.list)
+        self.Bind(wx.EVT_LIST_COL_CLICK, self.OnColClick, self.list)
         self.Bind(wx.EVT_CONTEXT_MENU, self.OnPopupMenu) 
         #self.init()
+        self.itemDataMap = {}
         self.load()
+
+        listmix.ColumnSorterMixin.__init__(self, self.list.GetColumnCount())
    
     def OnPopupMenu(self, event):
         if not hasattr(self, "ID_POPUP_DEL"):
@@ -243,6 +248,7 @@ class ItemListPanel (wx.Panel):
         self.list.InsertColumn(0, _("Date:"))
         self.list.SetColumnWidth(0, 100)
         self.list.InsertColumn(1, _("Category"))
+        self.list.SetColumnWidth(1, 150)
         self.list.InsertColumn(2, _("Money"))
         if self.type == 'payout':
             self.list.InsertColumn(3, _("Payment"))
@@ -284,19 +290,26 @@ class ItemListPanel (wx.Panel):
                 cyclestr = ''
                 if row['cycle'] > 0:
                     cyclestr = _('Yes')
+
                 if self.type == 'payout':
                     self.list.SetStringItem(item, 3, payway)
                     self.list.SetStringItem(item, 4, cyclestr)
                     self.list.SetStringItem(item, 5, row['explain'])
+
+                    self.itemDataMap[row['id']] = [mytime, cate, str(row['num']), payway, cyclestr.encode('utf-8'), row['explain']]
                 else:
                     self.list.SetStringItem(item, 3, cyclestr)
                     self.list.SetStringItem(item, 4, row['explain'])
+
+                    self.itemDataMap[row['id']] = [mytime, cate, str(row['num']), cyclestr.encode('utf-8'), row['explain']]
+
                 numall += row['num']
             self.total.SetValue(str(numall))
         else:
             self.total.SetValue('0')
 
-       
+    def GetListCtrl(self):
+        return self.list
 
     def OnChooseYear(self, event):
         self.load()
@@ -351,6 +364,10 @@ class ItemListPanel (wx.Panel):
         self.currentItem = event.m_itemIndex
         event.Skip()
 
+    def OnColClick(self, event):
+        col = event.GetColumn()
+        event.Skip()
+
 
 class PayoutListPanel (ItemListPanel):
     type = "payout"
@@ -392,7 +409,9 @@ class CycleListPanel (wx.Panel):
 
     def init(self):
         self.list.InsertColumn(0, _("Type"))
+        self.list.SetColumnWidth(0, 50)
         self.list.InsertColumn(1, _("Category"))
+        self.list.SetColumnWidth(1, 150)
         self.list.InsertColumn(2, _("Money"))
             
         self.list.InsertColumn(3, _("Payment"))

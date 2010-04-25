@@ -24,8 +24,8 @@ elif sys.platform.startswith('win32'):
     from distutils.core import setup
     includes = ['encodings', 'encodings.*', 'gettext', 'glob', 
             'wx.lib.sized_controls', 'wx.gizmos', 'wx.html',
-            'wx.lib.wordwrap', 'wx.lib.hyperlink', 'wx.lib.newevent',
-            'sqlite3', 'shutil', 'pprint', 'md5', 'urllib',
+            'wx.lib.wordwrap', 'wx.lib.hyperlink', 'wx.lib.newevent', 'wx.lib.mixins.listctrl', 
+            'sqlite3', 'shutil', 'pprint', 'md5', 'urllib', 'uuid',
             'urllib2', 'httplib', 'csv']
     options  = {'py2exe': {
                 'compressed': 0,

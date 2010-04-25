@@ -213,6 +213,13 @@ class Category:
                 x[2] += row['num']
 
         #pprint.pprint(cates)
+        #for kk in cates:
+        #    keys = kk.keys()
+        #    keys.sort()
+        #    for kk1 in keys:
+        #        print kk1, kk[kk1]
+        #    print
+        #print '-' * 30
 
         for k in cates[0]: 
             pos = k.find('->')
@@ -227,6 +234,14 @@ class Category:
                 vv[2] += v1[2]
 
         #pprint.pprint(cates)
+        #for kk in cates:
+        #    keys = kk.keys()
+        #    keys.sort()
+        #    for kk1 in keys:
+        #        print kk1, kk[kk1]
+        #    print
+        #print '-' * 30
+
 
         for k in cates[1]: 
             pos = k.find('->')
@@ -245,7 +260,8 @@ class Category:
         dtotal = 0
         for k in cates[0]:
             v = cates[0][k]
-            node = treenode_find(self.payout_tree, k)
+            kn = k.split('->')[-1]
+            node = treenode_find(self.payout_tree, kn)
             if node:
                 node.count = v[0]
                 node.month_num = v[1]
@@ -264,7 +280,8 @@ class Category:
         for k in cates[1]:
             node = None
             v = cates[1][k]
-            node = treenode_find(self.income_tree, k)
+            kn = k.split('->')[-1]
+            node = treenode_find(self.income_tree, kn)
             if node:
                 node.count = v[0]
                 node.month_num = v[1]
