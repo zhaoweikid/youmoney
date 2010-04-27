@@ -99,6 +99,8 @@ class Downloader:
                     return
         except Exception, e:
             logfile.info(traceback.format_exc()) 
+            f.close()
+            raise
 
         f.close()
 
@@ -131,6 +133,8 @@ class Updater:
 
         if not os.path.isdir(self.tmpdir):
             os.mkdir(self.tmpdir)
+
+        self.rm_auto_backup() 
 
         self.info = {}
         self.error_info = '' 
@@ -211,7 +215,7 @@ class Updater:
         logfile.info('try download %s' % fileurl)
         logfile.info('save:', filepath)
         
-        count = 3
+        count = 9
         while count > 0: 
             try:
                 dw = Downloader(fileurl, filepath, self.callback)
@@ -280,8 +284,14 @@ class Updater:
         allfiles = []
         
         for topdir in os.listdir(self.home):
-            if topdir in ['.hg', 'tmp'] or topdir.endswith(('.swp', '.log')) or topdir.find('.backup.') > 0:
+            if topdir in ['.hg', 'tmp'] or topdir.endswith(('.swp', '.log')):
                 continue
+
+            if topdir.find('.backup.') > 0:
+                try:
+                    os.remove(topdir)
+                except:
+                    continue
             toppath = os.path.join(self.home, topdir)
             if os.path.isdir(toppath):
                 for root,dirs,files in os.walk(toppath):
@@ -391,6 +401,16 @@ class Updater:
                 except:
                     logfile.info(traceback.format_exc())
                 logfile.info('rollback file:', fpath, dstpath)
+
+    def rm_auto_backup(self):
+        files = os.listdir(self.home)
+        for fname in files:
+            if fname.find('.backup.') > 0:
+                filename = os.path.join(self.home, fname)
+                try:
+                    os.remove(filename)
+                except:
+                    pass
 
 
 class UpdaterApp (wx.App):
