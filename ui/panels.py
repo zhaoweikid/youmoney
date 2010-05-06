@@ -54,7 +54,7 @@ class CategoryPanel (wx.Panel):
         self.tree.SetItemText(self.root, "1", 1)
         self.tree.SetPyData(self.root, None)
 
-        for root in [cate.payout_tree, cate.income_tree]:
+        for root in [cate.payout_tree, cate.income_tree, cate.surplus_tree]:
             child = self.tree.AppendItem(self.root, root.name)
             self.tree.SetItemText(child, str(root.month_num), 1)
             self.tree.SetItemText(child, str(root.day_num), 2)

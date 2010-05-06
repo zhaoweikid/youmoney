@@ -88,6 +88,7 @@ class Category:
 
         self.payout_tree = TreeNode(None, _('payout'), 0)
         self.income_tree = TreeNode(None, _('income'), 0)
+        self.surplus_tree = TreeNode(None, _('surplus'), 0)
    
         self.types = {0: 'payout', 1: 'income', 'payout': 'payout', 'income': 'income'}
 
@@ -292,6 +293,8 @@ class Category:
         self.income_tree.month_num = mtotal
         self.income_tree.day_num = dtotal
         #self.income_tree.echo()
+
+        self.surplus_tree.month_num = self.income_tree.month_num - self.payout_tree.month_num
 
 
     def catelist(self, ctype=None):
