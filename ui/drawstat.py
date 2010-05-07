@@ -134,9 +134,10 @@ class CharDrawer (wx.Panel, ScaledBufferMixin):
         dc.SetBackground(wx.Brush("#ffffff"))
         dc.Clear()
 
-    def draw_pie(self, data):
+    def draw_pie(self, data, surplus):
         self.bgcolor    = '#ffffff'
         self.data = data
+        self.surplus = surplus
         self.hspacing = 100
         self.vspacing = 40
 
@@ -267,6 +268,8 @@ class CharDrawer (wx.Panel, ScaledBufferMixin):
         
         total = sum([ k['data'] for k in mydata ])
         dc.DrawText(_('Sum: ') + str(total) ,xstart, ystart)
+        dc.DrawText(_('Surplus: ') + str(self.surplus) ,xstart+100, ystart)
+
         ystart += 20
 
         for i in range(0, len(mydata)):
@@ -281,7 +284,12 @@ class CharDrawer (wx.Panel, ScaledBufferMixin):
     def draw_bar(self, data):
         self.bgcolor    = '#ffffff'
         self.linecolor  = '#eeeeee'
-        self.barcolor   = '#358e35'
+        self.barcolor   = ['#8d210c', '#1a6f9b', '#358335']
+        self._barcolor  = []
+            
+        for x in self.barcolor:
+            self._barcolor.append([int(x[1:3], 16), int(x[3:5], 16), int(x[5:7], 16)])
+
         self.spacing    = 25
         
         self.data = data
@@ -296,12 +304,15 @@ class CharDrawer (wx.Panel, ScaledBufferMixin):
             return
  
         maxval = 0
-        vals = []
-        for item in self.data:
-            val = item['data']
-            vals.append(val)
+        for item in self.data[0]:
+            val = item[1]
             if val > maxval:
                 maxval = val
+        for item in self.data[1]:
+            val = item[1]
+            if val > maxval:
+                maxval = val
+ 
         maxy = (maxval / 10 + 1) * 10
            
         f = wx.Font(self.fontsize, wx.FONTFAMILY_SWISS , wx.NORMAL, wx.NORMAL)
@@ -318,7 +329,7 @@ class CharDrawer (wx.Panel, ScaledBufferMixin):
         width  = size.width
         height = size.height
 
-        xcount = len(self.data)
+        xcount = len(self.data[0])
         ycount = 10
         xbsize = (width  - 2 * self.spacing - labelspacing) / xcount
         ybsize = (height - 2 * self.spacing - vspacing) / ycount
@@ -335,7 +346,22 @@ class CharDrawer (wx.Panel, ScaledBufferMixin):
         # x 
         dc.DrawLine(leftspacing, height - topspacing, leftspacing + xbsize * xcount, height - topspacing)
         
-        dc.DrawText(_('Time'), width/2 - 30, height - self.spacing)
+        cy = height - self.spacing + 5
+        #dc.DrawText(_('Time'), width/2 - 30, height - self.spacing)
+        dc.DrawText(_('Time'), width/2 - 30, cy)
+        cx = width/2 - 30 + 100
+
+        ctext = [_('Income'), _('Payout'), _('Surplus')]
+        for i in range(0, len(self.data)):
+            penclr   = wx.Colour(self._barcolor[i][0], self._barcolor[i][1], 
+                                 self._barcolor[i][2], wx.ALPHA_OPAQUE)
+            dc.SetPen(wx.Pen(penclr))
+            dc.SetBrush(wx.Brush(self.barcolor[i]))
+ 
+            dc.DrawText(ctext[i], cx, cy)
+            dc.DrawRectangle(cx + 30, cy, 30, 15)
+            cx += 80
+            
         ypos = height/2 - 30
         ystr = _('Money')
         for x in ystr:
@@ -347,47 +373,206 @@ class CharDrawer (wx.Panel, ScaledBufferMixin):
         for i in range(1, ycount+1):
             y = (height-topspacing) - i*ybsize 
             dc.DrawLine(leftspacing, y, leftspacing-5, y)
-            dc.DrawText(str(i*ybval), leftspacing-45, y-3)
+            dc.DrawText(str(int(i*ybval)), leftspacing-45, y-3)
 
         for i in range(1, xcount+1):
             x = leftspacing + i*xbsize 
-            text = self.data[i-1]['name']
+            #text = self.data[i-1]['name']
+            text = self.data[0][i-1][0]
             if len(text) == 6:
                 text1 = text[:4]
                 text2 = text[4:]
             else:
                 text1 = ''
                 text2 = text
-
             dc.DrawLine(x, height-topspacing, x, height-topspacing+5)
             #dc.DrawText(str(i), x-5, height-topspacing + 5)
             dc.DrawText(text2, x-12, height-topspacing + 5)
             dc.DrawText(text1, x-self.fontsize*3, height-topspacing + 5 + self.fontsize + 5)
          
         # draw data
-        penclr   = wx.Colour(int(self.barcolor[1:3], 16), int(self.barcolor[3:5], 16), 
-                             int(self.barcolor[5:7], 16), wx.ALPHA_OPAQUE)
+        valnum = []
+        for idx in range(0, len(self.data)):
+            item = self.data[idx]
+
+            penclr   = wx.Colour(self._barcolor[idx][0], self._barcolor[idx][1], 
+                                 self._barcolor[idx][2], wx.ALPHA_OPAQUE)
+            dc.SetPen(wx.Pen(penclr))
+            dc.SetBrush(wx.Brush(self.barcolor[idx]))
+ 
+            for i in range(0, len(item)):
+                #val = self.data[i]['data']
+                val = item[i][1]
+                if val < 0:
+                    val = 0
+                w = xbsize-cellspacing+1
+                x = leftspacing + i*xbsize + cellspacing
+                y = height - topspacing - (float(val)/maxy) * (ybsize*ycount)
+                h = height-topspacing-y+1
+ 
+                #dc.DrawRectangle(x, y, xbsize-cellspacing+1, height-spacing-y+1)
+                if w > 80:
+                    cha = w - 80
+                    x = x + cha
+                    w = 80
+
+                w1 = w / 3
+                x1 = x + w1 * idx
+                #dc.DrawRectangle(x, y, w, h)
+                dc.DrawRectangle(x1, y, w1, h)
+                #dc.DrawText(str(self.data[i]['data']), x, y - 20)
+                #dc.DrawText(str(item[i][1]), x, y - 20)
+                valnum.append([str(int(item[i][1])), x1, y - 20])
+                #dc.DrawText(str(item[i][1]), x1, y - 20)
+
+        for x in valnum:
+            dc.DrawText(x[0], x[1], x[2])
+
+
+    def draw_table(self, data):
+        self.bgcolor = '#ffffff'
+        self.margin_left  = 20
+        self.margin_top   = 40
+        self.lineheight = 50
+
+        self.cellpadding_top  = (self.lineheight - self.fontsize) / 2
+        #self.cellpadding_left = 0
+        
+        self.barcolor   = ['#8d210c', '#1a6f9b', '#358335']
+        self._barcolor  = []
+            
+        for x in self.barcolor:
+            self._barcolor.append([int(x[1:3], 16), int(x[3:5], 16), int(x[5:7], 16)])
+
+
+        self.data = data
+        self.draw = self._drawtable
+        self.redraw()
+
+    def _drawtable(self, dc, size):
+        dc.SetBackground(wx.Brush(self.bgcolor))
+        dc.Clear()
+        rect = self.GetClientRect()
+
+        f = wx.Font(self.fontsize, wx.FONTFAMILY_SWISS , wx.NORMAL, wx.NORMAL)
+        dc.SetFont(f)
+        # 说明            
+        x1 = self.margin_left
+        y1 = 20
+        text = [_('Income'), _('Payout'), _('Surplus')]
+        for i in range(0, len(text)):
+            penclr   = wx.Colour(self._barcolor[i][0], self._barcolor[i][1], 
+                                 self._barcolor[i][2], wx.ALPHA_OPAQUE)
+            dc.SetPen(wx.Pen(penclr))
+            dc.SetBrush(wx.Brush(self.barcolor[i]))
+            dc.SetTextForeground(penclr)
+ 
+            dc.DrawText(text[i], x1, y1)
+            dc.DrawRectangle(x1 + 30, y1, 30, 15)
+            x1 += 80
+ 
+        penclr   = wx.Colour(0, 0, 0, wx.ALPHA_OPAQUE)
         dc.SetPen(wx.Pen(penclr))
-        dc.SetBrush(wx.Brush(self.barcolor))
+        dc.SetBrush(wx.Brush(self.barcolor[i]))
+        dc.SetTextForeground(penclr)
+        
+        # 表格横线
+        x1 = self.margin_left
+        y1 = self.margin_top
+        x2 = rect.width - self.margin_left
+        y2 = y1
+
+        for i in range(0, len(self.data) + 1):
+            dc.DrawLine(x1, y1, x2, y2)
+            y1 += self.lineheight
+            y2 = y1
+        y1 = self.margin_top + self.lineheight * (len(self.data) + 1)
+        y2 = y1
+        dc.DrawLine(x1, y1, x2, y2)
+        
+        # 表格月分割的竖线
+        x1 = self.margin_left
+        y1 = self.margin_top
+        x2 = x1
+        y2 = self.margin_top + (len(self.data) + 1) * self.lineheight + 1
+        
+        colsize = (rect.width - self.margin_left*2) / 14
+        cellpadding_left = (colsize - 18) / 2
+        for i in range(0, 14):
+            dc.DrawLine(x1, y1, x2, y2)
+
+            if i > 0 and i < 13:
+                dc.DrawText(str(i) + u'月', x1 + cellpadding_left, y1 + self.cellpadding_top)
+
+            if i == 13:
+                dc.DrawText(u'总计', x1 + cellpadding_left, y1 + self.cellpadding_top)
+
+ 
+            x1 += colsize
+            x2 = x1
+
+        x1 = rect.width - self.margin_left
+        x2 = x1
+        dc.DrawLine(x1, y1, x2, y2)
+        
+        # 年的字
+        cellpadding_left = (colsize - 35) / 2
+        x1 = self.margin_left + cellpadding_left
+        y1 = self.margin_top + self.lineheight + self.cellpadding_top
+
         for i in range(0, len(self.data)):
-            val = self.data[i]['data']
-            if val < 0:
-                val = 0
-            x = leftspacing + i*xbsize + cellspacing
-            y = height - topspacing - (float(val)/maxy) * (ybsize*ycount)
-            w = xbsize-cellspacing+1
-            h = height-topspacing-y+1
-            #dc.DrawRectangle(x, y, xbsize-cellspacing+1, height-spacing-y+1)
-            if w > 80:
-                cha = w - 80
-                x = x + cha
-                w = 80
-            dc.DrawRectangle(x, y, w, h)
-            dc.DrawText(str(self.data[i]['data']), x, y - 20)
+            dc.DrawText(str(self.data[i][0]) + u'年', x1, y1)
+            y1 += self.lineheight
+
+        
+        cellpadding_left = 5
+        x1 = self.margin_left + colsize + cellpadding_left
+        y1 = self.margin_top + self.lineheight + 5
+        for row in self.data:
+            year = row[0]
+            item = row[1]
+            sums = row[2]
+
+            for monthdata in item:
+                m = monthdata[0]
+                vals = monthdata[1]
+                
+                x1 = self.margin_left + cellpadding_left + colsize * m
+
+                x2 = x1
+                y2 = y1 
+                
+                #for val in vals:
+                for i in range(0, len(vals)):
+                    val = vals[i]
+                    penclr   = wx.Colour(self._barcolor[i][0], self._barcolor[i][1], 
+                                         self._barcolor[i][2], wx.ALPHA_OPAQUE)
+                    dc.SetTextForeground(penclr)
+                
+                    dc.DrawText(str(val), x2, y2)
+                    y2 += 13
+
+
+                x1 += colsize
+            
+            x2 = self.margin_left + cellpadding_left + colsize * 13
+            y2 = y1
+            for i in range(0, len(sums)):
+                val = sums[i]
+                penclr   = wx.Colour(self._barcolor[i][0], self._barcolor[i][1], 
+                                     self._barcolor[i][2], wx.ALPHA_OPAQUE)
+                dc.SetTextForeground(penclr)
+                
+                dc.DrawText(str(val), x2, y2)
+                y2 += 13
+
+            y1 += self.lineheight
+
 
     def OnPaint(self, event):
         dc = wx.PaintDC(self)
         rect = self.GetClientRect()
+
         _ScaleBlit(self.buffer, dc, rect)
 
 

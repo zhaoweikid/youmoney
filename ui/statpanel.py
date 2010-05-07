@@ -1,7 +1,7 @@
 # coding: utf-8
 import os, sys
 import wx
-import  wx.html as  html
+import wx.html as  html
 import datetime
 import logfile
 import drawstat
@@ -37,7 +37,8 @@ class StatPanel (wx.Panel):
         
         box.Add(wx.StaticText(self, -1, _("   Type "), (8, 10)), 0, wx.ALIGN_CENTER)
         #items = [_('Payout and Income'), _('Payout'), _('Income')]
-        items = [_('Payout'), _('Income'), _('Surplus')]
+        #items = [_('Payout'), _('Income'), _('Surplus')]
+        items = [_('Payout'), _('Income')]
         self.default_type = items[0]
         self.type = wx.ComboBox(self, -1, items[0], (60, 50), (80, -1), items, wx.CB_DROPDOWN|wx.CB_READONLY)
         box.Add(self.type, 0, wx.EXPAND)
@@ -54,6 +55,8 @@ class StatPanel (wx.Panel):
         box.Add(self.catestat, 0, wx.EXPAND)
         self.monthstat = wx.Button(self, -1, _("Month Stat"), (20, 20)) 
         box.Add(self.monthstat, 0, wx.EXPAND)
+        self.tablestat = wx.Button(self, -1, _("Table Stat"), (20, 20)) 
+        box.Add(self.tablestat, 0, wx.EXPAND)
  
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(box, 0, wx.EXPAND|wx.ALL, border=2)
@@ -67,6 +70,7 @@ class StatPanel (wx.Panel):
             
         self.Bind(wx.EVT_BUTTON, self.OnCateStatClick, self.catestat)
         self.Bind(wx.EVT_BUTTON, self.OnMonthStatClick, self.monthstat)
+        self.Bind(wx.EVT_BUTTON, self.OnTableStatClick, self.tablestat)
         self.Bind(wx.EVT_COMBOBOX, self.OnChooseType, self.type) 
 
 
@@ -101,44 +105,45 @@ class StatPanel (wx.Panel):
             minmonth = frommonth
         
         endsql = ''
-        if mytype >= 0:
-            endsql += " and type=%d" % (mytype)
+        #if mytype >= 0:
+        #    endsql += " and type=%d" % (mytype)
 
         if cate != _('All Categories'):
             logfile.info("cate:", cate)
-            cates = frame.category.cate_subs(mytype, cate)
+            cates = frame.category.cate_subs_id(mytype, cate)
             logfile.info("cates:", cates)
             cates = map(str, cates)
             endsql += ' and category in (%s)' % (','.join(cates))
         #endsql += " order by year,month,day"
-
+        
+        prefixsql = 'select num,year,month,day,type,category from capital '
         #sql = "select num,year,month from capital where type=%d and year>=%s and year<=%s" % (mytype, fromyear, toyear)
         if qtype == 'category':
             if cate != _('All Categories'):
-                return None, None, None
+                return [], (), ()
 
             if fromyear == toyear and frommonth == tomonth:
                 #sql = "select num,year,month,day,type,category from capital where year>=%d and year<=%d and month>=%d and month<=%d and day>=%d and day<=%d %s" % (fromyear, toyear, minmonth, maxmonth, fromday, today, endsql)
-                sql = "select num,year,month,day,type,category from capital where year=%d and month=%d and day>=%d and day<=%d %s order by year,month,day" % (fromyear, frommonth, fromday, today, endsql)
+                sql = prefixsql + "where year=%d and month=%d and day>=%d and day<=%d %s order by year,month,day" % (fromyear, frommonth, fromday, today, endsql)
             else:
                 years = range(fromyear, toyear+1)
                 sqls = []
-                sql = "select num,year,month,day,type,category from capital where year=%d and month=%d and day>=%d %s" % (fromyear, frommonth, fromday, endsql)
+                sql = prefixsql + "where year=%d and month=%d and day>=%d %s" % (fromyear, frommonth, fromday, endsql)
                 sqls.append(sql)
                 
-                if len(years) <= 1:
-                    sql = "select num,year,month,day,type,category from capital where year>=%d and year<=%d and month>%d and month<%d %s" % (fromyear, toyear, minmonth, maxmonth, endsql)
+                if len(years) <= 1: # one year, multip month, entire months
+                    sql = prefixsql + "where year>=%d and year<=%d and month>%d and month<%d %s" % (fromyear, toyear, minmonth, maxmonth, endsql)
                     sqls.append(sql)
-                else:
-                    sql = "select num,year,month,day,type,category from capital where year=%d and month>%d  %s" % (fromyear, frommonth, endsql)
+                else: # multip year
+                    sql = prefixsql + "where year=%d and month>%d %s" % (fromyear, frommonth, endsql)
                     sqls.append(sql)
-                    sql = "select num,year,month,day,type,category from capital where year=%d and month<%d  %s" % (toyear, tomonth, endsql)
+                    sql = prefixsql + "where year=%d and month<%d %s" % (toyear, tomonth, endsql)
                     sqls.append(sql)
 
-                    sql = "select num,year,month,day,type,category from capital where year>=%d and year<=%d %s" % (fromyear, toyear, endsql)
+                    sql = prefixsql + "where year>%d and year<%d %s" % (fromyear, toyear, endsql)
                     sqls.append(sql)
                      
-                sql = "select num,year,month,day,type,category from capital where year=%d and month=%d and day<=%d %s" % (toyear, tomonth, today, endsql)
+                sql = prefixsql + "where year=%d and month=%d and day<=%d %s" % (toyear, tomonth, today, endsql)
                 sqls.append(sql)
 
                 sql = ' union '.join(sqls) + ' order by year,month,day'
@@ -163,20 +168,36 @@ class StatPanel (wx.Panel):
 
         logfile.info('stat:', sql)
         rets = frame.db.query(sql)
-        
+        if not rets:
+            rets = []
         return rets, (fromyear, frommonth), (toyear, tomonth)
 
     def OnCateStatClick(self, event):
         type  = self.type.GetValue()
         
-        if type == _('Surplus'):
+        if type == _('Payout'):
+            mytype = 0
+        elif type == _('Income'):
+            mytype = 1
+        else:
+            mytype = -1
+ 
+        if mytype == -1:
             rets = []
         else:
             frame = self.parent.parent
             rets, fromdate, todate = self.query_input('category')
-
+        surplus_val = 0
         catevals = {}
         for row in rets:
+            if row['type'] == 1:
+                surplus_val += row['num']
+            else:
+                surplus_val -= row['num']
+
+            if row['type'] != mytype:
+                continue
+
             cate = row['category'] 
             pcate = frame.category.parent_cate_name(row['type'], cate) 
             if not pcate:
@@ -191,14 +212,61 @@ class StatPanel (wx.Panel):
         for k in catevals:
             data.append({'data':catevals[k], 'name':k})
             
-        self.content.draw_pie(data)
+        self.content.draw_pie(data, surplus_val)
 
     def OnMonthStatClick(self, event):
+        data = self.statdata()
+        self.content.draw_bar(data)
+
+    def OnTableStatClick(self, event):
+        cate = self.category.GetValue()
+        issubcate = False
+        if cate != _('All Categories'):
+            issubcate = True
+
+        vals = self.statdata()
+        
+        # [[year, [month, [income_vals, payout_vals, surplus_vals]]], ]
+        data = []
+        lastyear = 0
+        sums = None
+        for i in range(0, len(vals[0])):
+            k = vals[0][i][0]
+            year  = k[:4]
+            month = k[4:]
+
+            inc = int(vals[0][i][1])
+            pay = int(vals[1][i][1])
+            if not issubcate:
+                sur = int(vals[2][i][1])
+            else:
+                sur = 0
+ 
+            if year == lastyear:
+                data[-1][1].append([int(month), [inc, pay, sur]])
+                sums[0] += inc
+                sums[1] += pay
+                sums[2] += sur
+            else:
+                sums = [inc, pay, sur]
+                data.append([int(year), [[int(month), [inc, pay, sur]]], sums])
+            lastyear = year
+
+        #pprint.pprint(data)
+        self.content.draw_table(data)
+
+    def statdata(self):
+        cate = self.category.GetValue()
+        issubcate = False
+        if cate != _('All Categories'):
+            issubcate = True
+
         type  = self.type.GetValue()
         frame = self.parent.parent
         rets, fromdate, todate = self.query_input('month')
-
-        vals = {}
+        
+        # payout vals, income vals, surplus vals
+        vals = [{}, {}, {}]
         keys = []
         for ye in range(fromdate[0], todate[0]+1):
             if ye == fromdate[0]:
@@ -212,25 +280,28 @@ class StatPanel (wx.Panel):
             for mo in range(bm, em+1):
                 k = '%d%02d' % (ye, mo)
                 keys.append(k)
-                vals[k] = 0
-        if type == _('Surplus'):
-            for row in rets:
-                key = '%d%02d' % (row['year'], row['month'])
-                if row['type'] == 0:
-                    vals[key] -= row['num']
-                else:
-                    vals[key] += row['num']
+                vals[0][k] = 0
+                vals[1][k] = 0
+                vals[2][k] = 0
+       
+        for row in rets:
+            key = '%d%02d' % (row['year'], row['month'])
+            vals[row['type']][key] += row['num']
+        
+        if not issubcate:
+            for k in vals[2]:
+                vals[2][k] = vals[1][k] - vals[0][k]
 
-        else:
-            for row in rets:
-                key = '%d%02d' % (row['year'], row['month'])
-                vals[key] += row['num']
+        data = [[], [], []]
+        for i in range(0, len(data)):
+            for k in keys:
+                data[i].append([k, vals[i][k]])
 
-        data = []
-        for k in keys:
-            data.append({'data':int(vals[k]), 'name':k})
-            
-        self.content.draw_bar(data)
+        swap = data[0]
+        data[0] = data[1]
+        data[1] = swap
+        
+        return data
 
     def OnChooseType(self, event):
         val = self.type.GetValue()

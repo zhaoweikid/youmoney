@@ -193,6 +193,7 @@ class ItemListPanel (wx.Panel, listmix.ColumnSorterMixin):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, -1, style=0)
         self.parent = parent
+        self.db = self.parent.parent.db
 
         box = wx.BoxSizer(wx.HORIZONTAL)
         tday = datetime.date.today()
@@ -206,8 +207,13 @@ class ItemListPanel (wx.Panel, listmix.ColumnSorterMixin):
         box.Add(self.month, 0, wx.EXPAND)
         box.Add(wx.StaticText(self, -1, _(" Month:"), (8, 10)), 0, wx.ALIGN_CENTER)
         box.Add(wx.StaticText(self, -1, _("  Sum: "), (8, 10)), 0, wx.ALIGN_CENTER)
-        self.total = wx.TextCtrl(self, -1, size=(100,-1), style=wx.TE_READONLY)
+        #self.total = wx.TextCtrl(self, -1, size=(100,-1), style=wx.TE_READONLY)
+        self.total = wx.StaticText(self, -1, "", (8, 10))
         box.Add(self.total, 0, wx.ALIGN_CENTER)
+
+        box.Add(wx.StaticText(self, -1, _("  Surplus: "), (8, 10)), 0, wx.ALIGN_CENTER)
+        self.surplus = wx.StaticText(self, -1, "", (8, 10))
+        box.Add(self.surplus, 0, wx.ALIGN_CENTER)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(box, 0, wx.EXPAND|wx.ALL, border=2)
@@ -269,14 +275,16 @@ class ItemListPanel (wx.Panel, listmix.ColumnSorterMixin):
 
         if self.type == 'payout':
             mytype = 0
+            othertype = 1
         else:
             mytype = 1
+            othertype = 0
 
         sql = "select * from capital where year=%s and month=%s and type=%d order by day,id" % (year, month, mytype)
         logfile.info(sql)
         rets = self.parent.parent.db.query(sql)
+        numall = 0
         if rets:
-            numall = 0
             for row in rets:
                 mytime = '%d-%02d-%02d' % (row['year'], row['month'], row['day'])
                 item = self.list.InsertStringItem(0, mytime)
@@ -304,10 +312,22 @@ class ItemListPanel (wx.Panel, listmix.ColumnSorterMixin):
                     self.itemDataMap[row['id']] = [mytime, cate, str(row['num']), cyclestr.encode('utf-8'), row['explain']]
 
                 numall += row['num']
-            self.total.SetValue(str(numall))
+            #self.total.SetValue(str(numall))
+            self.total.SetLabel(str(numall))
         else:
-            self.total.SetValue('0')
+            #self.total.SetValue('0')
+            self.total.SetLabel('0')
 
+        sql = "select sum(num) as num from capital where year=%s and month=%s and type=%s" % (year, month, othertype)
+        rets = self.db.query(sql)
+        if rets:
+            val = rets[0]['num']
+            if mytype == 0: # payout
+                self.surplus.SetLabel(str(val-numall))
+            else:
+                self.surplus.SetLabel(str(numall-val))
+                
+            
     def GetListCtrl(self):
         return self.list
 
@@ -317,7 +337,6 @@ class ItemListPanel (wx.Panel, listmix.ColumnSorterMixin):
     def OnChooseMonth(self, event):
         self.load()
 
-    
     def OnItemActivated(self, event):
         try:
             currentItem = event.m_itemIndex
