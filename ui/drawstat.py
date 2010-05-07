@@ -426,7 +426,8 @@ class CharDrawer (wx.Panel, ScaledBufferMixin):
                 #dc.DrawText(str(item[i][1]), x1, y - 20)
 
         for x in valnum:
-            dc.DrawText(x[0], x[1], x[2])
+            if x[0] != '0':
+                dc.DrawText(x[0], x[1], x[2])
 
 
     def draw_table(self, data):
