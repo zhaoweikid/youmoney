@@ -322,6 +322,8 @@ class ItemListPanel (wx.Panel, listmix.ColumnSorterMixin):
         rets = self.db.query(sql)
         if rets:
             val = rets[0]['num']
+            if not val:
+                val = 0
             if mytype == 0: # payout
                 self.surplus.SetLabel(str(val-numall))
             else:
