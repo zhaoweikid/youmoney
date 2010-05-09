@@ -193,7 +193,6 @@ class ItemListPanel (wx.Panel, listmix.ColumnSorterMixin):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, -1, style=0)
         self.parent = parent
-        self.db = self.parent.parent.db
 
         box = wx.BoxSizer(wx.HORIZONTAL)
         tday = datetime.date.today()
@@ -319,7 +318,7 @@ class ItemListPanel (wx.Panel, listmix.ColumnSorterMixin):
             self.total.SetLabel('0')
 
         sql = "select sum(num) as num from capital where year=%s and month=%s and type=%s" % (year, month, othertype)
-        rets = self.db.query(sql)
+        rets = self.parent.parent.db.query(sql)
         if rets:
             val = rets[0]['num']
             if not val:
