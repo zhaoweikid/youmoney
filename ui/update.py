@@ -23,6 +23,19 @@ def windows_version():
 
     return winver
 
+def system_version():
+    try:
+        if sys.platform == 'darwin':
+            x = platform.mac_ver()
+            info = '%s (Mac OS X %s)' % (platform.platform(), x[0])
+        elif sys.platform == 'win32':
+            info = windows_version()
+        else:
+            info = platform.platform()
+    except:
+        info = platform.platform()
+    return info
+
 class Update:
     def __init__(self):
         self.updatefile = ['http://www.pythonid.com/youmoney/update.php', 
@@ -42,18 +55,7 @@ class Update:
         for u in self.updatefile:
             try:
                 logfile.info('try update file:', u)
-                info = ''
-                try:
-                    if sys.platform == 'darwin':
-                        x = platform.mac_ver()
-                        info = '%s (Mac OS X %s)' % (platform.platform(), x[0])
-                    elif sys.platform == 'win32':
-                        info = windows_version()
-                    else:
-                        info = platform.platform()
-                except:
-                    logfile.info(traceback.format_exc())
-                
+                info = system_version()
                 logfile.info('version:', info) 
                 info = urllib.quote(info).strip()
                 u = u + '?sys=%s&ver=%s&info=%s&name=%s' % (sys.platform, version.VERSION, info, storage.name)

@@ -6,7 +6,7 @@
 # 感谢 Jacky MA <jackyma1981@gmail.com> 制作的日文支持
 
 import os, sys
-import threading
+import threading, urllib, urllib2
 import wx
 import ui
 import traceback
@@ -93,13 +93,22 @@ def main():
     f = open(vername, 'w')
     f.write(version.VERSION)
     f.close()
-
+    
     th = task.Task()
     th.start()
  
-    app = YouMoney()
-    app.MainLoop()
-
+    try:
+        app = YouMoney()
+        app.MainLoop()
+    except:
+        s = traceback.format_exc()
+        print '-------------- report error ---------------'
+        data = urllib.urlencode({'user':str(ui.storage.name), 
+                                 'sys':ui.update.system_version(), 
+                                 'version':str(version.VERSION), 'info':s})
+        resp = urllib2.urlopen('http://youmoney.pythonid.com/report', data)  
+        logfile.info('report error:', resp.read())
+        raise
 
 if __name__ == '__main__':
     main()

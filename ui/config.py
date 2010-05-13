@@ -1,13 +1,16 @@
 # coding: utf-8
 import os, sys
 import locale, time, version
-import types, pprint
+import types, pprint, uuid
+import base64, pickle
+import rsa
 
 cf = None
 
 class Configure:
     def __init__(self, charset='utf-8'):
         self.rundir = os.path.dirname(os.path.abspath(sys.argv[0]))
+        self.home = self.rundir
         #print 'rundir:', self.rundir
         self.charset = charset
         self.locallang = locale.getdefaultlocale()[0] 
@@ -32,18 +35,25 @@ class Configure:
 
         self.conffile = os.path.join(self.confdir, "youmoney.conf") 
         self.conffile = unicode(self.conffile, self.localcharset)
+        # is new create db file
         self.iscreate = False
-        self.data = {}
+        # sync_way maybe 'user/id'
+        self.datadef = {'lastdb':'', 'lang':'', 'rsa_pub':'', 'rsa_private':'', 
+                     'id':'', 'user':'', 'password':'', 'sync_way':'id',
+                     'sync_ver':'', 'sync_auto': '', 'sync_md5':''}
+
+        self.data = None
         self.load()
 
     def load(self):
+        self.data = {}
+        self.data.update(self.datadef)
         try:
             f = open(self.conffile, 'r')
         except:
             self.iscreate = True
             self.data['lastdb'] = os.path.join(os.path.dirname(self.conffile), "youmoney.db")
             self.data['lang'] = self.locallang
-            #self.data['name'] = str(time.time()) + version.VERSION + sys.platform
             self.dump()
             return
         lines = f.readlines()
@@ -64,14 +74,23 @@ class Configure:
 
         if not os.path.isfile(self.data['lastdb']):
             self.iscreate = True
-        #if not self.data.has_key('name'):
-        #    self.data['name'] = str(time.time()) + version.VERSION + sys.platform
-        
+
+        if not self.data['rsa_pub'] or not self.data['rsa_private']:
+            keys = rsa.gen_pubpriv_keys(128)
+            self.data['rsa_pub'] = base64.b64encode(pickle.dumps(keys[0]))
+            self.data['rsa_private'] = base64.b64encode(pickle.dumps(keys[1]))
+
         self.dump()
+
+    def reload(self):
+        self.iscreate = False
+        self.load()
 
     def dump(self):
         f = open(self.conffile, 'w')
-        for k in self.data:
+        keys = self.data.keys()
+        keys.sort()
+        for k in keys:
             v = self.data[k]
             if type(v) == types.UnicodeType:
                 v = v.encode(self.charset)
@@ -89,6 +108,11 @@ class Configure:
         if self.data['lastdb'] == os.path.join(self.rundir, 'data', 'youmoney.db'):
             return True
         return False
+
+    def setid(self, idstr):
+        if idstr != self.data['id']:
+            self.data['id'] = idstr
+            self.dump()
 
     def __getitem__(self, k):
         return self.data[k]

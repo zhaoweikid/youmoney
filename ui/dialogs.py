@@ -476,4 +476,117 @@ class ImportDataDialog (sc.SizedDialog):
             self.filepath.SetValue(path)
         dlg.Destroy()
 
+class SyncDialog (sc.SizedDialog):
+    def __init__(self, parent, conf):
+        super(SyncDialog, self).__init__(None, -1, _('Sync User Data'), style=wx.DEFAULT_DIALOG_STYLE)
+        self.parent = parent
+        self.conf = conf
+
+        panel = self.GetContentsPane()
+        panel.SetSizerType("vertical")
+        
+        msg = [_('Sync will synchronous user data to server.'),
+               _('Then, user can use the same data everywhere.'),
+              # _('Data encrypted by rsa, only self can decrypt.')
+              ]
+
+        s = '\n'.join(msg)
+        wx.StaticText(panel, -1, s)
+        valuelist = [_('Not Sync'), _('Sync with configure file setting'), _('Sync with username and password')]
+        self.syncway = wx.RadioBox(panel, -1, _('Choose Sync Way'), wx.DefaultPosition, wx.DefaultSize, valuelist, 1, wx.RA_SPECIFY_COLS)
+        #self.sync = wx.CheckBox(panel, -1, _("Automatic sync data when start and quit"))
+        
+        self.info = wx.Panel(panel, -1)
+
+        self.create_info()
+
+        wx.StaticText(panel, -1, _('Click OK to start synchronous immediately.'))
+
+        self.select(self.conf['sync_way'])
+
+        self.Bind(wx.EVT_RADIOBOX, self.OnRadioBox, self.syncway)
+        self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
+        self.SetMinSize(wx.Size(400, 300))
+        self.Fit()
+
+    def select(self, choice):
+        if choice == '' or choice == 0:
+            self.syncway.SetSelection(0)
+            self.username.Disable()
+            self.password.Disable()
+            s = _('Not sync anything.') + '\n\n'
+            self.msg.SetLabel(s)
+        elif choice == 'id' or choice == 1:
+            self.syncway.SetSelection(1)
+            self.username.Disable()
+            self.password.Disable()
+        
+            msg = [_('This option have the best privacy and security. '), _('When use YouMoney in other computer, '), _('you must copy data/youmoney.conf to another.')]
+            s = '\n'.join(msg)
+            
+            self.msg.SetLabel(s)
+        else:
+            self.syncway.SetSelection(2)
+            self.username.Enable()
+            self.password.Enable()
+    
+            msg = [_('This option have the best conveniency. '), _('When use YouMoney in other computer, '), _('you must input username and password to sync user data.')]
+            s = '\n'.join(msg)
+ 
+            self.msg.SetLabel(s)
+
+ 
+    def value(self):
+        ret = self.syncway.GetSelection()
+        if ret == 1:
+            return 'id'
+        elif ret == 2:
+            return 'user'
+        return ''
+
+    def OnRadioBox(self, event):
+        self.select(event.GetInt())
+        return
+        idx = event.GetInt()
+        if idx <= 1:
+            chs = self.info.GetChildren()
+            for x in chs:
+                self.info.RemoveChild(x)
+            self.username.Disable()
+            self.password.Disable()
+        elif idx == 2:
+            chs = self.info.GetChildren()
+            for x in chs:
+                self.info.RemoveChild(x)
+            self.username.Enable()
+            self.password.Enable()
+       
+
+    def create_info(self):
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        self.msg = wx.StaticText(self.info, -1, '', style=wx.ALIGN_LEFT|wx.ST_NO_AUTORESIZE)
+        self.msg.Wrap(60)
+        sizer.Add(self.msg, 0, wx.ALIGN_LEFT|wx.ALL, 5)
+
+        box = wx.FlexGridSizer(0, 2, 0, 0)
+        label = wx.StaticText(self.info, -1, _("Username:"))
+        box.Add(label, 0, wx.ALIGN_CENTER|wx.ALL, 5)
+        self.username  = wx.TextCtrl(self.info, -1, self.conf['user'], size=(120, -1))
+        box.Add(self.username, 1, wx.ALIGN_CENTER|wx.ALL, 5)
+            
+        label = wx.StaticText(self.info, -1, _("Password:"))
+        box.Add(label, 0, wx.ALIGN_CENTER|wx.ALL, 5)
+        self.password  = wx.TextCtrl(self.info, -1, self.conf['password'], size=(120, -1))
+        box.Add(self.password, 1, wx.ALIGN_CENTER|wx.ALL, 5)
+
+        sizer.Add(box, 1, wx.ALIGN_LEFT|wx.ALIGN_TOP|wx.ALL, 5)
+          
+        self.info.SetSizer(sizer)
+
+
+
+
+
+
+
 
