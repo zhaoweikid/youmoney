@@ -904,32 +904,44 @@ class MainFrame (wx.Frame):
                 try:
                     datasync = sync.DataSync(self.conf)
                     status, resp = datasync.query()
-                    print 'status:', status, resp
-                    #if status == sync.DataSync.CONFLICT:
-                        #dlg2 = wx.MessageDialog(self, _('Your data modified in old version. Click YES to cancel modify and use the new version. No to use current data.'),
-                        #    _('Data Conflict'), wx.YES_NO | wx.NO_DEFAULT| wx.ICON_INFORMATION)
-                        #ret2 = dlg2.ShowModal()
-                        #if ret2 == wx.ID_YES:
-                        #    datasync.status = sync.DataSync.UPDATE
-                        #    print 'click yes'
-                        #elif ret2 == wx.ID_NO:
-                        #    datasync.status = sync.DataSync.COMMIT
-                        #    print 'click no'
-                        #dlg2.Destroy()
+                    logfile.info('status:', status, resp)
+                    if status == sync.DataSync.CONFLICT:
+                        dlg2 = wx.MessageDialog(self, _('Your data modified in old version. Click YES to cancel modify and use the new version. No to use current data.'),
+                            _('Data Conflict'), wx.YES_NO | wx.NO_DEFAULT| wx.ICON_INFORMATION)
+                        ret2 = dlg2.ShowModal()
+                        if ret2 == wx.ID_YES:
+                            datasync.status = sync.DataSync.UPDATE
+                        elif ret2 == wx.ID_NO:
+                            datasync.status = sync.DataSync.COMMIT
+                        dlg2.Destroy()
                     
-                    if status == sync.DataSync.UPDATE or status == sync.DataSync.ADD or \
-                       status == sync.DataSync.COMMIT:
+                    if datasync.status == sync.DataSync.UPDATE or datasync.status == sync.DataSync.ADD or \
+                       datasync.status == sync.DataSync.COMMIT:
                         ret3 = datasync.sync_db()
-                        print 'ret3:', ret3
-                        if ret3 and ret3['status'] == 200:
-                            self.conf['sync_ver'] = str(ret3['ver'])
-                            self.conf['sync_md5'] = datasync.md5val
-                            self.conf.dump()
+                        logfile.info('sync_db:', ret3)
+                        if ret3:
+                            if not ret3 is True:
+                                self.conf['sync_ver'] = str(ret3['ver'])
+                                self.conf['sync_md5'] = datasync.md5val
+                                self.conf.dump()
+                            else:
+                                self.conf['sync_ver'] = str(resp['ver'])
+                                self.conf['sync_md5'] = resp['md5']
+                                self.conf.dump()
+
+                        d = wx.MessageDialog(self, _('Sync complete!'), _('Sync Information'), wx.OK|wx.ICON_INFORMATION)
+                        d.ShowModal()
+                        d.Destroy()
+                    elif datasync.status == sync.DataSync.NOUPDATE:
+                        d = wx.MessageDialog(self, _('Not need sync!'), _('Sync Information'), wx.OK|wx.ICON_INFORMATION)
+                        d.ShowModal()
+                        d.Destroy()
+                        
                 except:
-                    traceback.print_exc()
                     logfile.info(traceback.format_exc())
                 finally:
                     self.db = storage.DBStorage(self.conf['lastdb'])
+                    self.reload()
 
         dlg.Destroy()
  

@@ -33,11 +33,23 @@ def encrypt_file(filename):
     s = f.read()
     f.close()
     
-    rsa_pub = pickle.loads(base64.b64decode(config.cf['rsa_pub']))
+    r = config.cf['rsa_pub']
+    eqnum = len(r) % 4
+    r += '='*eqnum
+
+    rsa_pub = pickle.loads(base64.b64decode(r))
+    s = base64.b64encode(s)
     data = rsa.encrypt(s, rsa_pub)
 
     return data
 
+def decrypt_data(data):
+    s = config.cf['rsa_private']
+    eqnum = len(s) % 4
+    s += '='*eqnum
+    rsa_pri = pickle.loads(base64.b64decode(s))
+    return base64.b64decode(rsa.decrypt(data, rsa_pri))
+    
 
 class FilePost:
     BOUNDARY = '------------tHiS_Is_My_BoNdArY_'
@@ -58,23 +70,19 @@ class FilePost:
         
         data = ''.join(itemlist)
 
-        print data
-        
         content_type = 'multipart/form-data; boundary="%s"' % self.BOUNDARY
         urlparts = urlparse.urlsplit(self.url) 
-        host = urlparts.hostname
+        host = urlparts[1]
         sel = self.url[self.url.find(host) + len(host):]
-
-        h = httplib.HTTP(urlparts.hostname)
+        
+        h = httplib.HTTP(urlparts[1])
         h.putrequest('POST', sel)
         h.putheader('host', host)
         h.putheader('content-type', content_type)
         h.putheader('content-length', str(len(data)))
         h.endheaders()
-        h.send(body)
-        
+        h.send(data)
         errcode, errmsg, headers = h.getreply()
-
         return errcode, h.file.read()
 
     def add_file(self, name, filename, iszip=False):
@@ -83,9 +91,11 @@ class FilePost:
         f.close()
         self.data.append([name, filename, zlib.compress(data)])
 
-    def add_data(self, name, filename, data):
-        #self.data.append([name, filename, zlib.compress(data)])
-        self.data.append([name, filename, data])
+    def add_data(self, name, filename, data, datacompress=False):
+        if not datacompress:
+            self.data.append([name, filename, zlib.compress(data)])
+        else:
+            self.data.append([name, filename, data])
 
     def encode_body(self, name, filename, data):
         lines = [] 
@@ -114,8 +124,9 @@ class DataSync:
         self.conf     = cf
         #self.identity = storage.name
         self.path     = cf['lastdb']
-        self.baseurl  = 'http://youmoney.pythonid.com/sync'
-        self.endata   = encrypt_file(self.conf['lastdb'])
+        #self.baseurl  = 'http://youmoney.pythonid.com/sync'
+        self.baseurl  = 'http://127.0.0.1:8080/sync'
+        self.endata   = zlib.compress(encrypt_file(self.conf['lastdb']))
         #self.md5val   = sumfile(self.path)
         self.md5val   = sumdata(self.endata)
         self.url      = self.baseurl + '?action=%s&ident=%s'+'&ver=%s&md5=%s' % (self.conf['sync_ver'], self.md5val)
@@ -130,19 +141,28 @@ class DataSync:
         else:
             #password = base64.b64decode(self.conf['password'])
             url  = self.user_url % ('query', username, password)
-        try:
-            resp = urllib2.urlopen(url)
-            data = resp.read()
-            x = json.loads(data)
-        except Exception, e:
-            logfile.info(traceback.format_exc())
-            x = {'ver':0, 'md5':'', 'modify':'', 'user':'', 'error': str(e)}
-        
+
+        resp = urllib2.urlopen(url)
+        data = resp.read()
+        x = json.loads(data)
+
+        if x.has_key('error'):
+            return 0, x
+
+        # return x is last version information 
+        if x['ver'] == 0 and not x.has_key('error'):
+            self.status = self.ADD
+            return self.status, x
+
         if len(self.conf['sync_ver']) > 0:
             localver = int(self.conf['sync_ver'])
         else:
-            self.status = self.ADD
-            return self.status, x
+            if x['ver'] > 0:
+                self.status = self.UPDATE
+                return self.status, x
+            else:
+                self.status = self.COMMIT
+                return self.status, x
 
         if x['ver'] == localver: # the same version
             if x['md5'] == self.md5val:
@@ -152,7 +172,8 @@ class DataSync:
 
         elif x['ver'] > localver: # remote version is newer than local
             #if x['modify']:
-            if self.conf['sync_md5'] != self.md5val: # local modified
+            #if self.conf['sync_md5'] != self.md5val: # local modified
+            if x['modify']:
                 self.status = self.CONFLICT
             else:
                 self.status = self.UPDATE
@@ -182,15 +203,12 @@ class DataSync:
         if self.status == self.ADD or self.status == self.COMMIT:
             url = self.url % ('upload', self.conf['id'])
             fp = FilePost(url)
-            fp.add_data('youmoney.db', 'youmoney.db', self.endata)
+            fp.add_data('youmoney.db', 'youmoney.db', self.endata, True)
 
             if self.conf['sync_way'] == 'user':
                 fp.add_file('youmoney.conf', 'youmoney.conf', confpath)
 
             errcode, ret = fp.post()
-            
-            print 'sync db:', errcode, ret
-
             if errcode >= 200 and errcode < 300:
                 return json.loads(ret)
 
@@ -199,7 +217,7 @@ class DataSync:
             resp = urllib2.urlopen(url)
             data = resp.read()
             
-            real = zlib.uncompress(data)
+            real = decrypt_data(zlib.decompress(data))
             
             lastdb = self.conf['lastdb']
             bakdb  = lastdb + '.bak'
@@ -213,8 +231,9 @@ class DataSync:
                 os.remove(bakdb)
             if os.path.isfile(lastdb):
                 os.rename(lastdb, bakdb)
-            os.path.rename(tmpdb, lastdb)
- 
+            os.rename(tmpdb, lastdb)
+
+            return True 
         return None
 
 

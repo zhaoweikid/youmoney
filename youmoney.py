@@ -85,9 +85,12 @@ def main():
     if sys.platform.startswith('win32'):
         filename = os.path.join(home, "youmoney.log")
         vername  = os.path.join(home, "version.dat")
+        reportfile  = os.path.join(home, "youmoney.report.txt")
     else:
         filename = os.path.join(os.environ['HOME'], ".youmoney", "youmoney.log")
         vername  = os.path.join(os.environ['HOME'], ".youmoney", "verion.dat")
+        reportfile  = os.path.join(os.environ['HOME'], "youmoney.report.txt")
+
     logfile.install(filename)
         
     f = open(vername, 'w')
@@ -102,12 +105,20 @@ def main():
         app.MainLoop()
     except:
         s = traceback.format_exc()
-        print '-------------- report error ---------------'
-        data = urllib.urlencode({'user':str(ui.storage.name), 
+        f = open(reportfile, 'a+')
+        f.write(s)
+        f.close()
+
+        try:
+            data = urllib.urlencode({'user':str(ui.storage.name), 
                                  'sys':ui.update.system_version(), 
                                  'version':str(version.VERSION), 'info':s})
-        resp = urllib2.urlopen('http://youmoney.pythonid.com/report', data)  
-        logfile.info('report error:', resp.read())
+            resp = urllib2.urlopen('http://youmoney.pythonid.com/report', data)  
+            logfile.info('report result:', resp.read())
+        except:
+            pass
+        else:
+            os.remove(reportfile)
         raise
 
 if __name__ == '__main__':
