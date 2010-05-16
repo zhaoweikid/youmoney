@@ -54,18 +54,18 @@ class Configure:
             self.iscreate = True
             self.data['lastdb'] = os.path.join(os.path.dirname(self.conffile), "youmoney.db")
             self.data['lang'] = self.locallang
-            self.dump()
-            return
-        lines = f.readlines()
-        f.close()
+            #self.dump()
+        else:
+            lines = f.readlines()
+            f.close()
 
-        for line in lines:
-            line = line.strip()
-            if not line or line.startswith('#'):
-                continue
+            for line in lines:
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
             
-            parts = [ x.strip() for x in line.split('=') ]
-            self.data[parts[0]] = unicode(parts[1], self.charset)
+                parts = [ x.strip() for x in line.split('=', 1) ]
+                self.data[parts[0]] = unicode(parts[1], self.charset)
 
         if not self.data.has_key('lang'):
             self.data['lang'] = self.locallang

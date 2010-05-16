@@ -143,13 +143,15 @@ class DataSync:
 
         resp = urllib2.urlopen(url)
         data = resp.read()
+        logfile.info('query resp:', data)
         x = json.loads(data)
 
         if x.has_key('error'):
             return 0, x
        
         if self.conf['sync_way'] == 'user' and self.conf['id'] != x['id']:
-            self.get_conf()
+            logfile.info('sync_wary: user, id:', self.conf['id'], x['id'])
+            logfile.info(self.get_conf())
             self.status = self.ADD
             return self.status, x
 
@@ -261,13 +263,14 @@ class DataSync:
         if self.conf['sync_way'] != 'user':
             return None
 
-        url  = self.user_url % ('getconf', username, password)
+        url  = self.user_url % ('getconf', self.conf['user'], self.conf['password'])
 
-        resp = urllib2.urlopen(url, postdata)
+        resp = urllib2.urlopen(url)
         s = resp.read()
          
         data = json.loads(s)
         if not data.has_key('error'):
+            logfile.info('get conf:', data['data'])
             self.conf.load_data(data['data'])
 
         return data 

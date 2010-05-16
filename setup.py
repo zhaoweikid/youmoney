@@ -29,7 +29,7 @@ elif sys.platform.startswith('win32'):
             'urllib2', 'httplib', 'csv']
     options  = {'py2exe': {
                 'compressed': 0,
-                'optimize': 2,
+                'optimize': 1,
                 'includes': includes,
                 #'bundle_files': 1
                 }}

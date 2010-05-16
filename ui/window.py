@@ -948,9 +948,9 @@ class MainFrame (wx.Frame):
                 finally:
                     self.db = storage.DBStorage(self.conf['lastdb'])
                     self.reload()
-
-                    sql = "update verinfo set sync_ver=" + self.conf['sync_ver']
-                    self.db.execute(sql)
+                    if self.conf['sync_ver']:
+                        sql = "update verinfo set sync_ver=" + self.conf['sync_ver']
+                        self.db.execute(sql)
 
 
 

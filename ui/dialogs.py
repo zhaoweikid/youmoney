@@ -478,6 +478,10 @@ class ImportDataDialog (sc.SizedDialog):
         dlg.Destroy()
 
 class UserPassDialog (sc.SizedDialog):
+    WAY_ADD = 0
+    WAY_SET = 1
+    WAY_MODIFY = 0
+    WAY_CHANGE = 1
     def __init__(self, parent, conf, mode='add'):
         if mode == 'add':
             title = _('Sync User Add')
@@ -493,13 +497,23 @@ class UserPassDialog (sc.SizedDialog):
     
         wx.StaticText(panel, -1, "")
         self.warn = wx.StaticText(panel, -1, size=(150, -1))
+        
+        if mode == 'add':
+            self.ui_add(panel)
+        elif mode == 'modify':
+            self.ui_modify(panel)
+
+        self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
+        self.SetMinSize(wx.Size(300, 170))
+        self.Fit()
+
+    def ui_add(self, panel):
+        wx.StaticText(panel, -1, _("Add/Set") + ':')
+        valuelist = [_('Add new sync user'), _('Use a exist sync user')]
+        self.way = wx.RadioBox(panel, -1, "", wx.DefaultPosition, wx.DefaultSize, valuelist, 1, wx.RA_SPECIFY_COLS)
 
         wx.StaticText(panel, -1, _("Username")+':')
         self.username = wx.TextCtrl(panel, -1, size=(150, -1))
-
-        if mode == 'modify':
-            wx.StaticText(panel, -1, _("Old Password")+':')
-            self.oldpass = wx.TextCtrl(panel, -1, style=wx.TE_PASSWORD, size=(150, -1))
 
         wx.StaticText(panel, -1, _("Password:"))
         self.pass1 = wx.TextCtrl(panel, -1, style=wx.TE_PASSWORD, size=(150, -1))
@@ -507,26 +521,47 @@ class UserPassDialog (sc.SizedDialog):
         wx.StaticText(panel, -1, _("Password Again:"))
         self.pass2 = wx.TextCtrl(panel, -1, style=wx.TE_PASSWORD, size=(150, -1))
 
-        if mode == 'modify':
-            self.username.SetValue(self.conf['user'])
-            self.oldpass.SetValue(self.conf['password'])
+        self.Bind(wx.EVT_RADIOBOX, self.OnAddChoice, self.way)
 
-        self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
-        self.SetMinSize(wx.Size(300, 170))
-        self.Fit()
+    def ui_modify(self, panel):
+        wx.StaticText(panel, -1, _("User Name")+':')
+        #self.username = wx.TextCtrl(panel, -1, size=(150, -1), style=wx.TE_READONLY)
+        self.username = wx.StaticText(panel, -1, "", size=(150, -1))
+
+        wx.StaticText(panel, -1, _("Old Password")+':')
+        self.oldpass = wx.TextCtrl(panel, -1, style=wx.TE_PASSWORD, size=(150, -1))
+
+        wx.StaticText(panel, -1, _("New Password") + ':')
+        self.pass1 = wx.TextCtrl(panel, -1, style=wx.TE_PASSWORD, size=(150, -1))
+
+        wx.StaticText(panel, -1, _("Password Again") + ':')
+        self.pass2 = wx.TextCtrl(panel, -1, style=wx.TE_PASSWORD, size=(150, -1))
+
+        #self.username.SetValue(self.conf['user'])
+        self.username.SetLabel(self.conf['user'])
+        self.oldpass.SetValue(self.conf['password'])
+        
+        #self.Bind(wx.EVT_RADIOBOX, self.OnModifyChoice, self.way)
 
     def values(self):
-        user  = self.username.GetValue()
+        #user  = self.username.GetValue()
+        user  = self.username.GetLabel()
         pass1 = self.pass1.GetValue()
         pass2 = self.pass2.GetValue()
         if self.mode == 'modify':
             return {'username':user, 'password1':pass1, 'password2':pass2, 'oldpass': self.oldpass.GetValue()}
         else:
-            return {'username':user, 'password1':pass1, 'password2':pass2}
+            return {'username':user, 'password1':pass1, 'password2':pass2, 'way':self.way.GetSelection()}
 
     def set_warn(self, msg):
         self.warn.SetLabel(msg)       
 
+    def OnAddChoice(self, event):
+        cho = event.GetInt()
+        if cho == 0:
+            self.pass2.Enable() 
+        elif cho == 1:
+            self.pass2.Disable()
  
 class SyncDialog (sc.SizedDialog):
     def __init__(self, parent, conf):
@@ -575,7 +610,9 @@ class SyncDialog (sc.SizedDialog):
         elif choice == 'id' or choice == 1:
             self.syncway.SetSelection(1)
             self.changepass.Disable()
-        
+            self.username.Disable()
+            self.password.Disable()
+
             msg = [_('This option have the best privacy and security. '), 
                    _('When use YouMoney in other computer, '), 
                    _('you must copy data/youmoney.conf to another.')]
@@ -585,6 +622,8 @@ class SyncDialog (sc.SizedDialog):
         else:
             self.syncway.SetSelection(2)
             self.changepass.Enable()
+            self.username.Enable()
+            self.password.Enable()
     
             msg = [_('This option have the best conveniency. '), 
                    _('When use YouMoney in other computer, '), 
@@ -598,6 +637,14 @@ class SyncDialog (sc.SizedDialog):
  
     def value(self):
         ret = self.syncway.GetSelection()
+        user   = self.username.GetValue()
+        passwd = self.password.GetValue()
+        
+        if user or passwd:
+            self.conf['user'] = user
+            self.conf['password'] = passwd
+            self.conf.dump()
+
         if ret == 1:
             return 'id'
         elif ret == 2:
@@ -607,35 +654,44 @@ class SyncDialog (sc.SizedDialog):
     def OnRadioBox(self, event):
         self.select(event.GetInt())
 
-    def create_info2(self):
+    def create_info(self):
         sizer = wx.BoxSizer(wx.VERTICAL)
-        self.msg = wx.StaticText(self.info, -1, '', style=wx.ALIGN_LEFT|wx.ST_NO_AUTORESIZE)
-        self.msg.Wrap(60)
+        self.msg = wx.StaticText(self.info, -1, '', size=(300, -1), style=wx.ALIGN_LEFT|wx.ST_NO_AUTORESIZE)
         sizer.Add(self.msg, 0, wx.ALIGN_LEFT|wx.ALL, 5)
+
+        staticbox = wx.StaticBox(self.info, -1, _('User Login'))
+        bsizer = wx.StaticBoxSizer(staticbox, wx.VERTICAL)
 
         box = wx.FlexGridSizer(0, 2, 0, 0)
         label = wx.StaticText(self.info, -1, _("Username:"))
         box.Add(label, 0, wx.ALIGN_CENTER|wx.ALL, 5)
-        self.username  = wx.TextCtrl(self.info, -1, self.conf['user'], size=(120, -1))
+        self.username  = wx.TextCtrl(self.info, -1, self.conf['user'], size=(150, -1))
         box.Add(self.username, 1, wx.ALIGN_CENTER|wx.ALL, 5)
             
         label = wx.StaticText(self.info, -1, _("Password:"))
         box.Add(label, 0, wx.ALIGN_CENTER|wx.ALL, 5)
-        self.password  = wx.TextCtrl(self.info, -1, self.conf['password'], size=(120, -1))
+        self.password  = wx.TextCtrl(self.info, -1, self.conf['password'], size=(150, -1), style=wx.TE_PASSWORD)
         box.Add(self.password, 1, wx.ALIGN_CENTER|wx.ALL, 5)
+        
+        bsizer.Add(box, 1, wx.TOP|wx.LEFT, 0)
 
-        sizer.Add(box, 1, wx.ALIGN_LEFT|wx.ALIGN_TOP|wx.ALL, 5)
+        sizer.Add(bsizer, 1, wx.ALIGN_LEFT|wx.ALIGN_TOP|wx.ALL, 5)
+ 
+        self.changepass = wx.Button(self.info, -1, _('Change Password'), (20, 80))
+        sizer.Add(self.changepass, 0, wx.ALIGN_LEFT|wx.ALL, 5)
           
         self.info.SetSizer(sizer)
+        
+        self.Bind(wx.EVT_BUTTON, self.OnChangePassword, self.changepass)
 
 
-    def create_info(self):
+    def create_info3(self):
         sizer = wx.BoxSizer(wx.VERTICAL)
         #self.msg = wx.StaticText(self.info, -1, '', style=wx.ALIGN_LEFT|wx.ST_NO_AUTORESIZE)
         self.msg = wx.StaticText(self.info, -1, '', size=(300, -1), style=wx.ALIGN_LEFT)
         sizer.Add(self.msg, 0, wx.ALIGN_LEFT|wx.ALL|wx.EXPAND, 5)
 
-        self.changepass = wx.Button(self.info, -1, _('Change Username/Password'), (20, 80))
+        self.changepass = wx.Button(self.info, -1, _('Change Password'), (20, 80))
         sizer.Add(self.changepass, 1, wx.ALIGN_LEFT|wx.ALL, 5)
         self.info.SetSizer(sizer)
 
@@ -649,6 +705,12 @@ class SyncDialog (sc.SizedDialog):
             if ret != wx.ID_OK:
                 return
             vals = dlg.values()
+            if vals['way'] == dlg.WAY_SET:
+                self.conf['user'] = vals['username']
+                self.conf['password'] = vals['password1']
+                self.conf.dump()
+                
+                break
             if vals['password1'] != vals['password2']:
                 dlg.set_warn(_('Different password.'))
                 continue
@@ -666,7 +728,7 @@ class SyncDialog (sc.SizedDialog):
              
             wx.MessageBox(_('User and password are successfully added!'), _('Success'), wx.OK|wx.ICON_INFORMATION)
             self.conf['user'] = vals['username']
-            self.conf['password'] = vals['password']
+            self.conf['password'] = vals['password1']
             self.conf.dump()
             isok = True
             break
@@ -674,6 +736,8 @@ class SyncDialog (sc.SizedDialog):
         dlg.Destroy()
         return isok
 
+    def OnUserAdd(self, event):
+        self.user_add()
 
     def OnChangePassword(self, event):
         dlg = UserPassDialog(self, self.conf, 'modify')
