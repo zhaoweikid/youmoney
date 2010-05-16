@@ -86,7 +86,7 @@ class FilePost:
         return errcode, h.file.read()
 
     def add_file(self, name, filename, iszip=False):
-        f = open('filename', 'rb')
+        f = open(filename, 'rb')
         data = f.read()
         f.close()
         self.data.append([name, filename, zlib.compress(data)])
@@ -122,25 +122,24 @@ class DataSync:
 
     def __init__(self, cf):
         self.conf     = cf
-        #self.identity = storage.name
         self.path     = cf['lastdb']
         #self.baseurl  = 'http://youmoney.pythonid.com/sync'
-        self.baseurl  = 'http://127.0.0.1:8080/sync'
+        self.baseurl  = 'http://%s/sync' % (self.conf['server'])
         self.endata   = zlib.compress(encrypt_file(self.conf['lastdb']))
-        #self.md5val   = sumfile(self.path)
         self.md5val   = sumdata(self.endata)
         self.url      = self.baseurl + '?action=%s&ident=%s'+'&ver=%s&md5=%s' % (self.conf['sync_ver'], self.md5val)
-        self.user_url = self.baseurl + '?action=%s&user=%s&pass=%s&'+'&ver=%s&md5=%s' % (self.conf['sync_ver'], self.md5val)
+        self.conf_url = self.baseurl + '?action=%s&ident=%s'
+        self.user_url = self.baseurl + '?action=%s&user=%s&pass=%s'+'&ver=%s&md5=%s' % (self.conf['sync_ver'], self.md5val)
 
         # current status
         self.status   = 0
         
-    def query(self, username=None, password=None):
+    def query(self):
         if self.conf['sync_way'] == 'id':
             url  = self.url % ('query', self.conf['id'])
         else:
             #password = base64.b64decode(self.conf['password'])
-            url  = self.user_url % ('query', username, password)
+            url  = self.user_url % ('query', self.conf['user'], self.conf['password'])
 
         resp = urllib2.urlopen(url)
         data = resp.read()
@@ -148,6 +147,14 @@ class DataSync:
 
         if x.has_key('error'):
             return 0, x
+       
+        if self.conf['sync_way'] == 'user' and self.conf['id'] != x['id']:
+            self.get_conf()
+            self.status = self.ADD
+            return self.status, x
+
+        if self.conf['sync_way'] == 'user' and not x['haveconf']:
+            self.upload_conf()
 
         # return x is last version information 
         if x['ver'] == 0 and not x.has_key('error'):
@@ -205,9 +212,6 @@ class DataSync:
             fp = FilePost(url)
             fp.add_data('youmoney.db', 'youmoney.db', self.endata, True)
 
-            if self.conf['sync_way'] == 'user':
-                fp.add_file('youmoney.conf', 'youmoney.conf', confpath)
-
             errcode, ret = fp.post()
             if errcode >= 200 and errcode < 300:
                 return json.loads(ret)
@@ -238,17 +242,33 @@ class DataSync:
 
 
     def upload_conf(self):
-        confpath = os.path.join(self.conf.home, 'data', 'youmoney.conf')
+        upkeys = ['id', 'user', 'password', 'rsa_private', 'rsa_pub', 'sync_way']
+        data = {}
 
-        url = self.url % ('uploadconf', self.conf['id'])
-        fp = FilePost(url)
-        fp.add_file('youmoney.conf', 'youmoney.conf', confpath)
+        for k in upkeys:
+            data[k] = self.conf[k]
 
-        errcode, ret = fp.post()
+        url = self.conf_url % ('upconf', self.conf['id'])
+    
+        postdata = urllib.urlencode({'data': json.dumps(data)})
+        resp = urllib2.urlopen(url, postdata)
+        s = resp.read()
+        x = json.loads(s)
 
-        if errcode >= 200 and errcode < 300:
-            return True
+        return True
 
-        return False
+    def get_conf(self):
+        if self.conf['sync_way'] != 'user':
+            return None
 
+        url  = self.user_url % ('getconf', username, password)
+
+        resp = urllib2.urlopen(url, postdata)
+        s = resp.read()
+         
+        data = json.loads(s)
+        if not data.has_key('error'):
+            self.conf.load_data(data['data'])
+
+        return data 
 

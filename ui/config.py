@@ -40,7 +40,7 @@ class Configure:
         # sync_way maybe 'user/id'
         self.datadef = {'lastdb':'', 'lang':'', 'rsa_pub':'', 'rsa_private':'', 
                      'id':'', 'user':'', 'password':'', 'sync_way':'id',
-                     'sync_ver':'', 'sync_auto': '', 'sync_md5':''}
+                     'sync_ver':'', 'sync_auto': '', 'sync_md5':'', 'server':'youmoney.pythonid.com'}
 
         self.data = None
         self.load()
@@ -85,6 +85,10 @@ class Configure:
     def reload(self):
         self.iscreate = False
         self.load()
+
+    def load_data(self, data):
+        self.data.update(data)
+        self.dump()
 
     def dump(self):
         f = open(self.conffile, 'w')

@@ -92,6 +92,7 @@ def main():
         reportfile  = os.path.join(os.environ['HOME'], "youmoney.report.txt")
 
     logfile.install(filename)
+    #logfile.install('stdout')
         
     f = open(vername, 'w')
     f.write(version.VERSION)

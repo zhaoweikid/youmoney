@@ -3,6 +3,7 @@ import os, sys, string, re
 import wx
 import wx.lib.sized_controls as sc
 import wx.lib.hyperlink as hl
+import urllib, urllib2, json
 import logfile
 
 class IncomeDialog (sc.SizedDialog):
@@ -476,6 +477,57 @@ class ImportDataDialog (sc.SizedDialog):
             self.filepath.SetValue(path)
         dlg.Destroy()
 
+class UserPassDialog (sc.SizedDialog):
+    def __init__(self, parent, conf, mode='add'):
+        if mode == 'add':
+            title = _('Sync User Add')
+        else:
+            title = _('Sync User Password Change')
+        super(UserPassDialog, self).__init__(None, -1, title, style=wx.DEFAULT_DIALOG_STYLE)
+        self.parent = parent
+        self.conf = conf
+        self.mode = mode
+
+        panel = self.GetContentsPane()
+        panel.SetSizerType("form")
+    
+        wx.StaticText(panel, -1, "")
+        self.warn = wx.StaticText(panel, -1, size=(150, -1))
+
+        wx.StaticText(panel, -1, _("Username")+':')
+        self.username = wx.TextCtrl(panel, -1, size=(150, -1))
+
+        if mode == 'modify':
+            wx.StaticText(panel, -1, _("Old Password")+':')
+            self.oldpass = wx.TextCtrl(panel, -1, style=wx.TE_PASSWORD, size=(150, -1))
+
+        wx.StaticText(panel, -1, _("Password:"))
+        self.pass1 = wx.TextCtrl(panel, -1, style=wx.TE_PASSWORD, size=(150, -1))
+
+        wx.StaticText(panel, -1, _("Password Again:"))
+        self.pass2 = wx.TextCtrl(panel, -1, style=wx.TE_PASSWORD, size=(150, -1))
+
+        if mode == 'modify':
+            self.username.SetValue(self.conf['user'])
+            self.oldpass.SetValue(self.conf['password'])
+
+        self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
+        self.SetMinSize(wx.Size(300, 170))
+        self.Fit()
+
+    def values(self):
+        user  = self.username.GetValue()
+        pass1 = self.pass1.GetValue()
+        pass2 = self.pass2.GetValue()
+        if self.mode == 'modify':
+            return {'username':user, 'password1':pass1, 'password2':pass2, 'oldpass': self.oldpass.GetValue()}
+        else:
+            return {'username':user, 'password1':pass1, 'password2':pass2}
+
+    def set_warn(self, msg):
+        self.warn.SetLabel(msg)       
+
+ 
 class SyncDialog (sc.SizedDialog):
     def __init__(self, parent, conf):
         super(SyncDialog, self).__init__(None, -1, _('Sync User Data'), style=wx.DEFAULT_DIALOG_STYLE)
@@ -487,14 +539,12 @@ class SyncDialog (sc.SizedDialog):
         
         msg = [_('Sync will synchronous user data to server.'),
                _('Then, user can use the same data everywhere.'),
-              # _('Data encrypted by rsa, only self can decrypt.')
               ]
 
         s = '\n'.join(msg)
         wx.StaticText(panel, -1, s)
         valuelist = [_('Not Sync'), _('Sync with configure file setting'), _('Sync with username and password')]
         self.syncway = wx.RadioBox(panel, -1, _('Choose Sync Way'), wx.DefaultPosition, wx.DefaultSize, valuelist, 1, wx.RA_SPECIFY_COLS)
-        #self.sync = wx.CheckBox(panel, -1, _("Automatic sync data when start and quit"))
         
         self.info = wx.Panel(panel, -1)
 
@@ -506,35 +556,45 @@ class SyncDialog (sc.SizedDialog):
 
         self.Bind(wx.EVT_RADIOBOX, self.OnRadioBox, self.syncway)
         self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
-        self.SetMinSize(wx.Size(400, 300))
+        self.SetMinSize(wx.Size(450, 300))
         self.Fit()
+
+
+        self.errors = {401: _('user is exist'), 
+                       402: _('password error'),
+                       403: _('user is not exist'),
+                       404: _('username error'), 
+                       440: _('internal error')}
 
     def select(self, choice):
         if choice == '' or choice == 0:
             self.syncway.SetSelection(0)
-            self.username.Disable()
-            self.password.Disable()
+            self.changepass.Disable()
             s = _('Not sync anything.') + '\n\n'
             self.msg.SetLabel(s)
         elif choice == 'id' or choice == 1:
             self.syncway.SetSelection(1)
-            self.username.Disable()
-            self.password.Disable()
+            self.changepass.Disable()
         
-            msg = [_('This option have the best privacy and security. '), _('When use YouMoney in other computer, '), _('you must copy data/youmoney.conf to another.')]
+            msg = [_('This option have the best privacy and security. '), 
+                   _('When use YouMoney in other computer, '), 
+                   _('you must copy data/youmoney.conf to another.')]
             s = '\n'.join(msg)
             
             self.msg.SetLabel(s)
         else:
             self.syncway.SetSelection(2)
-            self.username.Enable()
-            self.password.Enable()
+            self.changepass.Enable()
     
-            msg = [_('This option have the best conveniency. '), _('When use YouMoney in other computer, '), _('you must input username and password to sync user data.')]
+            msg = [_('This option have the best conveniency. '), 
+                   _('When use YouMoney in other computer, '), 
+                   _('you must input username and password to sync data.')]
             s = '\n'.join(msg)
  
             self.msg.SetLabel(s)
-
+            
+            if not self.conf['user']:
+                self.user_add()
  
     def value(self):
         ret = self.syncway.GetSelection()
@@ -546,23 +606,8 @@ class SyncDialog (sc.SizedDialog):
 
     def OnRadioBox(self, event):
         self.select(event.GetInt())
-        return
-        idx = event.GetInt()
-        if idx <= 1:
-            chs = self.info.GetChildren()
-            for x in chs:
-                self.info.RemoveChild(x)
-            self.username.Disable()
-            self.password.Disable()
-        elif idx == 2:
-            chs = self.info.GetChildren()
-            for x in chs:
-                self.info.RemoveChild(x)
-            self.username.Enable()
-            self.password.Enable()
-       
 
-    def create_info(self):
+    def create_info2(self):
         sizer = wx.BoxSizer(wx.VERTICAL)
         self.msg = wx.StaticText(self.info, -1, '', style=wx.ALIGN_LEFT|wx.ST_NO_AUTORESIZE)
         self.msg.Wrap(60)
@@ -584,7 +629,84 @@ class SyncDialog (sc.SizedDialog):
         self.info.SetSizer(sizer)
 
 
+    def create_info(self):
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        #self.msg = wx.StaticText(self.info, -1, '', style=wx.ALIGN_LEFT|wx.ST_NO_AUTORESIZE)
+        self.msg = wx.StaticText(self.info, -1, '', size=(300, -1), style=wx.ALIGN_LEFT)
+        sizer.Add(self.msg, 0, wx.ALIGN_LEFT|wx.ALL|wx.EXPAND, 5)
 
+        self.changepass = wx.Button(self.info, -1, _('Change Username/Password'), (20, 80))
+        sizer.Add(self.changepass, 1, wx.ALIGN_LEFT|wx.ALL, 5)
+        self.info.SetSizer(sizer)
+
+        self.Bind(wx.EVT_BUTTON, self.OnChangePassword, self.changepass)
+
+    def user_add(self):
+        isok = False
+        dlg = UserPassDialog(self, self.conf, 'add')
+        while True:
+            ret = dlg.ShowModal()
+            if ret != wx.ID_OK:
+                return
+            vals = dlg.values()
+            if vals['password1'] != vals['password2']:
+                dlg.set_warn(_('Different password.'))
+                continue
+            url = 'http://%s/sync?action=useradd&ident=%s&user=%s&pass=%s' % \
+                    (self.conf['server'], self.conf['id'], urllib.quote(vals['username']), urllib.quote(vals['password1']))
+            resp = urllib2.urlopen(url) 
+            s = resp.read()
+            
+            val = json.loads(s)
+            errstr = val.get('error')
+            if errstr:
+                logfile.info(errstr)
+                dlg.set_warn(self.errors[val['status']])
+                continue
+             
+            wx.MessageBox(_('User and password are successfully added!'), _('Success'), wx.OK|wx.ICON_INFORMATION)
+            self.conf['user'] = vals['username']
+            self.conf['password'] = vals['password']
+            self.conf.dump()
+            isok = True
+            break
+
+        dlg.Destroy()
+        return isok
+
+
+    def OnChangePassword(self, event):
+        dlg = UserPassDialog(self, self.conf, 'modify')
+        while True:
+            ret = dlg.ShowModal()
+            if ret != wx.ID_OK:
+                return
+            vals = dlg.values()
+            if vals['password1'] != vals['password2']:
+                dlg.set_warn(_('Different password.'))
+                continue
+
+            url = 'http://%s/sync?action=usermodify&ident=%s&user=%s&pass=%s&newpass=%s' % \
+                    (self.conf['server'], self.conf['id'], urllib.quote(vals['username']), 
+                     urllib.quote(vals['oldpass']), urllib.quote(vals['password1']))
+ 
+            resp = urllib2.urlopen(url) 
+            s = resp.read()
+            
+            val = json.loads(s)
+            errstr = val.get('error')
+            if errstr:
+                logfile.info(errstr)
+                dlg.set_warn(self.errors[val['status']])
+                continue
+             
+            wx.MessageBox(_('Password successfully changed!'), _('Success'), wx.OK|wx.ICON_INFORMATION)
+            self.conf['user'] = vals['username']
+            self.conf['password'] = vals['password1']
+            self.conf.dump()
+            break
+
+        dlg.Destroy()
 
 
 

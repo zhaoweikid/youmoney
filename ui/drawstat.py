@@ -227,8 +227,8 @@ class CharDrawer (wx.Panel, ScaledBufferMixin):
             jiao = 2*3.14159*rate
             newpos = (int(self.x + math.cos(jiao) * self.r), int(self.y+math.sin(jiao) * self.r))
 
-            #print 'last:', lastpos, 'new:', newpos, 'rate:', rate
-            if newpos[0] != lastpos[0] and newpos[1] != lastpos[1]:
+            #print 'last:', lastpos, 'new:', newpos, 'rate:', rate, 'ratenow:', ratenow, 'x:', self.x, 'y:', self.y, 'r:', self.r
+            if newpos[0] != lastpos[0] or newpos[1] != lastpos[1]:
                 dc.DrawArc(newpos[0], newpos[1], lastpos[0], lastpos[1], self.x, self.y)
             
             jiao = 2*3.14159*(rate - ratenow/2)
