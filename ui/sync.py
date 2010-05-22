@@ -166,6 +166,7 @@ class DataSync:
         if len(self.conf['sync_ver']) > 0:
             localver = int(self.conf['sync_ver'])
         else:
+            logfile.info('not found local sync_ver, remote:', x['ver'])
             if x['ver'] > 0:
                 self.status = self.UPDATE
                 return self.status, x
@@ -174,6 +175,7 @@ class DataSync:
                 return self.status, x
 
         if x['ver'] == localver: # the same version
+            logfile.info('check md5, local db: ',self.md5val, 'remote:', x['md5'])
             if x['md5'] == self.md5val:
                 self.status = self.NOUPDATE
             else:
