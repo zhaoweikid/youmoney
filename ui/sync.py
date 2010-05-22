@@ -1,10 +1,14 @@
 # coding: utf-8
 import os, sys
-import md5, urlparse
+import md5, urlparse, time
+import wx
 import urllib, urllib2, traceback
 import httplib, mimetypes
 import storage, config, rsa, logfile
-import base64, json, pickle, zlib
+import base64, json, pickle, zlib, socket
+import logfile, storage
+ 
+socket.setdefaulttimeout(10)
 
 def sumfile(filename):
     m = md5.new()
@@ -125,7 +129,13 @@ class DataSync:
         self.path     = cf['lastdb']
         #self.baseurl  = 'http://youmoney.pythonid.com/sync'
         self.baseurl  = 'http://%s/sync' % (self.conf['server'])
-        self.endata   = zlib.compress(encrypt_file(self.conf['lastdb']))
+        
+        f = open(self.conf['lastdb'], 'rb')
+        s = f.read()
+        f.close()
+
+        self.endata   = zlib.compress(s)
+
         self.md5val   = sumdata(self.endata)
         self.url      = self.baseurl + '?action=%s&ident=%s'+'&ver=%s&md5=%s' % (self.conf['sync_ver'], self.md5val)
         self.conf_url = self.baseurl + '?action=%s&ident=%s'
@@ -135,11 +145,7 @@ class DataSync:
         self.status   = 0
         
     def query(self):
-        if self.conf['sync_way'] == 'id':
-            url  = self.url % ('query', self.conf['id'])
-        else:
-            #password = base64.b64decode(self.conf['password'])
-            url  = self.user_url % ('query', self.conf['user'], self.conf['password'])
+        url  = self.user_url % ('query', self.conf['user'], self.conf['password'])
 
         resp = urllib2.urlopen(url)
         data = resp.read()
@@ -151,42 +157,43 @@ class DataSync:
        
         if self.conf['sync_way'] == 'user' and self.conf['id'] != x['id']:
             logfile.info('sync_wary: user, id:', self.conf['id'], x['id'])
-            logfile.info(self.get_conf())
+            #logfile.info(self.get_conf())
             self.status = self.ADD
             return self.status, x
 
-        if self.conf['sync_way'] == 'user' and not x['haveconf']:
-            self.upload_conf()
+        #if self.conf['sync_way'] == 'user' and not x['haveconf']:
+        #    self.upload_conf()
 
         # return x is last version information 
         if x['ver'] == 0 and not x.has_key('error'):
             self.status = self.ADD
             return self.status, x
-
+            
+        # get local sync_ver
         if len(self.conf['sync_ver']) > 0:
             localver = int(self.conf['sync_ver'])
-        else:
+        else: # not have local sync_ver
             logfile.info('not found local sync_ver, remote:', x['ver'])
-            if x['ver'] > 0:
+            if x['ver'] > 0: # remove have sync_ver, update
                 self.status = self.UPDATE
                 return self.status, x
-            else:
-                self.status = self.COMMIT
+            else: # remote and local both not have sync_ver, ADD
+                self.status = self.ADD
                 return self.status, x
 
         if x['ver'] == localver: # the same version
             logfile.info('check md5, local db: ',self.md5val, 'remote:', x['md5'])
-            if x['md5'] == self.md5val:
+            if x['md5'] == self.md5val: # the same md5, not update
                 self.status = self.NOUPDATE
-            else:
+            else: # modified, commit
                 self.status = self.COMMIT
 
         elif x['ver'] > localver: # remote version is newer than local
             #if x['modify']:
             #if self.conf['sync_md5'] != self.md5val: # local modified
-            if x['modify']:
+            if x['modify']: # user modified on old data, conflict
                 self.status = self.CONFLICT
-            else:
+            else: # update
                 self.status = self.UPDATE
         else:
             self.status = self.ERROR
@@ -225,7 +232,7 @@ class DataSync:
             resp = urllib2.urlopen(url)
             data = resp.read()
             
-            real = decrypt_data(zlib.decompress(data))
+            real = zlib.decompress(data)
             
             lastdb = self.conf['lastdb']
             bakdb  = lastdb + '.bak'
@@ -276,4 +283,86 @@ class DataSync:
             self.conf.load_data(data['data'])
 
         return data 
+
+
+
+def do_sync(conf, db_sync_first_time, win, alert):
+    datasync = DataSync(conf)
+    status, resp = datasync.query()
+    logfile.info('status:', status, resp)
+
+    if status == DataSync.CONFLICT:
+        dlg2 = wx.MessageDialog(win, _('Your data modified in old version. Click YES to cancel modify and use the new version on server. No to use current local data.') + '\n' + _('Server Last Modify') + ': %d-%02d-%02d %02d:%02d:%02d' % time.localtime(resp['time'])[:6], 
+                _('Sync Data Conflict'), wx.YES_NO | wx.NO_DEFAULT| wx.ICON_INFORMATION)
+        ret2 = dlg2.ShowModal()
+        if ret2 == wx.ID_YES:
+            datasync.status = DataSync.UPDATE
+        elif ret2 == wx.ID_NO:
+            datasync.status = DataSync.COMMIT
+        dlg2.Destroy()
+    elif status == 0:
+        wx.MessageBox(resp['error'], _('Information'), wx.OK|wx.ICON_INFORMATION)
+                        
+    # maybe first sync
+    if db_sync_first_time == 0 and resp['ver']:
+        datasync.status = DataSync.UPDATE
+ 
+    #if updateonly and datasync.status != DataSync.UPDATE:
+    #    logfile.info('update only return:', datasync.status)
+    #    return 0
+
+    logfile.info('datasync status:', datasync.status)                    
+    if datasync.status == DataSync.UPDATE or \
+       datasync.status == DataSync.ADD or \
+       datasync.status == DataSync.COMMIT:
+        ret3 = datasync.sync_db()
+        logfile.info('sync_db:', ret3)
+        if ret3:
+            if not ret3 is True: # ADD or COMMIT
+                conf['sync_ver'] = str(ret3['ver'])
+                conf['sync_md5'] = datasync.md5val
+                conf.dump()
+            else: # UPDATE
+                conf['sync_ver'] = str(resp['ver'])
+                conf['sync_md5'] = resp['md5']
+                conf.dump()
+        
+        if alert:
+            wx.MessageBox(_('Sync complete!'), 
+                      _('Sync Information'), wx.OK|wx.ICON_INFORMATION)
+    elif datasync.status == DataSync.NOUPDATE:
+        if alert:
+            wx.MessageBox(_('Not need sync!'), 
+                      _('Sync Information'), wx.OK|wx.ICON_INFORMATION)
+
+    return datasync.status
+
+def synchronization(win, alert=True):
+    conf = win.conf
+   
+    db_sync_first_time = 0
+    sql = "select sync_first_time from verinfo"
+    db_sync_first_time = win.db.query_one(sql)
+    logfile.info("db sync first time:", db_sync_first_time)
+
+    win.db.close()
+    status = None
+    try:
+        status = do_sync(win.conf, db_sync_first_time, win, alert)
+    except Exception, e:
+        logfile.info(traceback.format_exc())
+        wx.MessageBox(str(e), _('Sync Information'), wx.OK|wx.ICON_INFORMATION)
+    finally:
+        win.db = storage.DBStorage(win.conf['lastdb'])
+        if db_sync_first_time == 0 and \
+           status == DataSync.UPDATE:
+            sql = "update verinfo set sync_first_time=%d" % int(time.time())
+            win.db.execute(sql)
+
+ 
+
+
+ 
+
+
 

@@ -8,6 +8,12 @@
 import os, sys
 import threading, urllib, urllib2
 import wx
+
+ver = int('%d%02d%02d' % wx.VERSION[:3])
+if ver < 20809:
+    print 'wxPython version must >= 2.8.9, current:', '.'.join([ str(k) for k in wx.VERSION[:3]])
+    sys.exit()
+
 import ui
 import traceback
 
@@ -114,7 +120,7 @@ def main():
             data = urllib.urlencode({'user':str(ui.storage.name), 
                                  'sys':ui.update.system_version(), 
                                  'version':str(version.VERSION), 'info':s})
-            resp = urllib2.urlopen('http://youmoney.pythonid.com/report', data)  
+            resp = urllib2.urlopen('http://%s/report' % (ui.config.cf['server']), data)  
             logfile.info('report result:', resp.read())
         except:
             pass

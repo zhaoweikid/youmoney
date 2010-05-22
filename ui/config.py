@@ -3,7 +3,7 @@ import os, sys
 import locale, time, version
 import types, pprint, uuid
 import base64, pickle
-import rsa
+#import rsa
 
 cf = None
 
@@ -38,7 +38,7 @@ class Configure:
         # is new create db file
         self.iscreate = False
         # sync_way maybe 'user/id'
-        self.datadef = {'lastdb':'', 'lang':'', 'rsa_pub':'', 'rsa_private':'', 
+        self.datadef = {'lastdb':'', 'lang':'', #'rsa_pub':'', 'rsa_private':'', 
                      'id':'', 'user':'', 'password':'', 'sync_way':'id',
                      'sync_ver':'', 'sync_auto': '', 'sync_md5':'', 'server':'youmoney.pythonid.com'}
 
@@ -75,10 +75,10 @@ class Configure:
         if not os.path.isfile(self.data['lastdb']):
             self.iscreate = True
 
-        if not self.data['rsa_pub'] or not self.data['rsa_private']:
-            keys = rsa.gen_pubpriv_keys(128)
-            self.data['rsa_pub'] = base64.b64encode(pickle.dumps(keys[0]))
-            self.data['rsa_private'] = base64.b64encode(pickle.dumps(keys[1]))
+        #if not self.data['rsa_pub'] or not self.data['rsa_private']:
+        #    keys = rsa.gen_pubpriv_keys(128)
+        #    self.data['rsa_pub'] = base64.b64encode(pickle.dumps(keys[0]))
+        #    self.data['rsa_private'] = base64.b64encode(pickle.dumps(keys[1]))
 
         self.dump()
 

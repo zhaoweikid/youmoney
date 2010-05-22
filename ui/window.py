@@ -3,8 +3,8 @@ import os, sys, copy, time
 import types, webbrowser, subprocess
 import wx
 import threading
-from wx.lib.wordwrap import wordwrap
 import panels, dialogs, config, storage, export, recycle, task, sync
+from wx.lib.wordwrap import wordwrap
 import event
 from loader import load_bitmap
 import sqlite3, datetime, shutil
@@ -23,6 +23,7 @@ class MainFrame (wx.Frame):
         iconpath = os.path.join(self.bmpdir, 'small.png')
         icon.CopyFromBitmap(wx.BitmapFromImage(wx.Image(iconpath, wx.BITMAP_TYPE_PNG)))
         self.SetIcon(icon)
+        self.CenterOnScreen()
 
         if config.cf:
             self.conf = config.cf
@@ -59,6 +60,12 @@ class MainFrame (wx.Frame):
         th.start()
         # start check update
         task.taskq.put({'id':1, 'type':'update', 'frame':self})
+
+        # sync
+        if self.conf['sync_way'] == 'user':
+            sync.synchronization(self, alert=False)
+            self.reload()
+
         
     def initcate(self):
         sql = "select count(*) from category"
@@ -122,6 +129,7 @@ class MainFrame (wx.Frame):
             sys.exit()
         
         self.conf.setid(storage.name)
+
         # check record cycle
         rc = recycle.RecordCycle(self.db)
         rc.cycle()
@@ -304,6 +312,9 @@ class MainFrame (wx.Frame):
         self.SetStatusWidths([-1])
 
     def OnCloseWindow(self, event):
+        logfile.info('destroy ...')
+        if self.conf['sync_way'] == 'user':
+            sync.synchronization(self)
         self.Destroy()
         sys.exit() 
 
@@ -899,60 +910,9 @@ class MainFrame (wx.Frame):
                 self.conf['sync_way'] = ret
                 self.conf.dump()
             
-            db_sync_ver = 0
-            sql = "select sync_ver from verinfo"
-            db_sync_ver = self.db.query_one(sql)
-
             if ret:
-                self.db.close()
-                try:
-                    datasync = sync.DataSync(self.conf)
-                    status, resp = datasync.query()
-                    logfile.info('status:', status, resp)
-                    if status == sync.DataSync.CONFLICT:
-                        dlg2 = wx.MessageDialog(self, _('Your data modified in old version. Click YES to cancel modify and use the new version. No to use current data.'),
-                            _('Data Conflict'), wx.YES_NO | wx.NO_DEFAULT| wx.ICON_INFORMATION)
-                        ret2 = dlg2.ShowModal()
-                        if ret2 == wx.ID_YES:
-                            datasync.status = sync.DataSync.UPDATE
-                        elif ret2 == wx.ID_NO:
-                            datasync.status = sync.DataSync.COMMIT
-                        dlg2.Destroy()
-                    elif status == 0:
-                        wx.MessageBox(resp['error'], _('Information'), wx.OK|wx.ICON_INFORMATION)
-                    
-                    # maybe first sync
-                    if self.conf['sync_way'] == 'id' and db_sync_ver != self.conf['sync_ver']:
-                        self.status = sync.DataSync.UPDATE
-                    
-                    if datasync.status == sync.DataSync.UPDATE or datasync.status == sync.DataSync.ADD or \
-                       datasync.status == sync.DataSync.COMMIT:
-                        ret3 = datasync.sync_db()
-                        logfile.info('sync_db:', ret3)
-                        if ret3:
-                            if not ret3 is True: # ADD or COMMIT
-                                self.conf['sync_ver'] = str(ret3['ver'])
-                                self.conf['sync_md5'] = datasync.md5val
-                                self.conf.dump()
-                            else: # UPDATE
-                                self.conf['sync_ver'] = str(resp['ver'])
-                                self.conf['sync_md5'] = resp['md5']
-                                self.conf.dump()
-
-                        wx.MessageBox(_('Sync complete!'), _('Sync Information'), wx.OK|wx.ICON_INFORMATION)
-                    elif datasync.status == sync.DataSync.NOUPDATE:
-                        wx.MessageBox(_('Not need sync!'), _('Sync Information'), wx.OK|wx.ICON_INFORMATION)
-                except Exception, e:
-                    logfile.info(traceback.format_exc())
-                    wx.MessageBox(str(e), _('Sync Information'), wx.OK|wx.ICON_INFORMATION)
-                finally:
-                    self.db = storage.DBStorage(self.conf['lastdb'])
-                    self.reload()
-                    if self.conf['sync_ver'] and self.conf['sync_ver'] != str(db_sync_ver):
-                        sql = "update verinfo set sync_ver=" + self.conf['sync_ver']
-                        self.db.execute(sql)
-
-
+                sync.synchronization(self)
+                self.reload()
 
         dlg.Destroy()
  

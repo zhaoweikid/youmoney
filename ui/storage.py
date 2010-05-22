@@ -72,8 +72,8 @@ class DBStorage:
             fields = set()
             for row in ret: 
                 fields.add(row[1])
-            if 'sync_ver' not in fields:
-                isql = "alter table verinfo add sync_ver integer default 0"
+            if 'sync_first_time' not in fields:
+                isql = "alter table verinfo add sync_first_time integer default 0"
                 self.execute(isql)
  
 
