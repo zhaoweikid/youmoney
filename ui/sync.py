@@ -156,7 +156,7 @@ class DataSync:
             return 0, x
        
         if self.conf['sync_way'] == 'user' and self.conf['id'] != x['id']:
-            logfile.info('sync_wary: user, id:', self.conf['id'], x['id'])
+            logfile.info('sync_way: user, local id:', self.conf['id'], 'remote id:', x['id'])
             self.conf['id'] =  x['id']
             self.conf.dump()
             #logfile.info(self.get_conf())
