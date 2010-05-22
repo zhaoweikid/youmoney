@@ -31,6 +31,7 @@ class MainFrame (wx.Frame):
             raise ValueError, 'config.cf is None'
         
         self.lang2id = {}
+        self.id2lang = {}
 
         self.make_menu()
         self.make_toolbar()
@@ -181,14 +182,21 @@ class MainFrame (wx.Frame):
         self.ID_VIEW_LANG = wx.NewId()
         self.ID_VIEW_LANG_EN = wx.NewId()
         self.ID_VIEW_LANG_CN = wx.NewId()
+        self.ID_VIEW_LANG_TW = wx.NewId()
         self.ID_VIEW_LANG_JP = wx.NewId()
         
         self.ID_ABOUT_UPDATE  = wx.NewId()
         self.ID_ABOUT_WEBSITE = wx.NewId()
             
         self.lang2id['zh_CN'] = self.ID_VIEW_LANG_CN
+        self.lang2id['zh_TW'] = self.ID_VIEW_LANG_TW
         self.lang2id['en_US'] = self.ID_VIEW_LANG_EN
         self.lang2id['ja_JP'] = self.ID_VIEW_LANG_JP
+        
+        self.id2lang[self.ID_VIEW_LANG_CN] = 'zh_CN'
+        self.id2lang[self.ID_VIEW_LANG_TW] = 'zh_TW'
+        self.id2lang[self.ID_VIEW_LANG_EN] = 'en_US'
+        self.id2lang[self.ID_VIEW_LANG_JP] = 'ja_JP'
         
         menubar = wx.MenuBar()
         
@@ -230,6 +238,7 @@ class MainFrame (wx.Frame):
        
         self.langmenu = wx.Menu()
         self.langmenu.AppendRadioItem(self.ID_VIEW_LANG_CN, _('Simple Chinese'))
+        self.langmenu.AppendRadioItem(self.ID_VIEW_LANG_TW, _('Traditional Chinese'))
         self.langmenu.AppendRadioItem(self.ID_VIEW_LANG_EN, _('English'))
         self.langmenu.AppendRadioItem(self.ID_VIEW_LANG_JP, _('Japanese'))
         
@@ -268,6 +277,7 @@ class MainFrame (wx.Frame):
         self.Bind(wx.EVT_MENU, self.OnEditTabStat, id=self.ID_EDIT_STAT)
 
         self.Bind(wx.EVT_MENU, self.OnLanguage, id=self.ID_VIEW_LANG_CN)
+        self.Bind(wx.EVT_MENU, self.OnLanguage, id=self.ID_VIEW_LANG_TW)
         self.Bind(wx.EVT_MENU, self.OnLanguage, id=self.ID_VIEW_LANG_EN)
         self.Bind(wx.EVT_MENU, self.OnLanguage, id=self.ID_VIEW_LANG_JP)
 
@@ -706,22 +716,12 @@ class MainFrame (wx.Frame):
         mid = event.GetId()  
         clang = self.conf['lang']
         ischange = False
-        if mid == self.ID_VIEW_LANG_CN:
-            if clang != 'zh_CN':
-                ischange = True
-            self.conf['lang'] = 'zh_CN'
+        
+        lang = self.id2lang[mid]
+        if lang != clang:
+            ischange = True
+            self.conf['lang'] = lang 
             self.conf.dump()
-        elif mid == self.ID_VIEW_LANG_EN:
-            if not clang.startswith('en_'):
-                ischange = True
-            self.conf['lang'] = 'en_US'
-            self.conf.dump()
-        elif mid == self.ID_VIEW_LANG_JP:
-            if clang != 'ja_JP':
-                ischange = True
-            self.conf['lang'] = 'ja_JP'
-            self.conf.dump()
- 
 
         if ischange:
             wx.MessageBox(_('Language changed! You must restart youmoney !'), _('Note:'), wx.OK|wx.ICON_INFORMATION)

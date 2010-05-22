@@ -39,7 +39,7 @@ class Configure:
         self.iscreate = False
         # sync_way maybe 'user/id'
         self.datadef = {'lastdb':'', 'lang':'', #'rsa_pub':'', 'rsa_private':'', 
-                     'id':'', 'user':'', 'password':'', 'sync_way':'id',
+                     'id':'', 'user':'', 'password':'', 'sync_way':'',
                      'sync_ver':'', 'sync_auto': '', 'sync_md5':'', 'server':'youmoney.pythonid.com'}
 
         self.data = None

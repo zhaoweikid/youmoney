@@ -31,7 +31,7 @@ def sumdata(data):
         m.update(d)
         start += 8086
     return m.hexdigest()
-
+'''
 def encrypt_file(filename):
     f = open(filename, 'rb')
     s = f.read()
@@ -53,7 +53,7 @@ def decrypt_data(data):
     s += '='*eqnum
     rsa_pri = pickle.loads(base64.b64decode(s))
     return base64.b64decode(rsa.decrypt(data, rsa_pri))
-    
+'''   
 
 class FilePost:
     BOUNDARY = '------------tHiS_Is_My_BoNdArY_'
@@ -157,6 +157,8 @@ class DataSync:
        
         if self.conf['sync_way'] == 'user' and self.conf['id'] != x['id']:
             logfile.info('sync_wary: user, id:', self.conf['id'], x['id'])
+            self.conf['id'] =  x['id']
+            self.conf.dump()
             #logfile.info(self.get_conf())
             self.status = self.ADD
             return self.status, x
@@ -200,21 +202,6 @@ class DataSync:
 
         return self.status, x
 
-    def query_local(self):
-        if len(self.conf['sync_ver']) > 0:
-            localver = int(self.conf['sync_ver'])
-        else:
-            self.status = self.ADD
-            return self.status
-
-        if self.conf['sync_md5'] == self.md5val:
-            self.status = self.NOUPDATE
-        else:
-            self.status = self.COMMIT
-
-        return self.status
-        
-
     def sync_db(self):
         confpath = os.path.join(self.conf.home, 'data', 'youmoney.conf')
 
@@ -232,6 +219,7 @@ class DataSync:
             resp = urllib2.urlopen(url)
             data = resp.read()
             
+            logfile.info('getdata len:', len(data)) 
             real = zlib.decompress(data)
             
             lastdb = self.conf['lastdb']
@@ -301,7 +289,7 @@ def do_sync(conf, db_sync_first_time, win, alert):
             datasync.status = DataSync.COMMIT
         dlg2.Destroy()
     elif status == 0:
-        wx.MessageBox(resp['error'], _('Information'), wx.OK|wx.ICON_INFORMATION)
+        wx.MessageBox(resp['error'], _('Sync Information'), wx.OK|wx.ICON_INFORMATION)
                         
     # maybe first sync
     if db_sync_first_time == 0 and resp['ver']:
@@ -354,8 +342,9 @@ def synchronization(win, alert=True):
         wx.MessageBox(str(e), _('Sync Information'), wx.OK|wx.ICON_INFORMATION)
     finally:
         win.db = storage.DBStorage(win.conf['lastdb'])
+        logfile.info('check update sync_first_time:', db_sync_first_time, status)
         if db_sync_first_time == 0 and \
-           status == DataSync.UPDATE:
+           (status == DataSync.UPDATE or status == DataSync.COMMIT or status == DataSync.ADD):
             sql = "update verinfo set sync_first_time=%d" % int(time.time())
             win.db.execute(sql)
 

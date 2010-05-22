@@ -3,7 +3,7 @@ import os, sys, datetime, shutil
 import random
 import merge
 
-dstnames = ['youmoney_zh_CN', 'youmoney_ja_JP']
+dstnames = ['youmoney_zh_CN', 'youmoney_ja_JP', 'youmoney_zh_TW']
 
 def create_po():
     tm = datetime.datetime.now()
