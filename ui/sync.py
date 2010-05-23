@@ -87,7 +87,7 @@ class FilePost:
         h.endheaders()
         h.send(data)
         errcode, errmsg, headers = h.getreply()
-        return errcode, h.file.read()
+        return errcode, h.getfile().read()
 
     def add_file(self, name, filename, iszip=False):
         f = open(filename, 'rb')
@@ -211,6 +211,7 @@ class DataSync:
             fp.add_data('youmoney.db', 'youmoney.db', self.endata, True)
 
             errcode, ret = fp.post()
+            logfile.info('file post return:', ret)
             if errcode >= 200 and errcode < 300:
                 return json.loads(ret)
 
