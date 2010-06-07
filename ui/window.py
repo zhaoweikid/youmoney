@@ -324,7 +324,14 @@ class MainFrame (wx.Frame):
         #if self.conf['sync_way'] == 'user':
         #    sync.synchronization(self)
         task.taskq.put(None)
-        task.server.shutdown()
+        logfile.info('task thread end')
+        vi = sys.version_info
+        if vi[0] == 2 and vi[1] >= 6:
+            task.server.shutdown()
+        else:
+            task.server.server_close()
+        logfile.info('server thread end')
+
         self.Destroy()
         sys.exit() 
 
