@@ -317,6 +317,8 @@ class Updater:
  
         for fname in allfiles:
             if fname.endswith('youmoney.conf') or fname.endswith('youmoney.db'):
+                newfile = fname + '.%d%02d%02d.%02d%02d%02d.bak' % time.localtime()[:6]
+                shutil.copyfile(fname, newfile)
                 continue
             logfile.info('remove file:', fname)
             try:

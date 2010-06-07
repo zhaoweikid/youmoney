@@ -55,6 +55,10 @@ def decrypt_data(data):
     return base64.b64decode(rsa.decrypt(data, rsa_pri))
 '''   
 
+class MyHTTP(httplib.HTTP):
+    _http_vsn = 11
+    _http_vsn_str = 'HTTP/1.1'
+
 class FilePost:
     BOUNDARY = '------------tHiS_Is_My_BoNdArY_'
     CRLF = '\r\n'
@@ -79,7 +83,8 @@ class FilePost:
         host = urlparts[1]
         sel = self.url[self.url.find(host) + len(host):]
         
-        h = httplib.HTTP(urlparts[1])
+        #h = httplib.HTTP(urlparts[1])
+        h = MyHTTP(urlparts[1])
         h.putrequest('POST', sel)
         h.putheader('host', host)
         h.putheader('content-type', content_type)

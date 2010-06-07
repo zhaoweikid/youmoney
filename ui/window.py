@@ -63,9 +63,9 @@ class MainFrame (wx.Frame):
         task.taskq.put({'id':1, 'type':'update', 'frame':self})
 
         # sync
-        if self.conf['sync_way'] == 'user':
-            sync.synchronization(self, alert=False)
-            self.reload()
+        #if self.conf['sync_way'] == 'user':
+        #    sync.synchronization(self, alert=False)
+        #    self.reload()
 
         
     def initcate(self):
@@ -130,6 +130,12 @@ class MainFrame (wx.Frame):
             sys.exit()
         
         self.conf.setid(storage.name)
+
+        # sync
+        if self.conf['sync_way'] == 'user':
+            sync.synchronization(self, alert=False)
+            self.reload()
+
 
         # check record cycle
         rc = recycle.RecordCycle(self.db)
