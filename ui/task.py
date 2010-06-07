@@ -19,6 +19,8 @@ class Task (threading.Thread):
                 task = taskq.get()
             except:
                 continue
+            if task is None:
+                break
             try:
                 func = getattr(self, 'do_' + task['type'])
             except:
@@ -55,6 +57,8 @@ class MyRequest (SocketServer.StreamRequestHandler):
         elif line.startswith('message:'):
             evt = event.MyAlertEvent(message=line[line.find(':')+1:], name='alert')
             wx.PostEvent(self.server.frame, evt)
+        elif line.startswith('quit'):
+            return
             
         self.wfile.write('ok\r\n')
         self.wfile.flush()

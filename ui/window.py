@@ -323,6 +323,7 @@ class MainFrame (wx.Frame):
     def OnCloseWindow(self, event):
         #if self.conf['sync_way'] == 'user':
         #    sync.synchronization(self)
+        task.taskq.put(None)
         self.Destroy()
         sys.exit() 
 
