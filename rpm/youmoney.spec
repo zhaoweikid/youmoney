@@ -1,5 +1,5 @@
 Name: YouMoney
-Version: 0.8.7
+Version: 0.9.5
 Release: 1
 Summary: YouMoney - free personal finance software
 Group: Applications/Archiving
@@ -57,6 +57,7 @@ rm -rf /usr/share/applications/YouMoney.desktop
 %{_prefix}/share/YouMoney/YouMoney.desktop
 %{_prefix}/share/YouMoney/lang/en_US/LC_MESSAGES/*
 %{_prefix}/share/YouMoney/lang/zh_CN/LC_MESSAGES/*
+%{_prefix}/share/YouMoney/lang/zh_TW/LC_MESSAGES/*
 %{_prefix}/share/YouMoney/lang/ja_JP/LC_MESSAGES/*
 %{_prefix}/share/YouMoney/images/*
 %{_prefix}/share/YouMoney/data/*
