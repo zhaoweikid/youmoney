@@ -7,7 +7,8 @@ import wx
 import logfile, update, event, version
 
 # task: {'id':xx, 'type':xxx}
-taskq = Queue.Queue()
+taskq  = Queue.Queue()
+server = None
 
 class Task (threading.Thread):
     def __init__(self):
@@ -70,7 +71,9 @@ class MyServer (SocketServer.TCPServer):
         SocketServer.TCPServer.__init__(self, ('127.0.0.1', 9596), MyRequest)
 
 def start_server(frame):
+    global server
     svr = MyServer(frame)
+    server = svr
     svr.serve_forever()
 
 

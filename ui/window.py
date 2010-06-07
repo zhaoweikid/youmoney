@@ -324,6 +324,7 @@ class MainFrame (wx.Frame):
         #if self.conf['sync_way'] == 'user':
         #    sync.synchronization(self)
         task.taskq.put(None)
+        task.server.shutdown()
         self.Destroy()
         sys.exit() 
 
