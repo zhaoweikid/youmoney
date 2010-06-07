@@ -6,14 +6,44 @@ import wx.lib.hyperlink as hl
 import urllib, urllib2, json
 import logfile
 
-class IncomeDialog (sc.SizedDialog):
+
+class MySizedDialog(wx.Dialog):
+    def __init__(self, *args, **kwargs):    
+        wx.Dialog.__init__(self, *args, **kwargs)
+    
+        if sys.platform == 'win32': 
+            self.SetExtraStyle(wx.WS_EX_VALIDATE_RECURSIVELY)
+    
+        self.borderLen = 12
+        self.mainPanel = sc.SizedPanel(self, -1) 
+    
+        mysizer = wx.BoxSizer(wx.VERTICAL)
+        mysizer.Add(self.mainPanel, 1, wx.EXPAND | wx.ALL, self.GetDialogBorder())
+        self.SetSizer(mysizer)
+    
+        self.SetAutoLayout(True)
+    
+    def GetContentsPane(self):
+        return self.mainPanel
+    
+    def SetButtonSizer(self, sizer):
+        self.GetSizer().Add(sizer, 0, wx.EXPAND | wx.BOTTOM | wx.RIGHT, self.GetDialogBorder())
+    
+        # Temporary hack to fix button ordering problems.
+        cancel = self.FindWindowById(wx.ID_CANCEL)
+        no = self.FindWindowById(wx.ID_NO)
+        if no and cancel:
+            cancel.MoveAfterInTabOrder(no)
+
+
+class IncomeDialog (MySizedDialog):
     def __init__(self, parent, readydata):
         if readydata['mode'] == 'insert':
             title = _('Add income item')
         else:
             title = _('Edit income item')
 
-        sc.SizedDialog.__init__(self, None, -1, title, 
+        MySizedDialog.__init__(self, None, -1, title, 
                                 style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         self.parent = parent
         self.data = readydata
@@ -79,13 +109,13 @@ class IncomeDialog (sc.SizedDialog):
 
 
 
-class PayoutDialog (sc.SizedDialog):
+class PayoutDialog (MySizedDialog):
     def __init__(self, parent, readydata):
         if readydata['mode'] == 'insert':
             title = _('Add payout item')
         else:
             title = _('Edit payout item')
-        sc.SizedDialog.__init__(self, None, -1, title, 
+        MySizedDialog.__init__(self, None, -1, title, 
                                 style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         self.parent = parent
         self.data = readydata
@@ -151,13 +181,13 @@ class PayoutDialog (sc.SizedDialog):
         self.explain.Clear()
         self.date.SetFocus()
 
-class CycleDialog (sc.SizedDialog):
+class CycleDialog (MySizedDialog):
     def __init__(self, parent, readydata):
         if readydata['mode'] == 'insert':
             title = _('Add cycle item')
         else:
             title = _('Edit cycle item')
-        sc.SizedDialog.__init__(self, None, -1, title, 
+        MySizedDialog.__init__(self, None, -1, title, 
                                 style=wx.DEFAULT_DIALOG_STYLE)
         self.parent = parent
         self.data = readydata
@@ -256,7 +286,7 @@ class CycleDialog (sc.SizedDialog):
         self.num.SetFocus()
 
 
-class CategoryDialog (sc.SizedDialog):
+class CategoryDialog (MySizedDialog):
     def __init__(self, parent, readydata):
         self.data = readydata
 
@@ -265,7 +295,7 @@ class CategoryDialog (sc.SizedDialog):
         else:
             title = _('Edit Category')
 
-        sc.SizedDialog.__init__(self, None, -1, title, 
+        MySizedDialog.__init__(self, None, -1, title, 
                                 style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         self.parent = parent
         panel = self.GetContentsPane()
@@ -308,9 +338,9 @@ class CategoryDialog (sc.SizedDialog):
         return data
 
 
-class UpdateDialog (sc.SizedDialog):
+class UpdateDialog (MySizedDialog):
     def __init__(self, parent, version):
-        sc.SizedDialog.__init__(self, None, -1, _('Update'), 
+        MySizedDialog.__init__(self, None, -1, _('Update'), 
                                 style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         self.parent = parent
         panel = self.GetContentsPane()
@@ -325,9 +355,9 @@ class UpdateDialog (sc.SizedDialog):
         self.Fit()
 
 
-class PasswordDialog (sc.SizedDialog):
+class PasswordDialog (MySizedDialog):
     def __init__(self, parent):
-        sc.SizedDialog.__init__(self, None, -1, _('Set Password'), 
+        MySizedDialog.__init__(self, None, -1, _('Set Password'), 
                                 style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         self.parent = parent
         panel = self.GetContentsPane()
@@ -354,9 +384,9 @@ class PasswordDialog (sc.SizedDialog):
     def set_warn(self, msg):
         self.warn.SetLabel(msg)       
 
-class UserCheckDialog (sc.SizedDialog):
+class UserCheckDialog (MySizedDialog):
     def __init__(self, parent):
-        sc.SizedDialog.__init__(self, None, -1, 'YouMoney ' + _('User Password'), 
+        MySizedDialog.__init__(self, None, -1, 'YouMoney ' + _('User Password'), 
                                 style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         self.parent = parent
         panel = self.GetContentsPane()
@@ -380,9 +410,9 @@ class UserCheckDialog (sc.SizedDialog):
         self.warn.SetLabel(msg)       
 
 
-class ImportCateDialog (sc.SizedDialog):
+class ImportCateDialog (MySizedDialog):
     def __init__(self, parent):
-        sc.SizedDialog.__init__(self, None, -1, _('Import Category'), 
+        MySizedDialog.__init__(self, None, -1, _('Import Category'), 
                                 style=wx.DEFAULT_DIALOG_STYLE)
         self.parent = parent
         panel = self.GetContentsPane()
@@ -427,9 +457,9 @@ class ImportCateDialog (sc.SizedDialog):
         dlg.Destroy()
 
 
-class ImportDataDialog (sc.SizedDialog):
+class ImportDataDialog (MySizedDialog):
     def __init__(self, parent):
-        sc.SizedDialog.__init__(self, None, -1, _('Import Data'), 
+        MySizedDialog.__init__(self, None, -1, _('Import Data'), 
                                 style=wx.DEFAULT_DIALOG_STYLE)
         self.parent = parent
         panel = self.GetContentsPane()
@@ -477,7 +507,7 @@ class ImportDataDialog (sc.SizedDialog):
             self.filepath.SetValue(path)
         dlg.Destroy()
 
-class UserPassDialog (sc.SizedDialog):
+class UserPassDialog (MySizedDialog):
     WAY_ADD = 0
     WAY_SET = 1
     WAY_MODIFY = 0
@@ -548,7 +578,7 @@ class UserPassDialog (sc.SizedDialog):
         self.warn.SetLabel(msg)       
 
 
-class SyncDialog (sc.SizedDialog):
+class SyncDialog (MySizedDialog):
     def __init__(self, parent, conf):
         super(SyncDialog, self).__init__(None, -1, _('Sync User Data'), style=wx.DEFAULT_DIALOG_STYLE)
         self.parent = parent
