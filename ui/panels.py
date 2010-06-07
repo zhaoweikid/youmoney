@@ -207,11 +207,11 @@ class ItemListPanel (wx.Panel, listmix.ColumnSorterMixin):
         box.Add(wx.StaticText(self, -1, _(" Month:"), (8, 10)), 0, wx.ALIGN_CENTER)
         box.Add(wx.StaticText(self, -1, _("  Sum: "), (8, 10)), 0, wx.ALIGN_CENTER)
         #self.total = wx.TextCtrl(self, -1, size=(100,-1), style=wx.TE_READONLY)
-        self.total = wx.StaticText(self, -1, "", (8, 10))
+        self.total = wx.StaticText(self, -1, "", (8, 10), (60, -1))
         box.Add(self.total, 0, wx.ALIGN_CENTER)
 
         box.Add(wx.StaticText(self, -1, _("  Surplus: "), (8, 10)), 0, wx.ALIGN_CENTER)
-        self.surplus = wx.StaticText(self, -1, "", (8, 10))
+        self.surplus = wx.StaticText(self, -1, "", (8, 10), (60, -1))
         box.Add(self.surplus, 0, wx.ALIGN_CENTER)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
