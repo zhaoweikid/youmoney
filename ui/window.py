@@ -134,8 +134,7 @@ class MainFrame (wx.Frame):
         # sync
         if self.conf['sync_way'] == 'user':
             sync.synchronization(self, alert=False)
-            self.reload()
-
+            #self.reload()
 
         # check record cycle
         rc = recycle.RecordCycle(self.db)
