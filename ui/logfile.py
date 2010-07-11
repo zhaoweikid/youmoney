@@ -14,10 +14,11 @@ class LogFile:
             self.file = sys.stdout
         else:
             if os.path.isfile(filename):
-                bakfile = filename + '.bak'
-                if os.path.isfile(bakfile):
-                    os.remove(bakfile)
-                shutil.move(filename, bakfile)
+                if os.path.getsize(filename) > 1024 * 1024 * 2:
+                    bakfile = filename + '.bak'
+                    if os.path.isfile(bakfile):
+                        os.remove(bakfile)
+                    shutil.move(filename, bakfile)
             self.file = open(filename, 'a+')
 
     def info(self, *s):

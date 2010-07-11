@@ -127,8 +127,8 @@ class MainFrame (wx.Frame):
         self.conf.setid(storage.name)
 
         # sync
-        #if self.conf['sync_way'] == 'user':
-        #    sync.synchronization(self, alert=False)
+        if self.conf['sync_way'] == 'user':
+            sync.synchronization(self, alert=False)
 
         # check record cycle
         rc = recycle.RecordCycle(self.db)
@@ -226,7 +226,7 @@ class MainFrame (wx.Frame):
         self.editmenu.Append(self.ID_EDIT_ADDINCOME, _('Add Income')+"\tAlt+I")
         self.editmenu.Append(self.ID_EDIT_ADDPAY, _('Add Payout')+"\tAlt+P")
         self.editmenu.Append(self.ID_EDIT_ADDCYCLE, _('Add Record Cycle')+"\tAlt+C")
-        #self.editmenu.Append(self.ID_EDIT_SYNC, _('Sync User Data')+"\tAlt+Y")
+        self.editmenu.Append(self.ID_EDIT_SYNC, _('Sync User Data')+"\tAlt+Y")
         self.editmenu.AppendSeparator()
         self.editmenu.Append(self.ID_EDIT_CATE, _('Category')+"\tAlt+1")
         self.editmenu.Append(self.ID_EDIT_INCOME, _('Income List')+"\tAlt+2")
@@ -267,7 +267,7 @@ class MainFrame (wx.Frame):
         self.Bind(wx.EVT_MENU, self.OnIncome, id=self.ID_EDIT_ADDINCOME)
         self.Bind(wx.EVT_MENU, self.OnPayout, id=self.ID_EDIT_ADDPAY)
         self.Bind(wx.EVT_MENU, self.OnCycle, id=self.ID_EDIT_ADDCYCLE)
-        #self.Bind(wx.EVT_MENU, self.OnSync, id=self.ID_EDIT_SYNC)
+        self.Bind(wx.EVT_MENU, self.OnSync, id=self.ID_EDIT_SYNC)
 
         self.Bind(wx.EVT_MENU, self.OnEditTabCate, id=self.ID_EDIT_CATE)
         self.Bind(wx.EVT_MENU, self.OnEditTabIncome, id=self.ID_EDIT_INCOME)
@@ -304,7 +304,7 @@ class MainFrame (wx.Frame):
         self.toolbar.AddLabelTool(self.ID_TB_INCOME, _('Add Income')+'(&I)', load_bitmap(os.path.join(self.bmpdir, 'cashin.png')), shortHelp=_('Add Income'), longHelp=_('Add Income')) 
         self.toolbar.AddLabelTool(self.ID_TB_PAYOUT, _("Add Payout")+'(&P)', load_bitmap(os.path.join(self.bmpdir, 'cashout.png')), shortHelp=_("Add Payout"), longHelp=_("Add Payout")) 
         self.toolbar.AddLabelTool(self.ID_TB_CYCLE, _("Add Record Cycle")+'(&C)', load_bitmap(os.path.join(self.bmpdir, 'cycle.png')), shortHelp=_("Record Cycle"), longHelp=_("Record Cycle")) 
-        #self.toolbar.AddLabelTool(self.ID_TB_SYNC, _("Sync")+'(&Y)', load_bitmap(os.path.join(self.bmpdir, 'sync.png')), shortHelp=_("Sync user data"), longHelp=_("Sync user data")) 
+        self.toolbar.AddLabelTool(self.ID_TB_SYNC, _("Sync")+'(&Y)', load_bitmap(os.path.join(self.bmpdir, 'sync.png')), shortHelp=_("Sync user data"), longHelp=_("Sync user data")) 
 
         self.toolbar.Realize ()
         self.SetToolBar(self.toolbar)
@@ -313,7 +313,7 @@ class MainFrame (wx.Frame):
         self.Bind(wx.EVT_TOOL, self.OnIncome, id=self.ID_TB_INCOME)
         self.Bind(wx.EVT_TOOL, self.OnPayout, id=self.ID_TB_PAYOUT)
         self.Bind(wx.EVT_TOOL, self.OnCycle, id=self.ID_TB_CYCLE)
-        #self.Bind(wx.EVT_TOOL, self.OnSync, id=self.ID_TB_SYNC)
+        self.Bind(wx.EVT_TOOL, self.OnSync, id=self.ID_TB_SYNC)
 
     def make_statusbar(self):
         self.statusbar = self.CreateStatusBar()
@@ -321,8 +321,9 @@ class MainFrame (wx.Frame):
         self.SetStatusWidths([-1])
 
     def OnCloseWindow(self, event):
-        #if self.conf['sync_way'] == 'user':
-        #    sync.synchronization(self)
+        if self.conf['sync_way'] == 'user':
+            sync.synchronization(self)
+
         task.taskq.put(None)
         logfile.info('task thread end')
         vi = sys.version_info
@@ -331,7 +332,7 @@ class MainFrame (wx.Frame):
         else:
             task.server.server_close()
         logfile.info('server thread end')
-
+        
         self.Destroy()
         sys.exit() 
 
