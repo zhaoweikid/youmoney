@@ -548,7 +548,7 @@ class ContentTab (wx.Notebook):
 
     def load_category(self, cate):
         self.cate.load(cate)
-    
+        self.stat.reload_category(copy.deepcopy(self.parent.category.catelist_parent())) 
 
     def load_list(self):
         self.payoutlist.load()

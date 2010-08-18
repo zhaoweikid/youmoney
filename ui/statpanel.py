@@ -73,6 +73,13 @@ class StatPanel (wx.Panel):
         self.Bind(wx.EVT_BUTTON, self.OnTableStatClick, self.tablestat)
         self.Bind(wx.EVT_COMBOBOX, self.OnChooseType, self.type) 
 
+    def reload_category(self, cates):
+        self.data = cates
+        for k in self.data:
+            self.data[k].insert(0, _('All Categories'))        
+
+        self.choose_type()
+
 
     def query_input(self, qtype='category'):
         fromdate  = self.fromdate.GetValue()
@@ -119,8 +126,8 @@ class StatPanel (wx.Panel):
         prefixsql = 'select num,year,month,day,type,category from capital '
         #sql = "select num,year,month from capital where type=%d and year>=%s and year<=%s" % (mytype, fromyear, toyear)
         if qtype == 'category':
-            if cate != _('All Categories'):
-                return [], (), ()
+            #if cate != _('All Categories'):
+            #    return [], (), ()
 
             if fromyear == toyear and frommonth == tomonth:
                 #sql = "select num,year,month,day,type,category from capital where year>=%d and year<=%d and month>=%d and month<=%d and day>=%d and day<=%d %s" % (fromyear, toyear, minmonth, maxmonth, fromday, today, endsql)
@@ -174,6 +181,7 @@ class StatPanel (wx.Panel):
 
     def OnCateStatClick(self, event):
         type  = self.type.GetValue()
+        icate = self.category.GetValue()
         
         if type == _('Payout'):
             mytype = 0
@@ -199,9 +207,14 @@ class StatPanel (wx.Panel):
                 continue
 
             cate = row['category'] 
-            pcate = frame.category.parent_cate_name(row['type'], cate) 
-            if not pcate:
+
+            if icate == _('All Categories'):
+                pcate = frame.category.parent_cate_name(row['type'], cate) 
+                if not pcate:
+                    pcate = frame.category.catemap(row['type'], cate)
+            else:
                 pcate = frame.category.catemap(row['type'], cate)
+                
 
             if catevals.has_key(pcate):
                 catevals[pcate] += row['num']
@@ -211,7 +224,8 @@ class StatPanel (wx.Panel):
         data = []
         for k in catevals:
             data.append({'data':catevals[k], 'name':k})
-            
+        
+        logfile.info('data:', data, 'surplus_val:', surplus_val)    
         self.content.draw_pie(data, surplus_val)
 
     def OnMonthStatClick(self, event):
@@ -304,6 +318,9 @@ class StatPanel (wx.Panel):
         return data
 
     def OnChooseType(self, event):
+        self.choose_type()
+
+    def choose_type(self):
         val = self.type.GetValue()
         self.default_type = val
         self.category.Clear()
