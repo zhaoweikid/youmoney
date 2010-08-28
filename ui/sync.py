@@ -1,6 +1,7 @@
 # coding: utf-8
 import os, sys
-import md5, urlparse, time
+import urlparse, time
+import hashlib
 import wx
 import urllib, urllib2, traceback
 import httplib, mimetypes
@@ -11,7 +12,7 @@ import logfile, storage
 socket.setdefaulttimeout(10)
 
 def sumfile(filename):
-    m = md5.new()
+    m = hashlib.md5()
     fobj = open(filename, 'rb')
     while True:
         d = fobj.read(8086)
@@ -22,7 +23,7 @@ def sumfile(filename):
     return m.hexdigest()
 
 def sumdata(data):
-    m = md5.new()
+    m = hashlib.md5()
     start = 0
     while True:
         d = data[start: start+8086]
