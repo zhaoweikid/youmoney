@@ -115,17 +115,6 @@ def main():
         f = open(reportfile, 'a+')
         f.write(s)
         f.close()
-
-        try:
-            data = urllib.urlencode({'user':str(ui.storage.name), 
-                                 'sys':ui.update.system_version(), 
-                                 'version':str(version.VERSION), 'info':s})
-            resp = urllib2.urlopen('http://%s/report' % (ui.config.cf['server']), data)  
-            logfile.info('report result:', resp.read())
-        except:
-            pass
-        else:
-            os.remove(reportfile)
         raise
 
 if __name__ == '__main__':

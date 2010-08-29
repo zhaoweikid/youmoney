@@ -4,7 +4,7 @@ import wx
 import wx.lib.sized_controls as sc
 import wx.lib.hyperlink as hl
 import urllib, urllib2, json
-import logfile
+import logfile, netreq
 
 
 class MySizedDialog(wx.Dialog):
@@ -706,6 +706,7 @@ class SyncDialog (MySizedDialog):
     def user_add(self):
         isok = False
         dlg = UserPassDialog(self, self.conf, 'add')
+        dlg.CenterOnScreen()
         while True:
             ret = dlg.ShowModal()
             if ret != wx.ID_OK:
@@ -714,18 +715,22 @@ class SyncDialog (MySizedDialog):
             if vals['password1'] != vals['password2']:
                 dlg.set_warn(_('Different password.'))
                 continue
-            url = 'http://%s/sync?action=useradd&ident=%s&user=%s&pass=%s' % \
-                    (self.conf['server'], self.conf['id'], urllib.quote(vals['username']), urllib.quote(vals['password1']))
+            #url = 'http://%s/sync?action=useradd&ident=%s&user=%s&pass=%s' % \
+            #        (self.conf['server'], self.conf['id'], urllib.quote(vals['username']), urllib.quote(vals['password1']))
+    
+            req = {'act':'adduser', 'id':self.conf['id'], 
+                   'username':vals['username'], 'password':vals['password1']}
             try:
-                resp = urllib2.urlopen(url) 
-                s = resp.read()
+                reqconn = netreq.Request(5)
+                header, data = reqconn.docmd(req)
+                reqconn.close()
             except Exception, e:
                 wx.MessageBox(str(e), _('Error'), wx.OK|wx.ICON_INFORMATION)
                 continue
             
-            val = json.loads(s)
-            errstr = val.get('error')
-            if errstr:
+            val = json.loads(data)
+            #errstr = val.get('error')
+            if val['ret'] != 1:
                 logfile.info(errstr)
                 dlg.set_warn(self.errors[val['status']])
                 continue
@@ -752,6 +757,7 @@ class SyncDialog (MySizedDialog):
             wx.MessageBox(_('Not found user setting, please login or registe first.'), _('Information'), wx.OK|wx.ICON_INFORMATION)
             return
         dlg = UserPassDialog(self, self.conf, 'modify')
+        dlg.CenterOnScreen()
         while True:
             ret = dlg.ShowModal()
             if ret != wx.ID_OK:
@@ -761,16 +767,24 @@ class SyncDialog (MySizedDialog):
                 dlg.set_warn(_('Different password.'))
                 continue
 
-            url = 'http://%s/sync?action=usermodify&ident=%s&user=%s&pass=%s&newpass=%s' % \
-                    (self.conf['server'], self.conf['id'], urllib.quote(vals['username']), 
-                     urllib.quote(vals['oldpass']), urllib.quote(vals['password1']))
- 
-            resp = urllib2.urlopen(url) 
-            s = resp.read()
-            
-            val = json.loads(s)
-            errstr = val.get('error')
-            if errstr:
+            #url = 'http://%s/sync?action=usermodify&ident=%s&user=%s&pass=%s&newpass=%s' % \
+            #        (self.conf['server'], self.conf['id'], urllib.quote(vals['username']), 
+            #         urllib.quote(vals['oldpass']), urllib.quote(vals['password1']))
+
+            req = {'act':'modifyuser', 'id':self.conf['id'],
+                   'username':vals['username'], 'password':vals['password1'], 
+                   'oldpass':vals['oldpass']}
+           
+            try:
+                reqconn = netreq.Request()
+                header, data = reqconn.docmd(req)
+            except Exception, e:
+                wx.MessageBox(str(e), _('Error'), wx.OK|wx.ICON_INFORMATION)
+                continue
+     
+            val = json.loads(data)
+            #errstr = val.get('error')
+            if val['ret'] != 1:
                 logfile.info(errstr)
                 dlg.set_warn(self.errors[val['status']])
                 continue

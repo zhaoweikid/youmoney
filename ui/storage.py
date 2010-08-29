@@ -8,7 +8,7 @@ createtable = ['create table if not exists category (id integer primary key auto
                'create table if not exists capital (id integer primary key autoincrement, category integer, num float, ctime integer, year integer, month integer, day integer, payway integer, explain text, type integer default 0, cycle integer default 0)',
                'create table if not exists user(password varchar(128), mtime integer default 0)', 
                'create table if not exists identity(name varchar(128))', 
-               'create table if not exists verinfo(version varchar(32), sys varchar(32), sync_ver integer default 0)',
+               'create table if not exists verinfo(version varchar(32), sys varchar(32), sync_ver integer default 0, sync_first_time integer default 0)',
                'create table if not exists recycle(id integer primary key autoincrement, category integer, num float, ctime integer, payway integer, type integer default 0, addtime integer, explain text, lasttime integer default 0)',
                ]
 
@@ -43,7 +43,7 @@ class DBStorage:
         sql = "select * from identity"
         ret = self.query(sql, False)
         if not ret:
-            name = '%f.%s.%s.%s' % (time.time(), version.VERSION, sys.platform, uuid.uuid1().hex)
+            name = '%d.%s.%s.%s' % (int(time.time()), version.VERSION, sys.platform, uuid.uuid1().hex)
             sql = "insert into identity values ('%s')" % (name)
             self.execute(sql)
         else:

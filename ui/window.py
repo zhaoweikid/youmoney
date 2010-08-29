@@ -48,20 +48,24 @@ class MainFrame (wx.Frame):
         self.SetAutoLayout(True)
 
         self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
-        self.check_password()
-
         self.Bind(event.EVT_UPDATE_NOTIFY, self.OnUpdateNotify) 
         self.Bind(event.EVT_MYALERT, self.OnMyAlert) 
-        wx.CallLater(100, self.notify)
-
         self.initcate()
         
+        self.check_password()
+
         # start server
         th = threading.Thread(target=task.start_server, args=(self,))
         th.start()
         # start check update
         task.taskq.put({'id':1, 'type':'update', 'frame':self})
 
+        # sync
+        if self.conf['sync_way'] == 'user':
+            if sync.synchronization(self):
+                self.reload()
+
+        wx.CallLater(100, self.notify)
         
     def initcate(self):
         sql = "select count(*) from category"
@@ -125,16 +129,15 @@ class MainFrame (wx.Frame):
             sys.exit()
         
         self.conf.setid(storage.name)
-
+        
         # sync
-        if self.conf['sync_way'] == 'user':
-            sync.synchronization(self, alert=False)
+        #if self.conf['sync_way'] == 'user':
+        #    sync.synchronization(self)
 
         # check record cycle
         rc = recycle.RecordCycle(self.db)
         rc.cycle()
         rc = None
-
         
     def load(self):
         tday = datetime.date.today()
@@ -146,7 +149,6 @@ class MainFrame (wx.Frame):
         self.category = Category(cates, recs)
         self.SetStatusText(_('Database file: ') + self.conf['lastdb'], 0)
 
-    
     def reload(self):
         self.load()
         self.book.load_category(self.category)
@@ -322,7 +324,9 @@ class MainFrame (wx.Frame):
 
     def OnCloseWindow(self, event):
         if self.conf['sync_way'] == 'user':
-            sync.synchronization(self)
+            busy = wx.BusyInfo(_("One moment please, waiting for commit modification..."))
+            wx.Yield()
+            sync.synchronization(self, onlyci=True)
 
         task.taskq.put(None)
         logfile.info('task thread end')

@@ -2,10 +2,10 @@
 import os, sys
 import socket
 import platform
-import urllib, urllib2, httplib
-import urlparse, traceback, subprocess
+import json
+import traceback, subprocess
 import version
-import logfile, event, storage
+import logfile, event, storage, netreq
 import wx
 
 def windows_version():
@@ -38,8 +38,6 @@ def system_version():
 
 class Update:
     def __init__(self):
-        self.updatefile = ['http://youmoney.pythonid.com/update.php', 
-                           'http://youmoney.googlecode.com/files/update.txt']
         self.home  = os.path.dirname(os.path.abspath(sys.argv[0]))
         if sys.platform.startswith('win32'):
             self.tmpdir = os.path.join(self.home, 'tmp')
@@ -50,44 +48,27 @@ class Update:
             os.mkdir(self.tmpdir)
 
     def update(self):
-        ret = None
-        for u in self.updatefile:
-            try:
-                logfile.info('try update file:', u)
-                info = system_version()
-                logfile.info('version:', info) 
-                info = urllib.quote(info).strip()
-                u = u + '?sys=%s&ver=%s&info=%s&name=%s' % (sys.platform, version.VERSION, info, storage.name)
-                ret = self.updateone(u)
-            except:
-                logfile.info(traceback.format_exc())
-                continue
-            break
+        newver = None
+        try:
+            info = system_version()
+            logfile.info('local system:', info) 
+            req = {'act':'checklog', 'sys':sys.platform, 'ver':version.VERSION, 'info':info, 'name':storage.name}
+            reqconn = netreq.Request(5)
+            header, data = reqconn.docmd(req)
+            reqconn.close()
 
-        return ret
+            newver = header.get('version')
+            if not self.version_diff(newver):
+                logfile.info('not need update:', newver)
+                return None
+            logfile.info('found new version:', newver)
 
+            return newver
+        except:
+            logfile.info(traceback.format_exc())
 
-    def updateone(self, fileurl):
-        socket.setdefaulttimeout = 30
-        fs = urllib2.urlopen(fileurl)
-        lines = fs.readlines()
-        fs.close() 
-
-        info = {}
-        for line in lines:
-            if line.startswith('#'):
-                continue
-            parts = line.strip().split('\t')
-            if len(parts) != 2:
-                continue
-            info[parts[0]] = parts[1]
-    
-        if not self.version_diff(info['version']):
-            logfile.info('not need update:', info['version'])
-            return None
-        logfile.info('found new version: ', info['version']) 
-        return info['version']
-   
+        return newver
+  
     def version_diff(self, newver):
         if int(newver.replace('.','')) > int(version.VERSION.replace('.','')):
             return 1
