@@ -97,8 +97,8 @@ def main():
         vername  = os.path.join(os.environ['HOME'], ".youmoney", "verion.dat")
         reportfile  = os.path.join(os.environ['HOME'], "youmoney.report.txt")
 
-    logfile.install(filename)
-    #logfile.install('stdout')
+    #logfile.install(filename)
+    logfile.install('stdout')
         
     f = open(vername, 'w')
     f.write(version.VERSION)

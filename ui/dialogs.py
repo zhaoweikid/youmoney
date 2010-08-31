@@ -724,17 +724,18 @@ class SyncDialog (MySizedDialog):
                 reqconn = netreq.Request(5)
                 header, data = reqconn.docmd(req)
                 reqconn.close()
+
+                val = json.loads(header)
+                #errstr = val.get('error')
+                if val['ret'] != 1:
+                    logfile.info(errstr)
+                    dlg.set_warn(self.errors[val['status']])
+                    continue
+     
             except Exception, e:
                 wx.MessageBox(str(e), _('Error'), wx.OK|wx.ICON_INFORMATION)
                 continue
             
-            val = json.loads(data)
-            #errstr = val.get('error')
-            if val['ret'] != 1:
-                logfile.info(errstr)
-                dlg.set_warn(self.errors[val['status']])
-                continue
-             
             wx.MessageBox(_('User and password are successfully added!'), _('Success'), wx.OK|wx.ICON_INFORMATION)
             self.conf['user'] = vals['username']
             self.conf['password'] = vals['password1']

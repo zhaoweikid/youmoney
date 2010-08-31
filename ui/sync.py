@@ -92,6 +92,8 @@ class DataSync:
             logfile.info('add/commit:', req, 'data:', len(s))
             header, data = self.reqconn.docmd(req, s)
             return header
+        
+        return {'ret':-2, 'error':'add status error:' + str(self.status)}
 
     def update_db(self):
         confpath = os.path.join(self.conf.home, 'data', 'youmoney.conf')
@@ -125,8 +127,9 @@ class DataSync:
             os.rename(tmpdb, lastdb)
 
             return header
-
-
+        
+        return {'ret':-2, 'error':'update status error:' + str(self.status)}
+        
     def sync_db(self):
         if self.status == self.ADD or self.status == self.COMMIT:
             return self.add_db()
@@ -166,9 +169,9 @@ def do_sync(conf, db_sync_first_time, win, onlyci):
                 _('Sync Data Conflict'), wx.YES_NO | wx.NO_DEFAULT| wx.ICON_INFORMATION)
         ret2 = dlg2.ShowModal()
         if ret2 == wx.ID_YES:
-            status = DataSync.UPDATE
+            status = datasync.status = DataSync.UPDATE
         elif ret2 == wx.ID_NO:
-            status = DataSync.COMMIT
+            status = datasync.status = DataSync.COMMIT
         dlg2.Destroy()
                         
     # maybe first sync
@@ -233,7 +236,7 @@ def synchronization(win, onlyci=False):
             sql = "update verinfo set sync_first_time=%d" % int(time.time())
             win.db.execute(sql)
 
- 
+    return True 
 
 
  

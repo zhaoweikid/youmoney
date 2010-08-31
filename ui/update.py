@@ -55,9 +55,10 @@ class Update:
             req = {'act':'checklog', 'sys':sys.platform, 'ver':version.VERSION, 'info':info, 'name':storage.name}
             reqconn = netreq.Request(5)
             header, data = reqconn.docmd(req)
+            logfile.info('update header:', header)
             reqconn.close()
 
-            newver = header.get('version')
+            newver = header.get('version', '')
             if not self.version_diff(newver):
                 logfile.info('not need update:', newver)
                 return None
