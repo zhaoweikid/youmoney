@@ -2,10 +2,10 @@
 import os, sys, string, re
 import wx
 import wx.lib.sized_controls as sc
+from wx.lib.mixins.listctrl import CheckListCtrlMixin
 import wx.lib.hyperlink as hl
 import urllib, urllib2, json
 import logfile, netreq
-
 
 class MySizedDialog(wx.Dialog):
     def __init__(self, *args, **kwargs):    
@@ -804,4 +804,141 @@ class SyncDialog (MySizedDialog):
 
 
 
+
+class CheckListCtrl(wx.ListCtrl, CheckListCtrlMixin):
+    def __init__(self, parent, data):
+        wx.ListCtrl.__init__(self, parent, -1, style=wx.LC_REPORT)
+        CheckListCtrlMixin.__init__(self)
+
+        self.data = data
+        self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnItemActivated)
+
+        self.init()
+
+    def init(self):
+        fields = self.data[0]
+        for i in range(0, len(fields)):
+            fi = fields[i]
+            self.InsertColumn(i, fi)
+
+        newdata = self.data[1]
+        olddata = self.data[2]
+
+        self.datamap = []
+       
+        for i in range(0, len(newdata)):
+            row = newdata[i]
+            index = self.InsertStringItem(sys.maxint, row[0])
+            for ii in range(1, len(row)):
+                self.SetStringItem(index, ii, row[ii])
+ 
+            item = self.GetItem(index)
+            item.SetTextColour(wx.BLUE)
+            self.SetItem(item)
+          
+            self.datamap.append([0, row])
+            self.SetItemData(index, len(self.datamap) - 1)  
+
+        for i in range(0, len(newdata)):
+            row = newdata[i]
+            index = self.InsertStringItem(sys.maxint, row[0])
+            for ii in range(1, len(row)):
+                self.SetStringItem(index, ii, row[ii])
+            self.CheckItem(index)
+                
+            self.datamap.append([1, row])
+            self.SetItemData(index, len(self.datamap) - 1)  
+ 
+
+    def OnItemActivated(self, evt):
+        self.ToggleItem(evt.m_itemIndex)
+
+    def OnCheckItem(self, index, flag):
+        data = self.GetItemData(index)
+        #title = musicdata[data][1]
+        if flag:
+            what = "checked"
+        else:
+            what = "unchecked"
+        logfile.info('click at index %d was %s\n' % (index, what))
+
+
+class SyncConflictDialog (wx.Dialog):
+    def __init__(self, parent, data):
+        wx.Dialog.__init__(self, parent=parent, size=(800, 600), style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+        self.CenterOnScreen()
+
+        self.data = data
+ 
+        if sys.platform == 'win32': 
+            self.SetExtraStyle(wx.WS_EX_VALIDATE_RECURSIVELY)
+    
+        self.borderLen = 12
+        dialogborder = self.GetDialogBorder()
+    
+        mysizer = wx.BoxSizer(wx.VERTICAL)
+        #mysizer.Add(self.mainPanel, 1, wx.EXPAND | wx.ALL, self.GetDialogBorder())
+        mysizer.Add(wx.StaticText(self, -1, _('Local database conflict with network version, please check it. ')), 0, wx.EXPAND|wx.LEFT|wx.TOP, dialogborder)
+        mysizer.Add(wx.StaticText(self, -1, _('Blue is network version, Black is local vertion.')), 
+                    0, wx.EXPAND|wx.LEFT, dialogborder)
+
+        for k,v in self.data.iteritems():
+            mysizer.Add(wx.StaticText(self, -1, k), 0, wx.EXPAND|wx.LEFT|wx.TOP, dialogborder)
+            mysizer.Add(CheckListCtrl(self, v), 1, wx.EXPAND|wx.LEFT|wx.RIGHT, dialogborder)
+            
+        self.SetSizer(mysizer)
+        
+        self.SetButtonSizer(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL))
+        self.SetAutoLayout(True)
+
+    def SetButtonSizer(self, sizer):
+        self.GetSizer().Add(sizer, 0, wx.EXPAND | wx.BOTTOM | wx.RIGHT, self.GetDialogBorder())
+    
+        # Temporary hack to fix button ordering problems.
+        cancel = self.FindWindowById(wx.ID_CANCEL)
+        no = self.FindWindowById(wx.ID_NO)
+        if no and cancel:
+            cancel.MoveAfterInTabOrder(no)
+
+
+
+ 
+def test_conflict():
+    import i18n, logfile
+    
+    logfile.install("stdout")
+    i18n.install("../lang", ['en_US'])
+    class MyFrame(wx.Frame):
+        def __init__(self, parent, ID, pos=wx.DefaultPosition,
+                size=wx.DefaultSize, style=wx.DEFAULT_FRAME_STYLE):
+
+            wx.Frame.__init__(self, parent, ID, "Test", pos, size, style)
+            panel = wx.Panel(self, -1)
+
+            button = wx.Button(panel, 1003, "Go")
+            button.SetPosition((15, 15))
+            self.Bind(wx.EVT_BUTTON, self.OnGo, button)
+            self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
+
+        def OnGo(self, event):
+            dlg = SyncConflictDialog(self, data)
+            if dlg.ShowModal() == wx.ID_OK:
+                pass
+
+            dlg.Destroy()
+
+        def OnCloseWindow(self, event):
+            self.Destroy()
+
+    data = {'haha': [['id', 'name'], [['1', 'zhaowei']], [['1', 'bobo']]],
+            'category':[['id', 'name', 'parent'], [['1', 'gogo', '3']], []]}
+
+    app = wx.PySimpleApp()
+    frame = MyFrame(None, -1)
+    frame.Show() 
+    app.MainLoop()
+
+
+if __name__ == '__main__':
+    test_conflict()
 

@@ -8,7 +8,7 @@ from wx.lib.wordwrap import wordwrap
 import event
 from loader import load_bitmap
 import sqlite3, datetime, shutil
-from category import Category
+import datamodel
 import pprint, traceback, logfile, version
 from storage import catetypes, payways, cycles
 
@@ -68,8 +68,8 @@ class MainFrame (wx.Frame):
         wx.CallLater(100, self.notify)
         
     def initcate(self):
-        sql = "select count(*) from category"
-        count = self.db.query_one(sql)
+        dbx   = datamodel.CategoryData(self.db)
+        count = dbx.count()
         #print 'count:', count, 'iscreate:', config.cf.iscreate, 'lang:', config.cf['lang']
         if count == 0 and config.cf.iscreate and config.cf['lang'] == 'zh_CN':
             path = os.path.join(self.rundir, 'data', 'category.csv')
@@ -84,29 +84,29 @@ class MainFrame (wx.Frame):
 
     def notify(self):
         lastdb = self.conf['lastdb']
-        if sys.platform.startswith('win32') and lastdb.startswith(os.environ['SystemDrive']) and self.conf.lastdb_is_default():
+        if sys.platform.startswith('win32') and \
+           lastdb.startswith(os.environ['SystemDrive']) and \
+           self.conf.lastdb_is_default():
             wx.MessageBox(_('You db file is in default path, strongly advise save it to other path. Choose menu File->Change Account Path to change path.'), _('Note:'), wx.OK|wx.ICON_INFORMATION)
         
 
     def check_password(self):
-        sql = "select * from user" 
-        ret = self.db.query(sql)
-        if ret:
-            row = ret[0]
-            if row['password']:
-                dlg = dialogs.UserCheckDialog(self)
-                dlg.CenterOnScreen()
-                while True:
-                    chi = dlg.ShowModal()
-                    if chi != wx.ID_OK:
-                        sys.exit()
+        dbx = datamodel.UserData(self.db)
+        password = dbx.password()
+        if password:
+            dlg = dialogs.UserCheckDialog(self)
+            dlg.CenterOnScreen()
+            while True:
+                chi = dlg.ShowModal()
+                if chi != wx.ID_OK:
+                    sys.exit()
 
-                    passwd = dlg.values()['password'] 
-                    if passwd != row['password']:
-                        dlg.set_warn(_('Password error.'))
-                        continue
-                    break
-                dlg.Destroy()
+                passwd = dlg.values()['password'] 
+                if passwd != password:
+                    dlg.set_warn(_('Password error.'))
+                    continue
+                break
+            dlg.Destroy()
 
     def initdb(self, path=None):
         if not path:
@@ -140,14 +140,17 @@ class MainFrame (wx.Frame):
         rc = None
         
     def load(self):
+        catedbx = datamodel.CategoryData(self.db)
+        capidbx = datamodel.CapitalData(self.db)
+
         tday = datetime.date.today()
-        sql = "select * from category order by parent"
-        cates = self.db.query(sql)
-        sql = "select * from capital where year=%d and month=%d" % (tday.year, tday.month)
-        recs  = self.db.query(sql)
+        cates= catedbx.getall('parent')
+        recs = capidbx.get_month(tday.year, tday.month)
    
-        self.category = Category(cates, recs)
+        self.category = datamodel.Category(cates, recs)
+        datamodel.category = self.category
         self.SetStatusText(_('Database file: ') + self.conf['lastdb'], 0)
+
 
     def reload(self):
         self.load()
@@ -451,7 +454,8 @@ class MainFrame (wx.Frame):
 
 
     def OnCateEdit(self, event):
-        ready = {'cates':[], 'cate':'', 'upcate':_('No Higher Category'), 'catetype':_('Payout'), 'mode':'insert'}
+        ready = {'cates':[], 'cate':'', 'upcate':_('No Higher Category'), 
+                 'catetype':_('Payout'), 'mode':'insert'}
         self.cateedit_dialog(ready)
 
 
@@ -469,37 +473,22 @@ class MainFrame (wx.Frame):
         if dlg.ShowModal() == wx.ID_OK:
             item = dlg.values()
             logfile.info('cateedit:', item)
-            type = catetypes[item['catetype']]
-            parent = 0
-            if item['catetype'] == _('Income'):
-                if item['upcate'] != _('No Higher Category'):
-                    parent = self.category.income_catemap[item['upcate']]
-            elif item['catetype'] == _('Payout'):
-                if item['upcate'] != _('No Higher Category'):
-                    parent = self.category.payout_catemap[item['upcate']]
             
+            dbx = datamodel.CategoryData(self.db)
             if item['mode'] == 'insert':
-                #sql = "insert into category (name,parent,type) values ('%s',%d,%d)" % (item['cate'], parent, type)
-                sql = "insert into category (name,parent,type) values (?,?,?)"
-                logfile.info('insert category:', sql)
                 try:
-                    #self.db.execute(sql, (item['cate'], parent, type, ))
-                    self.db.execute_param(sql, (item['cate'], parent, type, ))
+                    dbx.insert_item(item)
                 except Exception, e:
                     wx.MessageBox(_('Add category failture:') + str(e), _('Add category information'), wx.OK|wx.ICON_INFORMATION)
                 else:
                     self.reload()
             elif item['mode'] == 'update':
-                #sql = "update category set name='%s',parent=%d,type=%d where id=%d" % (item['cate'], parent, type, item['id'])
-                sql = "update category set name=?,parent=?,type=? where id=?"
-                logfile.info('update category:', sql)
                 try:
-                    self.db.execute_param(sql, (item['cate'],parent,type,item['id'],))
+                    dbx.update_item(item)
                 except Exception, e:
                     wx.MessageBox(_('Change category failture:') + str(e), _('Change category information'), wx.OK|wx.ICON_INFORMATION)
                 else:
                     self.reload()
- 
 
     def OnIncome(self, event):
         tday = datetime.date.today()
@@ -516,49 +505,24 @@ class MainFrame (wx.Frame):
     def income_dialog(self, ready):
         dlg = dialogs.IncomeDialog(self, ready)
         dlg.CenterOnScreen()
+
+        dbx = datamodel.CapitalData(self.db)
         while dlg.ShowModal() == wx.ID_OK:
             data = dlg.values()
             logfile.info('income dialog:', data)
-            #sql = "insert into capital (category,num,ctime,year,month,day,payway,explain,type) values (%d,%f,%d,%d,%d,%d,%d,'%s',1)"
-            sql = "insert into capital (category,num,ctime,year,month,day,payway,explain,type) values (?,?,?,?,?,?,?,?,1)"
-            cate = data['cate'].split('->')[-1]
-
+            
             if data['mode'] == 'insert':
                 try:
-                    #cateid = self.category.income_catemap[cate]
-                    cateid = self.category.income_catemap[data['cate']]
-                    tnow   = int(time.time())
-                    num    = float(data['num'])
-                    #payway = payways[data['pay']]
-                    payway = 0
-                    year   = data['date'].GetYear()
-                    month  = data['date'].GetMonth() + 1
-                    day    = data['date'].GetDay()
-
-                    #sql = sql % (cateid, num, tnow, year, month, day, payway, data['explain'])
-                    logfile.info('insert capital:', sql)
-                    self.db.execute_param(sql, (cateid, num, tnow, year, month, day, payway, data['explain'],))
+                    dbx.insert_income(data)
                 except Exception, e:
                     wx.MessageBox(_('Add income failture:') + str(e), _('Add income information'), wx.OK|wx.ICON_INFORMATION)
                     logfile.info('insert income error:', traceback.format_exc())
                 else:
                     self.reload()
                     dlg.ClearForReinput()
-
             elif data['mode'] == 'update':
-                #sql = "update capital set category=%d,num=%d,year=%d,month=%d,day=%d,explain='%s' where id=%d"
-                sql = "update capital set category=?,num=?,year=?,month=?,day=?,explain=? where id=?"
                 try:
-                    #cateid = self.category.income_catemap[cate]
-                    cateid = self.category.income_catemap[data['cate']]
-                    num    = float(data['num'])
-                    year   = data['date'].GetYear()
-                    month  = data['date'].GetMonth() + 1
-                    day    = data['date'].GetDay()
-
-                    #sql = sql % (cateid, num, year, month, day, data['explain'], data['id'])
-                    logfile.info('update capital:', sql)
-                    self.db.execute_param(sql, (cateid, num, year, month, day, data['explain'], data['id'],))
+                    dbx.update_income(data)
                 except Exception, e:
                     wx.MessageBox(_('Change income failture:') + str(e), _('Change income information'), wx.OK|wx.ICON_INFORMATION)
                     logfile.info('update error:', traceback.format_exc())
@@ -567,9 +531,7 @@ class MainFrame (wx.Frame):
 
             if not data['reuse']:
                 break
-
-
-
+ 
 
     def OnPayout(self, event):
         tday = datetime.date.today()
@@ -587,49 +549,24 @@ class MainFrame (wx.Frame):
     def payout_dialog(self, ready):
         dlg = dialogs.PayoutDialog(self, ready)
         dlg.CenterOnScreen()
+
+        dbx = datamodel.CapitalData(self.db)
         while dlg.ShowModal() == wx.ID_OK:
             data = dlg.values()
             logfile.info('payout dialog:', data)
             
-            cate = data['cate'].split('->')[-1]
             if data['mode'] == 'insert':
-                #sql = "insert into capital (category,num,ctime,year,month,day,payway,explain,type) values (%d,%f,%d,%d,%d,%d,%d,'%s',0)"
-                sql = "insert into capital (category,num,ctime,year,month,day,payway,explain,type) values (?,?,?,?,?,?,?,?,0)"
                 try:
-                    #cateid = self.category.payout_catemap[cate]
-                    cateid = self.category.payout_catemap[data['cate']]
-                    tnow   = int(time.time())
-                    num    = float(data['num'])
-                    payway = payways[data['pay']]
-                    year   = data['date'].GetYear()
-                    month  = data['date'].GetMonth() + 1
-                    day    = data['date'].GetDay()
-
-                    #sql = sql % (cateid, num, tnow, year, month, day, payway, data['explain'])
-                    logfile.info('insert capital payout:', sql)
-                    self.db.execute_param(sql, (cateid, num, tnow, year, month, day, payway, data['explain'],))
+                    dbx.insert_payout(data)
                 except Exception, e:
                     wx.MessageBox(_('Add payout failture:') + str(e), _('Add payout information'), wx.OK|wx.ICON_INFORMATION)
                     logfile.info('insert payout error:', traceback.format_exc())
                 else:
                     self.reload()
                     dlg.ClearForReinput()
-
             elif data['mode'] == 'update':
-                #sql = "update capital set category=%d,num=%d,year=%d,month=%d,day=%d,payway=%d,explain='%s' where id=%d"
-                sql = "update capital set category=?,num=?,year=?,month=?,day=?,payway=?,explain=? where id=?"
                 try:
-                    #cateid = self.category.payout_catemap[cate]
-                    cateid = self.category.payout_catemap[data['cate']]
-                    num    = float(data['num'])
-                    payway = payways[data['pay']]
-                    year   = data['date'].GetYear()
-                    month  = data['date'].GetMonth() + 1
-                    day    = data['date'].GetDay()
-
-                    #sql = sql % (cateid, num, year, month, day, payway, data['explain'], data['id'])
-                    logfile.info('update capital:', sql)
-                    self.db.execute_param(sql, (cateid, num, year, month, day, payway, data['explain'], data['id'],))
+                    dbx.update_payout(data)
                 except Exception, e:
                     wx.MessageBox(_('Change payout failture:') + str(e), _('Change payout information'), wx.OK|wx.ICON_INFORMATION)
                     logfile.info('update error:', traceback.format_exc())
@@ -663,31 +600,19 @@ class MainFrame (wx.Frame):
 
     def cycle_dialog(self, ready):
         dlg = dialogs.CycleDialog(self, ready)
-        #dlg.CenterOnParent()
+        dlg.CenterOnParent()
+
+        dbx = datamodel.CycleData(self.db)
         while dlg.ShowModal() == wx.ID_OK:
             data = dlg.values()
             logfile.info('cycle dialog:', data)
-            
-            cate = data['cate'].split('->')[-1]
+           
             if data['mode'] == 'insert':
-                sql = "insert into recycle (category,num,ctime,payway,type,addtime,explain) values (?,?,?,?,?,?,?)"
                 try:
-                    typeid = catetypes[data['type']]
-                    if data['type'] == _('Payout'):
-                        #cateid = self.category.payout_catemap[cate]
-                        cateid = self.category.payout_catemap[data['cate']]
-                    else:
-                        #cateid = self.category.income_catemap[cate]
-                        cateid = self.category.income_catemap[data['cate']]
-                    tnow   = int(time.time())
-                    num    = float(data['num'])
-                    payway = payways[data['pay']]
-                    addtime = cycles[data['addtime']]
-
-                    logfile.info('insert cycle:', sql)
-                    self.db.execute_param(sql, (cateid, num, tnow, payway, typeid, addtime, data['explain'],))
+                    dbx.insert(data)
                 except Exception, e:
-                    wx.MessageBox(_('Add cycle failture:') + str(e), _('Add cycle information'), wx.OK|wx.ICON_INFORMATION)
+                    wx.MessageBox(_('Add cycle failture:') + str(e), _('Add cycle information'), 
+                                    wx.OK|wx.ICON_INFORMATION)
                     logfile.info('insert cycle error:', traceback.format_exc())
                 else:
                     cid = self.db.last_insert_id() 
@@ -697,32 +622,17 @@ class MainFrame (wx.Frame):
 
                     self.reload()
                     dlg.ClearForReinput()
-
             elif data['mode'] == 'update':
-                sql = "update recycle set category=?,num=?,payway=?,type=?,addtime=?,explain=? where id=?"
                 try:
-                    typeid = catetypes[data['type']]
-                    if data['type'] == _('Payout'):
-                        #cateid = self.category.payout_catemap[cate]
-                        cateid = self.category.payout_catemap[data['cate']]
-                    else:
-                        #cateid = self.category.income_catemap[cate]
-                        cateid = self.category.income_catemap[data['cate']]
- 
-                    num    = float(data['num'])
-                    payway = payways[data['pay']]
-                    addtime = cycles[data['addtime']]
-
-                    logfile.info('update cycle:', sql)
-                    self.db.execute_param(sql, (cateid, num, payway, typeid, addtime, data['explain'], data['id'],))
+                    dbx.update(data)
                 except Exception, e:
-                    wx.MessageBox(_('Change cycle failture:') + str(e), _('Change cycle information'), wx.OK|wx.ICON_INFORMATION)
+                    wx.MessageBox(_('Change cycle failture:') + str(e), _('Change cycle information'), 
+                                    wx.OK|wx.ICON_INFORMATION)
                     logfile.info('update error:', traceback.format_exc())
                 else:
                     self.reload()
             if not data['reuse']:
                 break
-
 
     def OnLanguage(self, event):
         mid = event.GetId()  
@@ -813,10 +723,9 @@ class MainFrame (wx.Frame):
             if pass1 != pass2:
                 dlg.set_warn(_('Different password.'))
                 continue
-            
-            sql = "update user set password=?,mtime=?"
-            self.db.execute_param(sql, (pass1, int(time.time()),))
-
+           
+            dbx = datamodel.UserData(self.db)
+            dbx.change_password(pass1)
             break
 
         dlg.Destroy()

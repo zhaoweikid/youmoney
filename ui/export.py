@@ -3,16 +3,19 @@ import os, sys
 import csv, datetime, time, types
 import storage
 from storage import catetypes, payways
+import datamodel
 
 class DataExport:
     def __init__(self, db, charset='utf-8'):
         self.db = db
         self.charset = charset
+        self.catedbx = datamodel.CategoryData(self.db)
+        self.capidbx = datamodel.CapitalData(self.db)
 
     def category(self, filename):
-        sql = "select * from category order by parent"
-        rets = self.db.query(sql)
-        
+        #sql = "select * from category order by parent"
+        #rets = self.db.query(sql)
+        rets = self.catedbx.getall()
         if not rets:
             raise ValueError, 'No category.'
 
@@ -54,8 +57,9 @@ class DataExport:
         of.close()
 
     def itemdata(self, filename):
-        sql = "select * from category"
-        rets = self.db.query(sql)
+        #sql = "select * from category"
+        #rets = self.db.query(sql)
+        rets = self.catedbx.getall()
         if not rets:
             raise ValueError, 'No category.'
         
@@ -67,8 +71,9 @@ class DataExport:
             if row['parent'] > 0:
                 parents[row['id']] = row['parent']
 
-        sql = "select * from capital order by year,month,day"
-        rets = self.db.query(sql)
+        #sql = "select * from capital order by year,month,day"
+        #rets = self.db.query(sql)
+        rets = self.capidbx.getall("year,month,day")
         if not rets:
             raise ValueError, 'No record.'
         
@@ -124,8 +129,9 @@ class DataImport:
                          unicode(typen, self.charset)])
         f.close()
         
-        sql = "select * from category order by parent"
-        rets = self.db.query(sql)
+        #sql = "select * from category order by parent"
+        #rets = self.db.query(sql)
+        rets = self.catedbx.getall("parent")
         
         parents = {}
         parent_id2name = {}
@@ -150,20 +156,21 @@ class DataImport:
                 pid = parents[k]
             else:
                 x0 = x[0].encode('utf-8')
-                sql = "insert into category (name,parent,type) values (?,0,?)"
-                #self.db.execute_param(sql, (x[0].encode('utf-8'), tid,))
-                self.db.execute_param(sql, (x[0], tid,))
-                sql = "select id from category where name='%s' and type=%d" % (x0, tid)
-                pid = self.db.query_one(sql)
+                #sql = "insert into category (name,parent,type) values (?,0,?)"
+                #self.db.execute_param(sql, (x[0], tid,))
+                self.catedbx.insert(tid, 0, x[0])
+                #sql = "select id from category where name='%s' and type=%d" % (x0, tid)
+                #pid = self.db.query_one(sql)
+                pid = self.catedbx.getid(tid, x0)
                 kn = x[0] + '_' + str(tid)
                 parents[kn] = pid
                 parent_id2name[pid] = x[0]
             sk = x[0] + '_' + x[1] + '_' + str(tid) 
             if not x[1] or sk in subs:
                 continue
-            sql = "insert into category (name,parent,type) values (?,?,?)"
-            #self.db.execute_param(sql, (name, pid, tid,))
-            self.db.execute_param(sql, (x[1], pid, tid,))
+            #sql = "insert into category (name,parent,type) values (?,?,?)"
+            #self.db.execute_param(sql, (x[1], pid, tid,))
+            self.catedbx.insert(tid, pid, x[1])
             # value is not important
             subs[sk] = 0
 
@@ -187,9 +194,9 @@ class DataImport:
         f.close()
 
         allnum = len(recs)
-        sql = "select * from category order by parent"
-        rets = self.db.query(sql)
-        
+        #sql = "select * from category order by parent"
+        #rets = self.db.query(sql)
+        rets = self.catedbx.getall('parent') 
         parents = {}
         parent_id2name = {}
         subs = {}
@@ -213,10 +220,12 @@ class DataImport:
                 pid = parents[k]
             else:
                 x0 = x[0].encode('utf-8')
-                sql = "insert into category (name,parent,type) values (?,0,?)"
-                self.db.execute_param(sql, (x[0].encode('utf-8'), tid,))
-                sql = "select id from category where name='%s' and type=%d" % (x0, tid)
-                pid = self.db.query_one(sql)
+                #sql = "insert into category (name,parent,type) values (?,0,?)"
+                #self.db.execute_param(sql, (x[0].encode('utf-8'), tid,))
+                self.catedbx.insert(tid, 0, x[0].encode('utf-8'))
+                #sql = "select id from category where name='%s' and type=%d" % (x0, tid)
+                #pid = self.db.query_one(sql)
+                self.catedbx.getid(tid, x0)
                 kn = x[0] + '_' + str(tid)
                 parents[kn] = pid
                 parent_id2name[pid] = x[0]
@@ -226,15 +235,19 @@ class DataImport:
                 if sk in subs:
                     cateid = subs[sk]
                 else:
-                    sql = "insert into category (name,parent,type) values (?,?,?)"
-                    self.db.execute_param(sql, (name, pid, tid,))
-                    sql = "select id from category where name='%s' and parent=%d and type=%d" % (name, pid, tid) 
-                    cateid = self.db.query_one(sql)
+                    #sql = "insert into category (name,parent,type) values (?,?,?)"
+                    #self.db.execute_param(sql, (name, pid, tid,))
+                    self.catedbx.insert(tid, pid, name)
+                    #sql = "select id from category where name='%s' and parent=%d and type=%d" % (name, pid, tid) 
+                    #cateid = self.db.query_one(sql)
+                    cateid = self.catedbx.getid(tid, name, pid)
                     subs[sk] = cateid
 
-            sql = "insert into capital(category,num,ctime,year,month,day,payway,explain,type) values (?,?,?,?,?,?,?,?,?)"
-            param = (cateid, x[2], x[5], x[6], x[7], x[8], payways[x[3]], x[9].encode('utf-8'), catetypes[x[4]])
-            self.db.execute_param(sql, param)
+            #sql = "insert into capital(category,num,ctime,year,month,day,payway,explain,type) values (?,?,?,?,?,?,?,?,?)"
+            #param = (cateid, x[2], x[5], x[6], x[7], x[8], payways[x[3]], x[9].encode('utf-8'), catetypes[x[4]])
+            #self.db.execute_param(sql, param)
+            self.capidbx.insert(cateid, x[2], x[5], x[6], x[7], x[8], payways[x[3]], 
+                                x[9].encode('utf-8'), catetypes[x[4]])
 
             callback.Update(int(float(i)/allnum * 100))        
 

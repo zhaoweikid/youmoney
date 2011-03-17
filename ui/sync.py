@@ -214,10 +214,11 @@ def do_sync(conf, db_sync_first_time, win, onlyci):
 
 def synchronization(win, onlyci=False):
     conf = win.conf
-   
-    db_sync_first_time = 0
-    sql = "select sync_first_time from verinfo"
-    db_sync_first_time = win.db.query_one(sql)
+    dbx = datamodel.VerinfoData(win.db)   
+
+    db_sync_first_time = dbx.first_time()
+    #sql = "select sync_first_time from verinfo"
+    #db_sync_first_time = win.db.query_one(sql)
     logfile.info("db sync first time:", db_sync_first_time)
 
     win.db.close()
@@ -233,8 +234,9 @@ def synchronization(win, onlyci=False):
         logfile.info('check update sync_first_time:', db_sync_first_time, status)
         if db_sync_first_time == 0 and \
            (status == DataSync.UPDATE or status == DataSync.COMMIT or status == DataSync.ADD):
-            sql = "update verinfo set sync_first_time=%d" % int(time.time())
-            win.db.execute(sql)
+            dbx.up_first_time()
+            #sql = "update verinfo set sync_first_time=%d" % int(time.time())
+            #win.db.execute(sql)
 
     return True 
 

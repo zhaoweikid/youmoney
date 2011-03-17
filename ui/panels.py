@@ -7,11 +7,16 @@ import wx.lib.sized_controls as sc
 import wx.gizmos as gizmos
 import wx.lib.mixins.listctrl as listmix
 import logfile, statpanel, storage
+import datamodel
 
 class CategoryPanel (wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, -1, style=0)
         self.parent= parent        
+        self.frame = self.parent.parent
+        self.db = self.parent.parent.db
+        self.dbx = datamodel.CategoryData(self.db)
+
         sizer = wx.BoxSizer(wx.VERTICAL)
         self.tree = gizmos.TreeListCtrl(self, -1, style=wx.TR_DEFAULT_STYLE|
                     wx.TR_FULL_ROW_HIGHLIGHT|wx.TR_HIDE_ROOT)
@@ -96,37 +101,22 @@ class CategoryPanel (wx.Panel):
 
     def OnItemActivated(self, event):
         try:
-            data  = self.tree.GetPyData(event.GetItem())
+            data = self.tree.GetPyData(event.GetItem())
         except:
-            data  = self.tree.GetPyData(self.currentItem)
+            data = self.tree.GetPyData(self.currentItem)
 
-        frame = self.parent.parent
         if data['id'] > 0:
-            sql = "select * from category where id=" + str(data['id'])
-            ret = frame.db.query(sql)
+            ret = self.dbx.get_ready(data['id'])
             if ret:
-                row = ret[0]
-                if row['parent'] > 0:
-                    upcate = frame.category.catemap(row['type'], row['parent'])
-                else:
-                    upcate = _("No Higher Category")
-                if row['type'] == 0:
-                    ct = _('Payout')
-                else:
-                    ct = _('Income')
-                ready = {'cates':[], 'cate':row['name'], 'upcate':upcate, 'catetype':ct, 'mode':'update', 'id':row['id']}
-
-                frame.cateedit_dialog(ready)
+                self.frame.cateedit_dialog(ret)
 
     def OnCategoryDel(self, event):
-        data  = self.tree.GetPyData(self.currentItem)
+        data = self.tree.GetPyData(self.currentItem)
         if not data or data['id'] <= 0:
             logfile.info("category data invalid.")
             return
-        frame = self.parent.parent
- 
-        sql = "select * from category where id=" + str(data['id'])
-        ret = frame.db.query(sql)
+        #frame = self.parent.parent
+        ret = self.dbx.get(data['id'])
         if not ret:
             logfile.info('not found del category:', data['id'])
             return
@@ -135,56 +125,23 @@ class CategoryPanel (wx.Panel):
         
         if name == _('No Category'):
             dlg = wx.MessageDialog(self, _('Can not delete this category!'),
-                               _('Notice:'),
-                               wx.OK | wx.ICON_INFORMATION)
+                                _('Notice:'),wx.OK | wx.ICON_INFORMATION)
             dlg.ShowModal()
             dlg.Destroy()
             return   
         else:
-            dlg = wx.MessageDialog(self, _('To delete category') + '"' + name + '"' + _(', all child categories will move to "No Category"'),
-                               _('Notice:'),
-                               wx.OK | wx.ICON_INFORMATION | wx.CANCEL)
-        if dlg.ShowModal() == wx.ID_OK:
-            # 检查要删除的所有分类，包括子类
-            idlist = [str(data['id'])]
-            sql = "select * from category where parent=" + str(data['id'])
-            ret = frame.db.query(sql)
-            if ret:
-                for row in ret:
-                    idlist.append(str(row['id']))
-            ids = ','.join(idlist)
-            # 检查是否有 未分类
-            sql = u"select * from category where name='%s' and type=%d" %(_('No Category'), mytype)
-            ret = frame.db.query(sql)
-            if not ret:
-                sql = "insert into category (name,parent,type) values ('%s',0,%d)" % (_('No Category'), mytype)
-                frame.db.execute(sql)
-                sql = u"select * from category where name='%s' and type=%d" % (_('No Category'), mytype)
-
-                ret = frame.db.query(sql)
- 
-            mycid = ret[0]['id']
-
-            # 更新
-            try:
-                sql = "update capital set category=%d where category in (%s) and type=%d" % (mycid, ids, mytype)
-                logfile.info('update category:', sql)
-                frame.db.execute(sql, False)
-
-                sql = "update recycle set category=%d where category in (%s) and type=%d" % (mycid, ids, mytype)
-                logfile.info('update recycle:', sql)
-                frame.db.execute(sql, False)
- 
-                sql = "delete from category where id=%d or parent=%d" % (data['id'], data['id'])
-                frame.db.execute(sql, False)
-            except Exception, e:
-                frame.db.rollback()
-                wx.MessageBox(_('Delete category failure!') + str(e), _('Delete category information'), wx.OK|wx.ICON_INFORMATION)
-            else:
-                frame.db.commit()
-            frame.reload()
-        dlg.Destroy()
-    
+            dlg = wx.MessageDialog(self, _('To delete category') + '"' + name + '"' \
+                                + _(', all child categories will move to "No Category"'),
+                                _('Notice:'),wx.OK | wx.ICON_INFORMATION | wx.CANCEL)
+            if dlg.ShowModal() == wx.ID_OK:
+                try:
+                    self.dbx.delete(mytype, data['id'])
+                except Exception, e:
+                    wx.MessageBox(_('Delete category failure!') + str(e), 
+                                _('Delete category information'), wx.OK|wx.ICON_INFORMATION)
+                self.frame.reload()
+            dlg.Destroy()
+        
     def OnItemSelected(self, event):
         self.currentItem = event.GetItem()
 
@@ -193,6 +150,9 @@ class ItemListPanel (wx.Panel, listmix.ColumnSorterMixin):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, -1, style=0)
         self.parent = parent
+        self.frame  = self.parent.parent
+        self.db  = self.parent.parent.db
+        self.dbx = datamodel.CapitalData(self.db)
 
         box = wx.BoxSizer(wx.HORIZONTAL)
         tday = datetime.date.today()
@@ -248,7 +208,6 @@ class ItemListPanel (wx.Panel, listmix.ColumnSorterMixin):
         self.PopupMenu(menu)
         menu.Destroy()
 
-
     def init(self):
         self.list.InsertColumn(0, _("Date:"))
         self.list.SetColumnWidth(0, 100)
@@ -273,61 +232,45 @@ class ItemListPanel (wx.Panel, listmix.ColumnSorterMixin):
         month = self.month.GetValue()
 
         if self.type == 'payout':
-            mytype = 0
+            typeint = 0
             othertype = 1
         else:
-            mytype = 1
+            typeint = 1
             othertype = 0
 
-        sql = "select * from capital where year=%s and month=%s and type=%d order by day,id" % (year, month, mytype)
-        logfile.info(sql)
-        rets = self.parent.parent.db.query(sql)
+        rets = self.dbx.get_month_by_type(self.type, year, month) 
         numall = 0
         if rets:
             for row in rets:
-                mytime = '%d-%02d-%02d' % (row['year'], row['month'], row['day'])
-                item = self.list.InsertStringItem(0, mytime)
-                #cate = self.parent.parent.category.payout_catemap[row['category']]
-                cate = self.parent.parent.category.catemap(self.type, row['category'])
-                self.list.SetStringItem(item, 1, cate)
+                item = self.list.InsertStringItem(0, row['time'])
+                self.list.SetStringItem(item, 1, row['catestr'])
                 self.list.SetStringItem(item, 2, str(row['num']))
                 self.list.SetItemData(item, row['id'])
-                payway = storage.payways[row['payway']]
-
-                cyclestr = ''
-                if row['cycle'] > 0:
-                    cyclestr = _('Yes')
 
                 if self.type == 'payout':
-                    self.list.SetStringItem(item, 3, payway)
-                    self.list.SetStringItem(item, 4, cyclestr)
+                    self.list.SetStringItem(item, 3, row['paywaystr'])
+                    self.list.SetStringItem(item, 4, row['cyclestr'])
                     self.list.SetStringItem(item, 5, row['explain'])
 
-                    self.itemDataMap[row['id']] = [mytime, cate, str(row['num']), payway, cyclestr.encode('utf-8'), row['explain']]
+                    self.itemDataMap[row['id']] = [row['time'], row['catestr'], str(row['num']), 
+                                            row['paywaystr'], row['cyclestr'].encode('utf-8'), 
+                                            row['explain']]
                 else:
-                    self.list.SetStringItem(item, 3, cyclestr)
+                    self.list.SetStringItem(item, 3, row['cyclestr'])
                     self.list.SetStringItem(item, 4, row['explain'])
 
-                    self.itemDataMap[row['id']] = [mytime, cate, str(row['num']), cyclestr.encode('utf-8'), row['explain']]
-
+                    self.itemDataMap[row['id']] = [row['time'], row['catestr'], str(row['num']), 
+                                            row['cyclestr'].encode('utf-8'), row['explain']]
                 numall += row['num']
-            #self.total.SetValue(str(numall))
             self.total.SetLabel(str(numall))
         else:
-            #self.total.SetValue('0')
             self.total.SetLabel('0')
 
-        sql = "select sum(num) as num from capital where year=%s and month=%s and type=%s" % (year, month, othertype)
-        rets = self.parent.parent.db.query(sql)
-        if rets:
-            val = rets[0]['num']
-            if not val:
-                val = 0
-            if mytype == 0: # payout
-                self.surplus.SetLabel(str(val-numall))
-            else:
-                self.surplus.SetLabel(str(numall-val))
-                
+        val = self.dbx.sum_num(othertype, year, month)
+        if typeint == 0: # payout
+            self.surplus.SetLabel(str(val-numall))
+        else:
+            self.surplus.SetLabel(str(numall-val))
             
     def GetListCtrl(self):
         return self.list
@@ -344,25 +287,13 @@ class ItemListPanel (wx.Panel, listmix.ColumnSorterMixin):
         except:
             currentItem = self.currentItem
         id = self.list.GetItemData(currentItem)
-        category = self.parent.parent.category
-        sql = "select * from capital where id=" + str(id)
-        ret = self.parent.parent.db.query(sql)
+
+        ret = self.dbx.get_ready(self.type, id)
         if ret:
-            row = ret[0]
-            payway = storage.payways[row['payway']]
-            ready = {'cates':category.catelist(self.type), 
-                     'cate':category.catestr_by_id(self.type, row['category']), 'num': row['num'], 
-                     'explain':row['explain'], 
-                     'year':row['year'], 'month':row['month'], 'day':row['day'], 
-                     'pay':payway, 'mode':'update', 'id':row['id']}
-
-            logfile.info('ready:', ready)
-            #print 'update data:', ready
             if self.type == 'payout':
-                self.parent.parent.payout_dialog(ready)
+                self.frame.payout_dialog(ret)
             else:
-                self.parent.parent.income_dialog(ready)
-
+                self.frame.income_dialog(ret)
 
     def OnDelete(self, event):
         dlg = wx.MessageDialog(self, _('Is really delete? Delete can not be restored!'), _('Notice:'),
@@ -375,9 +306,7 @@ class ItemListPanel (wx.Panel, listmix.ColumnSorterMixin):
         if self.currentItem is None:
             return
         id = self.list.GetItemData(self.currentItem)
-        sql = "delete from capital where id=" + str(id)
-        logfile.info('del:', sql)
-        self.parent.parent.db.execute(sql)
+        self.dbx.delete(id)
         self.parent.parent.reload()
 
     def OnItemSelected(self, event):
@@ -400,6 +329,9 @@ class CycleListPanel (wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, -1, style=0)
         self.parent = parent
+        self.frame = self.parent.parent
+        self.db = self.frame.db
+        self.dbx = datamodel.CycleData(self.db)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         self.list = wx.ListCtrl(self, -1, style=wx.LC_REPORT)
@@ -445,24 +377,14 @@ class CycleListPanel (wx.Panel):
         self.list.ClearAll()
         self.init()
 
-        sql = "select * from recycle order by id"
-        logfile.info(sql)
-        rets = self.parent.parent.db.query(sql)
+        rets = self.dbx.getall()
         if rets:
             for row in rets:
-                try:
-                    cate = self.parent.parent.category.catemap(row['type'], row['category'])
-                    typestr = storage.catetypes[row['type']]
-                except:
-                    sql = "delete from recycle where id=" + str(row['id'])
-                    self.parent.parent.db.execute(sql)
-                    continue
-                item = self.list.InsertStringItem(0, typestr)
-                #self.list.SetStringItem(item, 0, storage.catetypes[row['type']]) 
-                self.list.SetStringItem(item, 1, cate)
+                item = self.list.InsertStringItem(0, row['typestr'])
+                self.list.SetStringItem(item, 1, row['catestr'])
                 self.list.SetStringItem(item, 2, str(row['num']))
-                self.list.SetStringItem(item, 3, storage.payways[row['payway']])
-                self.list.SetStringItem(item, 4, storage.cycles[row['addtime']])
+                self.list.SetStringItem(item, 3, row['paywaystr'])
+                self.list.SetStringItem(item, 4, row['addtimestr'])
                 self.list.SetStringItem(item, 5, row['explain'])
 
                 self.list.SetItemData(item, row['id'])
@@ -473,38 +395,10 @@ class CycleListPanel (wx.Panel):
         except:
             currentItem = self.currentItem
         id = self.list.GetItemData(currentItem)
-        category = self.parent.parent.category
 
-        cyclelist = []
-        for k in storage.cycles:
-            if type(k) != types.IntType:
-                cyclelist.append(k)
-        cyclelist.reverse()
-    
-        sql = "select * from recycle where id=" + str(id)
-        ret = self.parent.parent.db.query(sql)
+        ret = self.dbx.get_ready(id)
         if ret:
-            row = ret[0]
-            typestr = storage.catetypes[row['type']] 
-            
-            if typestr == _('Payout'):
-                payout_cate = category.catestr_by_id('payout', row['category'])
-                income_cate = category.income_catelist[0]
-            else:
-                payout_cate = category.payout_catelist[0]
-                income_cate = category.catestr_by_id('income', row['category'])
- 
-            ready = {'payout_cates':category.payout_catelist, 'payout_cate':payout_cate, 
-                 'income_cates':category.income_catelist, 'income_cate':income_cate,
-                 'num':row['num'], 
-                 'types':[_('Payout'), _('Income')], 'type':typestr, 
-                 'cycles':cyclelist, 'cycle':storage.cycles[row['addtime']],
-                 'explain':row['explain'],
-                 'pay':storage.payways[row['payway']], 'mode':'update', 'id':row['id']}
-            logfile.info('ready:', ready)
-            #print 'update data:', ready
-            self.parent.parent.cycle_dialog(ready)
-
+            self.parent.parent.cycle_dialog(ret)
 
     def OnDelete(self, event):
         dlg = wx.MessageDialog(self, _('Is really delete? Delete can not be restored!'), _('Notice:'),
@@ -517,9 +411,9 @@ class CycleListPanel (wx.Panel):
         if self.currentItem is None:
             return
         id = self.list.GetItemData(self.currentItem)
-        sql = "delete from recycle where id=" + str(id)
-        logfile.info('del:', sql)
-        self.parent.parent.db.execute(sql)
+
+        self.dbx.delete(id)
+
         self.parent.parent.reload()
 
     def OnItemSelected(self, event):

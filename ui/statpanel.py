@@ -4,6 +4,7 @@ import wx
 import wx.html as  html
 import datetime
 import logfile
+import datamodel
 import drawstat
 
 class StatPanel (wx.Panel):
@@ -110,75 +111,11 @@ class StatPanel (wx.Panel):
         else:
             maxmonth = tomonth
             minmonth = frommonth
+       
+        dbx = datamodel.CapitalData(frame.db) 
+        return  dbx.stat(qtype, mytype, cate, fromdate, fromyear, frommonth, fromday, 
+                        todate, toyear, tomonth ,today, minmonth, maxmonth)
         
-        endsql = ''
-        #if mytype >= 0:
-        #    endsql += " and type=%d" % (mytype)
-
-        if cate != _('All Categories'):
-            logfile.info("cate:", cate)
-            cates = frame.category.cate_subs_id(mytype, cate)
-            logfile.info("cates:", cates)
-            cates = map(str, cates)
-            endsql += ' and category in (%s)' % (','.join(cates))
-        #endsql += " order by year,month,day"
-        
-        prefixsql = 'select num,year,month,day,type,category from capital '
-        #sql = "select num,year,month from capital where type=%d and year>=%s and year<=%s" % (mytype, fromyear, toyear)
-        if qtype == 'category':
-            #if cate != _('All Categories'):
-            #    return [], (), ()
-
-            if fromyear == toyear and frommonth == tomonth:
-                #sql = "select num,year,month,day,type,category from capital where year>=%d and year<=%d and month>=%d and month<=%d and day>=%d and day<=%d %s" % (fromyear, toyear, minmonth, maxmonth, fromday, today, endsql)
-                sql = prefixsql + "where year=%d and month=%d and day>=%d and day<=%d %s order by year,month,day" % (fromyear, frommonth, fromday, today, endsql)
-            else:
-                years = range(fromyear, toyear+1)
-                sqls = []
-                sql = prefixsql + "where year=%d and month=%d and day>=%d %s" % (fromyear, frommonth, fromday, endsql)
-                sqls.append(sql)
-                
-                if len(years) <= 1: # one year, multip month, entire months
-                    sql = prefixsql + "where year>=%d and year<=%d and month>%d and month<%d %s" % (fromyear, toyear, minmonth, maxmonth, endsql)
-                    sqls.append(sql)
-                else: # multip year
-                    sql = prefixsql + "where year=%d and month>%d %s" % (fromyear, frommonth, endsql)
-                    sqls.append(sql)
-                    sql = prefixsql + "where year=%d and month<%d %s" % (toyear, tomonth, endsql)
-                    sqls.append(sql)
-
-                    sql = prefixsql + "where year>%d and year<%d %s" % (fromyear, toyear, endsql)
-                    sqls.append(sql)
-                     
-                sql = prefixsql + "where year=%d and month=%d and day<=%d %s" % (toyear, tomonth, today, endsql)
-                sqls.append(sql)
-
-                sql = ' union '.join(sqls) + ' order by year,month,day'
- 
-        elif qtype == 'month':
-            years = range(fromyear, toyear+1)
-            if len(years) <= 1:
-                sql = "select num,year,month,day,type,category from capital where year>=%d and year<=%d and month>=%d and month<=%d %s" % (fromyear, toyear, minmonth, maxmonth, endsql)
-            else:
-                sqls = []
-                sql = "select num,year,month,day,type,category from capital where year=%d and month>=%d %s" % (fromyear, frommonth, endsql)
-                sqls.append(sql)
-                for ye in years[1:-1]:
-                    sql = "select num,year,month,day,type,category from capital where year>%d and year<%d %s" % (fromyear, toyear, endsql)
-                    sqls.append(sql)
-
-                sql = "select num,year,month,day,type,category from capital where year=%d and month<=%d %s" % (toyear, tomonth, endsql)
-                sqls.append(sql)
-
-                sql = ' union '.join(sqls) + ' order by year,month,day'
-
-
-        logfile.info('stat:', sql)
-        rets = frame.db.query(sql)
-        if not rets:
-            rets = []
-        return rets, (fromyear, frommonth), (toyear, tomonth)
-
     def OnCateStatClick(self, event):
         type  = self.type.GetValue()
         icate = self.category.GetValue()
