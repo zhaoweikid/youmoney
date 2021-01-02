@@ -10,3 +10,7 @@ Windows：可以选择YouMoney-x.x.x.exe的安装文件直接运行就安装。�
 Linux: 可以用rpm，deb包来安装。下载对应的版本就可以。也可以从源码运行。需要保证python版本在2.5以上，但不能为3。wxPython版本在2.8.9以上。
 
 MacOS X：下载dmg包，把里面的youmoney.app拖到桌面或者应用程序里即可。
+
+## 说明
+
+这个是我在十几年前在googlecode上开源的一个wxpython开发的记账软件，现在仍然可以运行使用，但是已经没有更新了，给想做wxpython开发的同学一个参考吧
